@@ -33,4 +33,14 @@ class LoginModel extends Model
         $this->insert($data);
         return $this->insertID();
     }
+
+    public function usuarioExiste($usuario)
+    {
+        $query = $this->db->table($this->table);
+        $result = $query->select('id_usuario')
+            ->where('usu_nombre', $usuario)
+            ->get()
+            ->getRowArray();
+        return $result ? $result['id_usuario'] : false;
+    }
 }

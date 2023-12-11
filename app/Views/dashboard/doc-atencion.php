@@ -44,57 +44,63 @@
       <!--  -->
 
       <div class="w-full">
-        <form class="w-full max-w-full">
+        <form class="w-full max-w-full" action="/act-paciente" method="post">
           <div class="flex -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label for="rut" class="block text-sm font-medium text-gray-700">RUT</label>
-              <input id="rut" type="text" value="" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input type="hidden" id="id" name="id" value="<?= $datosPac['ID'] ?? '' ?>">
+              <label for=" rut" class="block text-sm font-medium text-gray-700">RUT</label>
+              <input id="rut" type="text" name="rut" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div class="w-full md:w-1/2 px-3">
               <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-              <input id="nombre" name="nombre" type="text" value="" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input id="nombres" name="nombres" type="text" value="<?= $datosPac['NOMBRES'] ?? '' ?>" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
           </div>
           <div class="flex -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido</label>
-              <input id="apellido" name="apellidos" type="text" value="" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input id="apellidos" name="apellidos" type="text" value="<?= $datosPac['APELLIDOS'] ?? '' ?>" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div class="w-full md:w-1/2 px-3">
               <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-              <input id="fecha" name="fecha" type="date" value="" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input id="fecha" name="fecha" type="date" value="<?= $datosPac['FECHA_NAC'] ?? '' ?>" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
           </div>
           <div class="flex -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label for="celular" class="block text-sm font-medium text-gray-700">Celular</label>
-              <input id="celular" name="celular" type="text" value="" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input id="celular" name="celular" type="text" value="<?= $datosPac['CELULAR'] ?? '' ?>" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label for="correo" class="block text-sm font-medium text-gray-700">Correo</label>
-              <input id="correo" name="correo" type="email" value="" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input id="correo" name="correo" type="email" value="<?= $datosPac['CORREO'] ?? '' ?>" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
           </div>
           <div class="flex -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label for="prevision" class="block text-sm font-medium text-gray-700">Previsión</label>
-              <select id="prevision" name="prevision" value="" type="text" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                <option value="" disabled="" selected="">Seleccione una opción</option>
+              <select id="prevision" name="prevision" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <option value="">Seleccione una opción</option>
                 <?php foreach ($previsiones as $prevision) : ?>
-                  <option value="<?= $prevision['id_prevision'] ?>"><?= $prevision['prev_nombre'] ?></option>
+                  <option value="<?= $prevision['id_prevision'] ?>" <?= ($datosPac['IDP'] ?? '') == $prevision['id_prevision'] ? 'selected' : '' ?>>
+                    <?= $prevision['prev_nombre'] ?>
+                  </option>
                 <?php endforeach; ?>
               </select>
             </div>
             <div class="w-full md:w-1/2 px-3">
               <label for="genero" class="block text-sm font-medium text-gray-700">Género</label>
-              <select id="genero" value="" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                <<option value="" disabled="" selected="">Seleccione una opción</option>
-                  <?php foreach ($generos as $genero) : ?>
-                    <option value="<?= $genero['id_genero'] ?>"><?= $genero['tipo_genero'] ?></option>
-                  <?php endforeach; ?>
+              <select id="genero" name="genero" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <option value="">Seleccione una opción</option>
+                <?php foreach ($generos as $genero) : ?>
+                  <option value="<?= $genero['id_genero'] ?>" <?= ($datosPac['IDG'] ?? '') == $genero['id_genero'] ? 'selected' : '' ?>>
+                    <?= $genero['tipo_genero'] ?>
+                  </option>
+                <?php endforeach; ?>
               </select>
             </div>
           </div>
+
           <div class="flex -mx-3 mb-6">
 
             <div class="w-[50%] md:w-1/2 px-3 mb-6 md:mb-0">
@@ -105,8 +111,8 @@
             <div class="w-full px-3">
               <h2 class="text-lg font-semibold text-gray-700 mb-2">Generar Credenciales</h2>
               <div class="flex flex-col md:flex-row gap-6">
-                <input type="text" class="w-full md:w-1/2 mt-1 md:mr-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Usuario" disabled>
-                <input type="password" class="w-full md:w-1/2 mt-1 md:ml-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Contraseña" disabled>
+                <input type="text" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full md:w-1/2 mt-1 md:mr-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Usuario" disabled>
+                <input type="password" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full md:w-1/2 mt-1 md:ml-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Contraseña" disabled>
               </div>
             </div>
           </div>
@@ -126,7 +132,7 @@
               Historial Médico </button>
             <button type="button" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Ver
               Historial anterior</button>
-            <button type="button" class="w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Guardar
+            <button type="submit" class="w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Guardar
               Cambios</button>
 
           </div>
@@ -143,11 +149,12 @@
           <div class=" text-center">
             <h1 class="text-4xl py-4 text-black">Agregar nuevo Historial</h1>
           </div>
-          <form>
+          <form action="/insert-historial" method="post">
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
+                <input type="hidden" id="id" name="id" value="<?= $datosPac['ID'] ?? '' ?>">
                 <label for="razon-cita" class="block text-sm font-medium text-gray-700">Razón de Cita</label>
-                <select id="razon-cita" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <select id="razon-cita" name="razon-cita" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                   <option value="" disabled="" selected="">Seleccione una opción</option>
                   <?php foreach ($listaHistorial as $lista) : ?>
                     <option value="<?= $lista['id_tipo_detalle'] ?>"><?= $lista['tipo_det_nombre'] ?></option>
@@ -158,11 +165,11 @@
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label for="comentario" class="block text-sm font-medium text-gray-700">Comentario</label>
-                <textarea id="comentario" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
+                <textarea id="comentario" name="detalle_cita" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
               </div>
 
             </div>
-            <button type="button" class="w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Guardar
+            <button type="submit" class="w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Guardar
             </button>
           </form>
       </section>

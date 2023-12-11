@@ -1,17 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var editarBtns = document.querySelectorAll("#Atender");
+    var buscarInput = document.getElementById("buscarPaciente");
 
-    editarBtns.forEach(function (btn) {
-        btn.addEventListener("click", function () {
-            var userId = btn.getAttribute("data-id");
-            obtenerDatosPersona(userId);
-        });
+    buscarInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            var searchTerm = buscarInput.value;
+            buscarPaciente(searchTerm);
+        }
     });
 
-    function obtenerDatosPersona(userId) {
-        // Envía el userId al archivo PHP para obtener los datos de la persona
+    function buscarPaciente(searchTerm) {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/doc-atencion/" + userId, true);
+        xhr.open("GET", "/doc-atencion2/" + searchTerm, true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("Respuesta del servidor:", responseData);
 
                     try {
-
                         var response = JSON.parse(responseData);
 
                         // Rellena los campos del formulario con los datos recibidos
@@ -28,12 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("rut").value = response.RUT;
                         document.getElementById("nombres").value = response.NOMBRES;
                         document.getElementById("apellidos").value = response.APELLIDOS;
+                        document.getElementById("fecha").value = response.FECHA_NAC;
                         document.getElementById("celular").value = response.CELULAR;
                         document.getElementById("correo").value = response.CORREO;
                         document.getElementById("prevision").value = response.IDP;
                         document.getElementById("genero").value = response.IDG;
-  
-                        window.location.href = "/doc-atencion";
+
+                        //window.location.href = "/doc-atencion";
                     } catch (e) {
                         console.error("Error al parsear JSON:", e);
                     }

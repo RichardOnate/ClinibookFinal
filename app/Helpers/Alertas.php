@@ -14,7 +14,9 @@ function Alerta($icono, $titulo, $msg, $pagina)
                         showConfirmButton: false,
                         timer: 2000
                     }).then(function() {
-                        window.location = '$pagina';
+                        if ('$pagina' !== '') {
+                            window.location = '$pagina';
+                        }
                     });
                 });
             </script>";

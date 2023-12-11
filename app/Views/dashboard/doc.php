@@ -64,7 +64,7 @@
                 <h3 class="mt-2 text-xl font-semibold text-gray-800 dark:text-white">Paciente: <?= esc($cita['NOMBRE PACIENTE']) ?></h3>
                 <p class="mt-2 text-gray-600 dark:text-gray-400">Hora de la cita: <?= esc($cita['HORARIO']) ?></p>
                 <div class="py-5">
-                  <a href="/doc-atencion" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Atender</a>
+                  <a href="/doc-atencion/<?= esc($cita['ID']) ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Atender</a>
                 </div>
               </div>
             </div>

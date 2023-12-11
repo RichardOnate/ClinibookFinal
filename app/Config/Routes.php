@@ -42,7 +42,10 @@ $routes->get('/doc', 'DocController::index');
 $routes->get('/doc-perfil', 'DocController::perfilDoc');
 $routes->get('/doc-atencion', 'DocController::atencionDoc');
 $routes->post('/act-perfil', 'TrabajadorController::actualizarPerfil');
-$routes->get('/doc-atencion/(:num)', 'DocController::atenderPaciente/$1');
+$routes->get('/doc-atencion/(:any)', 'DocController::atenderPaciente/$1');
+$routes->get('/doc-atencion2/(:any)', 'DocController::atenderPacienteRut/$1');
+$routes->post('/act-paciente', 'DocController::actualizarPacienteD');
+$routes->post('/insert-historial', 'DocController::añadirHistorial');
 
 //ruta enfermera
 $routes->get('/enfer', 'EnferController::index');
