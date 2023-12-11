@@ -29,10 +29,11 @@ $routes->post('/act-trab', 'TrabajadorController::actualizarTrabajador');
 $routes->post('/insert-trab', 'TrabajadorController::insertarTrabajador');
 $routes->post('/insert-suc', 'AdminController::insertarSucursal');
 $routes->post('/act-suc', 'AdminController::actualizarSucursal');
+$routes->get('/act-modals/(:num)', 'AdminController::modalEditarS/$1');
 $routes->get('/del-suc/(:num)', 'AdminController::eliminarSucursal/$1');
 $routes->get('/obtener-provincias/(:num)', 'AdminController::obtenerProvincias/$1');
 $routes->get('/obtener-comunas/(:num)', 'AdminController::obtenerComunas/$1');
-$routes->get('/act-modals/(:num)', 'AdminController::modalEditarS/$1');
+
 
 
 
@@ -63,4 +64,4 @@ $routes->get('/recep-perfil', 'RecepController::recepPerfil');
 // receta
 $routes->get('/receta', 'recetaController::index');
 // recuperar pass
-$routes->get('/recuperarPass', 'RecupePassController::index');
+$routes->get('/recuperarPass', 'recuPassController::index');

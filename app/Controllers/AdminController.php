@@ -153,10 +153,10 @@ class AdminController extends BaseController
         $this->sucursalModel->insertarSucursal($datos);
     }
 
-    public function atenderPaciente($id)
+    public function modalEditarS($id)
     {
-        $datosPac = $this->pacientesModel->modalEditarS($id);
-        return $this->response->setJSON($datosPac);
+        $datosSuc = $this->sucursalModel->modalEditarS($id);
+        return $this->response->setJSON($datosSuc);
     }
 
     public function actualizarSucursal()

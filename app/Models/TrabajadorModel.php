@@ -51,7 +51,7 @@ class TrabajadorModel extends Model
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->join('tbl_roles r', 'r.id_rol = u.id_rol')
             ->where('r.rol_nombre', 'Especialista')
-            ->whereNotIn('t.id_trabajador', [1])
+            //->whereNotIn('t.id_trabajador', [1])
             ->get()
             ->getResultArray();
         return $query;

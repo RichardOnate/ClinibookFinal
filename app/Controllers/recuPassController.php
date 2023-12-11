@@ -5,7 +5,7 @@ namespace app\Controllers;
 
 use CodeIgniter\Controller;
 
-class RecupePassController extends Controller
+class recupassController extends Controller
 {
     public function index()
     {

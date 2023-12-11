@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.getElementById("guardar").addEventListener("click", function () {
-    event.preventDefault();
+    //event.preventDefault();
     validarFormulario2();
   });
 
