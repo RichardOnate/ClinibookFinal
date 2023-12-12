@@ -91,6 +91,7 @@
       <!-- Fin desconectar -->
     </ul>
   </div>
+  <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 </aside>
 
 <script>

@@ -36,13 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var prevision = document.getElementById("prevision").value;
     var genero = document.getElementById("genero").value;
 
-    console.log("Rut:", rut);
-    console.log("Nombres:", nombres);
-    console.log("Apellidos:", apellidos);
-    console.log("Correo:", correo);
-    console.log("Celular:", celular);
-    console.log("Previsión:", prevision);
-    console.log("Género:", genero);
+  
 
     // Realizar la validación
     if (
