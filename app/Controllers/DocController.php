@@ -10,6 +10,7 @@ use App\Models\PrevisionModel;
 use App\Models\TrabajadorModel;
 use App\Models\TipoDetalleHistorialModel;
 use App\Models\CitasModel;
+use App\Models\HistorialModel;
 
 class DocController extends BaseController
 
@@ -21,6 +22,7 @@ class DocController extends BaseController
     private $detalleHistorialModel;
     //private $session;
     private $citasModel;
+    private $historialModel;
     public function __construct()
     {
         $this->pacienteModel = new PacienteModel;
@@ -29,18 +31,23 @@ class DocController extends BaseController
         $this->trabajadorModel = new TrabajadorModel;
         $this->detalleHistorialModel = new TipoDetalleHistorialModel;
         $this->citasModel = new CitasModel;
+        $this->historialModel = new HistorialModel;
         //$this->session = \Config\Services::session();
     }
     public function index()
     {
         $totalcitas = $this->citasModel->citasHoy();
         $datosCitas = $this->citasModel->datosCitas();
+        $totalcancel = $this->citasModel->citasCanceladasHoy();
+        $totalatend = $this->citasModel->citasAtendidasHoy();
 
         $data = [
             'active_page' => 'doc',
             'datos' => $datosCitas,
             'conteo' => [
-                'citas' => $totalcitas ? $totalcitas->totalCitas : 0,
+                'citasP' => $totalcitas ? $totalcitas->totalCitas : 0,
+                'citasC' => $totalcancel ? $totalcancel->totalCancel : 0,
+                'citasA' => $totalatend ? $totalatend->totalAtend : 0,
             ],
         ];
 
@@ -138,4 +145,21 @@ class DocController extends BaseController
 
         $this->pacienteModel->detalleHistorial($id, $tipoDetalle, $detalleCita);
     }
+
+    public function obtenerHistorial($id)
+    {
+        $historial = $this->historialModel->obtenerHistorial($id);
+        return $this->response->setJSON($historial);
+    }
+
+    /*public function nombre()
+    {
+        $nombreTrab = $this->trabajadorModel->nombreTrabajador();
+
+        $data = [
+            'nombreTrab' => $nombreTrab,
+        ];
+        print_r($nombreTrab);
+        return view('sliderbar/sliderbar-doc', $data);
+    }*/
 }

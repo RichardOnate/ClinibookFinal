@@ -47,7 +47,7 @@
         <form class="w-full max-w-full" action="/act-paciente" method="post">
           <div class="flex -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <input type="hidden" id="id" name="id" value="<?= $datosPac['ID'] ?? '' ?>">
+              <input type="hidden" id="id_p" name="id" value="<?= $datosPac['ID'] ?? '' ?>">
               <label for=" rut" class="block text-sm font-medium text-gray-700">RUT</label>
               <input id="rut" type="text" name="rut" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
@@ -130,7 +130,7 @@
 
             <button type="button" class=" abrirModal w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Agregar
               Historial Médico </button>
-            <button type="button" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Ver
+            <button type="button" id="Historial" data-id="<?= $datosPac['ID'] ?? '' ?>" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Ver
               Historial anterior</button>
             <button type="submit" class="w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Guardar
               Cambios</button>
@@ -177,23 +177,21 @@
 
 
       <!-- modal2 -->
-      <section class=" modalHisto fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 hidden">
+      <section class="modalHisto fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 hidden">
         <div class="fixed top-0 left-0 w-full h-full bg-black opacity-50"></div>
 
-        <div class="max-w-lg h-auto mx-auto md:mb-28 rounded-lg bg-white p-4 relative">
-          <span id="cerrarModalBtn2" class="cerrarModalhisto absolute top-0 right-0 mr-2  text-gray-500 cursor-pointer text-4xl hover:text-red-600 transform hover:scale-110 transition-transform">&times;</span>
+        <div class="max-w-lg h-auto mx-auto md:mb-28 rounded-lg bg-white p-4 relative overflow-y-auto">
+          <span id="cerrarModalBtn2" class="cerrarModalhisto absolute top-0 right-0 mr-2 text-gray-500 cursor-pointer text-4xl hover:text-red-600 transform hover:scale-110 transition-transform">&times;</span>
 
-          <div class=" text-center">
+          <div class="text-center">
             <h1 class="text-4xl py-4 text-black">Ver Historial del Paciente</h1>
           </div>
-          <span>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quaerat est labore rem ea numquam blanditiis
-            ipsa dignissimos tempora voluptas quis unde beatae, enim provident impedit voluptates reiciendis praesentium
-            perspiciatis!
-          </span>
 
+          <!-- Contenedor adicional para historiales -->
+          <div id="historialContainer"></div>
         </div>
       </section>
+
     </div>
   </div>
 
@@ -204,6 +202,7 @@
   <script src="<?= base_url('js/docFuncionalidad.js') ?>"></script>
   <script src="<?= base_url('js/controlVentana.js') ?>"></script>
   <script src="<?= base_url('js/DOC-atenderPaciente.js') ?>"></script>
+  <script src="<?= base_url('js/DOC-mostrarHistorial.js') ?>"></script>
 </body>
 
 </html>

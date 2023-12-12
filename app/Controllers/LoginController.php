@@ -36,11 +36,11 @@ class LoginController extends BaseController
             $idUsuario = $usuarioEncontrado['id_usuario'];
             $Rolusuario = $usuarioEncontrado['id_rol'];
             $nombreRol = $this->loginModel->obtenerRol($Rolusuario);
-            $nombreUsuario = $this->trabajadorModel->nombreTrabajador($idUsuario);
+            //$nombreUsuario = $this->trabajadorModel->nombreTrabajador($idUsuario);
 
             $this->session->set('id_usuario', $idUsuario);
             $this->session->set('rol_usuario', $nombreRol['rol_nombre']);
-            $this->session->set('nombre_usuario', $nombreUsuario['nombre']);
+            //$this->session->set('nombre_usuario', $nombreUsuario['nombre']);
 
             // Definimos las rutas de redirección según el rol
             $redirectRoutes = [

@@ -28,26 +28,26 @@
         <div class=" text-center">
           <h1 class="text-4xl py-4 text-black">Mi Perfil</h1>
         </div>
-        <form>
+        <form action="/act-perfil" method="post">
 
           <div class="mb-4">
             <label for="rut" class="block text-sm font-medium text-gray-700">Rut</label>
-            <input type="text" id="rut" name="rut" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <input type="text" id="rut" name="rut" value="<?= $lista['RUT'] ?>" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div class="mb-4">
               <label for="nombres" class="block text-sm font-medium text-gray-700">Nombres</label>
-              <input type="text" id="nombres" name="nombres" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input type="text" id="nombres" name="nombres" value="<?= $lista['NOMBRES'] ?>" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div class="mb-4">
               <label for="apellidos" class="block text-sm font-medium text-gray-700">Apellidos</label>
-              <input type="text" id="apellidos" name="apellidos" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+              <input type="text" id="apellidos" name="apellidos" value="<?= $lista['APELLIDOS'] ?>" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
           </div>
 
           <div class="mb-4">
             <label for="celular" class="block text-sm font-medium text-gray-700">Celular</label>
-            <input type="text" id="celular" name="celular" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <input type="text" id="celular" name="celular" value="<?= $lista['CELULAR'] ?>" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
           </div>
 
           <div id="credenciales" class="mb-4 overflow-hidden opacity-0 max-h-0 transition-all duration-500 ease-in-out ">
@@ -55,16 +55,16 @@
             <div class="grid grid-cols-2 gap-4">
               <div class="mt-2">
                 <label for="usuario" class="block text-sm font-medium text-gray-700">Usuario</label>
-                <input type="text" id="usuario" name="usuario" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <input type="text" id="usuario" name="usuario" value="<?= $lista['USUARIO'] ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
               </div>
               <div class="mt-2">
                 <label for="contrasena" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                <input type="password" id="contrasena" name="contrasena" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <input type="password" id="contrasena" name="pass" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
               </div>
               <div class="mt-2">
                 <label for="repetirContrasena" class="block text-sm font-medium text-gray-700">Repetir
                   Contraseña</label>
-                <input type="password" id="repetirContrasena" name="repetirContrasena" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <input type="password" id="repetirpass" name="repetirpass" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
               </div>
             </div>
           </div>

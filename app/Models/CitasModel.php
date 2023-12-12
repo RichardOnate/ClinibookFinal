@@ -63,4 +63,38 @@ class CitasModel extends Model
             ->getResultArray();
         return $query;
     }
+
+
+    public function citasCanceladasHoy()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalCancel')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->where('u.id_usuario', $idUsuario)
+            ->where('cc.info_confirmacion', 'Cancelada')
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->get();
+
+        return $query->getRow();
+    }
+
+    public function citasAtendidasHoy()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalAtend')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->where('u.id_usuario', $idUsuario)
+            ->where('cc.info_confirmacion', 'Atendida')
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->get();
+        return $query->getRow();
+    }
 }

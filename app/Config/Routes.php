@@ -46,6 +46,7 @@ $routes->get('/doc-atencion/(:any)', 'DocController::atenderPaciente/$1');
 $routes->get('/doc-atencion2/(:any)', 'DocController::atenderPacienteRut/$1');
 $routes->post('/act-paciente', 'DocController::actualizarPacienteD');
 $routes->post('/insert-historial', 'DocController::añadirHistorial');
+$routes->get('/traer-historial/(:num)', 'DocController::obtenerHistorial/$1');
 
 //ruta enfermera
 $routes->get('/enfer', 'EnferController::index');

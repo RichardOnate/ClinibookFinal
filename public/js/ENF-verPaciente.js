@@ -1,12 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
     var buscarInput = document.getElementById("buscarPaciente");
+    var buscarBtn = document.getElementById("btnbuscarPaciente");
 
     buscarInput.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
-            var searchTerm = buscarInput.value;
-            buscarPaciente(searchTerm);
+            realizarBusqueda();
         }
     });
+
+    buscarBtn.addEventListener("click", function () {
+        realizarBusqueda();
+    });
+
+    function realizarBusqueda() {
+        var searchTerm = buscarInput.value;
+        buscarPaciente(searchTerm);
+    }
 
     function buscarPaciente(searchTerm) {
         var xhr = new XMLHttpRequest();
@@ -31,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("correo").value = response.CORREO;
                         document.getElementById("prevision").value = response.IDP;
                         document.getElementById("genero").value = response.IDG;
-                        document.getElementById("Historial").setAttribute("data-id", response.ID);
+                        //document.getElementById("Historial").setAttribute("data-id", response.ID);
 
                         //window.location.href = "/doc-atencion";
                     } catch (e) {

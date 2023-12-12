@@ -173,6 +173,7 @@ class TrabajadorModel extends Model
     }
     public function insertarTrabajador($data)
     {
+
         $query = $this->db->table('tbl_trabajador')->insert($data);
 
         if ($query) {
@@ -196,16 +197,18 @@ class TrabajadorModel extends Model
         return $query;
     }
 
-    public function nombreTrabajador($id)
+    public function nombreTrabajador()
     {
+        $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_trabajador t')
             ->select("CONCAT(t.trab_nombres, ' ', t.trab_apellidos) as nombre")
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
-            ->where('u.id_usuario', $id)
+            ->where('u.id_usuario', $idUsuario)
             ->get()
             ->getRowArray();
         return $query;
     }
+
     public function eliminarTrabajador($id)
     {
         $query = $this->update($id, ['eliminado' => 1]);

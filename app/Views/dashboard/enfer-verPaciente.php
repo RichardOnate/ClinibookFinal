@@ -32,7 +32,7 @@
           <div class="relative w-full mb-3">
             <input type="search" id="buscarPaciente" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border
                   border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Buscar....">
-            <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button type="submit" id="btnbuscarPaciente" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
               </svg>
@@ -42,6 +42,7 @@
           <!-- formulario -->
           <form>
             <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <input type="hidden" id="id_p" name="id" value="">
               <!-- rut -->
               <div>
                 <label for="rut" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">RUT</label>
@@ -50,12 +51,12 @@
               <!-- nombre -->
               <div>
                 <label for="nombre" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
-                <input type="text" id="nombre" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="text" id="nombres" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- apellidos -->
               <div>
                 <label for="apellido" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Apellido</label>
-                <input type="text" id="apellido" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="text" id="apellidos" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- fecha nacimiento -->
               <div>
@@ -67,11 +68,6 @@
                 <label for="celular" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Celular</label>
                 <input type="text" id="celular" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
-              <!-- direccion -->
-              <div>
-                <label for="direccion" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Dirección</label>
-                <input type="text" id="direccion" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
-              </div>
               <!-- correo electronico -->
               <div>
                 <label for="correo" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Correo</label>
@@ -79,15 +75,22 @@
               </div>
               <!-- genero -->
               <div>
-                <label for="genero" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Género</label>
-                <input type="text" id="genero" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <label for="genero" class="block text-sm font-medium text-gray-700"">Género</label>
+                <select disabled class=" mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" id="genero" name="genero">
+                  <option selected>Seleccione una opción</option>
+                  <?php foreach ($generos as $genero) : ?>
+                    <option value="<?= $genero['id_genero'] ?>"><?= $genero['tipo_genero'] ?></option>
+                  <?php endforeach; ?>
+                  </select>
               </div>
               <!-- prevision -->
               <div>
                 <label for="prevision" class="block text-sm font-medium text-gray-700">Previsión</label>
-                <select id="prevision" name="prevision" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                  <option value="fonasa">Fonasa</option>
-                  <option value="isapre">Isapre</option>
+                <select id="prevision" disabled name="prevision" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                  <option selected>Seleccione una opción</option>
+                  <?php foreach ($previsiones as $prevision) : ?>
+                    <option value="<?= $prevision['id_prevision'] ?>"><?= $prevision['prev_nombre'] ?></option>
+                  <?php endforeach; ?>
                 </select>
               </div>
             </div>
@@ -109,6 +112,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+  <script src="<?= base_url('js/ENF-verPaciente.js') ?>"></script>
   <script>
     document.getElementById('editar').addEventListener('click', function() {
       var campos = document.querySelectorAll('input, select');
@@ -134,7 +138,7 @@
         }, 1000);
       }, 3000);
     });
-  </script>s
+  </script>
 </body>
 
 </html>
