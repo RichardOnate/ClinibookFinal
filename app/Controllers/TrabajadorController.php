@@ -63,8 +63,11 @@ class TrabajadorController extends BaseController
         } elseif ($rolUsuario == 'Especialista') {
             $rutaRedireccion = '/doc';
         } elseif ($rolUsuario == 'Enfermera') {
-            $rutaRedireccion = '/dashboard/enfer';
-        }
+            $rutaRedireccion = '/enfer';
+        } elseif ($rolUsuario == 'Recepcionista') {
+            $rutaRedireccion = '/recep';
+        } else
+            $rutaRedireccion = '/paciente';
 
         // Llamar a la función en el modelo
         $this->trabajadorModel->actualizarPerfil($idUsuario, $rut, $nombres, $apellidos, $celular, $usuario, $pass, $repetirpass, $rutaRedireccion);
@@ -86,34 +89,33 @@ class TrabajadorController extends BaseController
         }
 
         $passwordRut = str_replace("-", "", $rut);
-        // Crear datos para el usuario
-        $dataUsuario = [
-            'usu_nombre' => $rut,
-            'usu_pass' => password_hash("$passwordRut", PASSWORD_DEFAULT),
-            'id_rol' => $rol,
-        ];
+        $idUsuarioExistente = $this->loginModel->usuarioExiste($rut);
 
-        $idUsuarioInsertado = $this->loginModel->insertarUsuario($dataUsuario);
-
-        // Verificar si la inserción del usuario fue exitosa
-        if ($idUsuarioInsertado) {
-            // Crear datos para el trabajador
-            $dataTrabajador = [
-                'id_sucursal' => $sucursal,
-                'id_usuario' => $idUsuarioInsertado, // Asignar el ID del usuario recién insertado
-                'trab_rut' => $rut,
-                'trab_nombres' => $nombres,
-                'trab_apellidos' => $apellidos,
-                'trab_celular' => $celular,
+        if (!$idUsuarioExistente) {
+            $dataUsuario = [
+                'usu_nombre' => $rut,
+                'usu_pass' => password_hash("$passwordRut", PASSWORD_DEFAULT),
+                'id_rol' => $rol
             ];
+            $idUsuarioInsertado = $this->loginModel->insertarUsuario($dataUsuario);
 
-            // Insertar trabajador
-            $this->trabajadorModel->insertarTrabajador($dataTrabajador);
-        } else {
-            // Manejar el caso en que la inserción del usuario falla
-            Alerta("error", "Error de registro", "No se pudo crear el usuario", "/admin-trab");
+            if ($idUsuarioInsertado) {
+                $dataTrabajador = [
+                    'id_sucursal' => $sucursal,
+                    'id_usuario' => $idUsuarioInsertado,
+                    'trab_rut' => $rut,
+                    'trab_nombres' => $nombres,
+                    'trab_apellidos' => $apellidos,
+                    'trab_celular' => $celular,
+                ];
+
+                $this->trabajadorModel->insertarTrabajador($dataTrabajador);
+            } else {
+                Alerta("error", "Error de registro", "No se pudo crear el usuario", "/admin-trab");
+            }
         }
     }
+
 
     public function datosDoc()
     {

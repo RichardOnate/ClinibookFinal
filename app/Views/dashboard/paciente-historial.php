@@ -32,67 +32,76 @@
                         <h2 class="text-4xl text-white text-center font-bold">Mis Datos</h2>
                     </div>
                     <!-- formulario -->
-                    <form>
+                    <form action="/pac-perfil" method="post">
+                        <input type="hidden" id="id_p" name="id" value="<?= $datosPac['ID'] ?>">
                         <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                             <!-- rut -->
                             <div>
                                 <label for="rut" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">RUT</label>
-                                <input type="text" id="rut" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                                <input type="text" id="rut" name="rut" value="<?= $datosPac['RUT'] ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
                             </div>
                             <!-- nombre -->
                             <div>
                                 <label for="nombre" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
-                                <input type="text" id="nombre" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                                <input type="text" id="nombre" name="nombres" value="<?= $datosPac['NOMBRES'] ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
                             </div>
                             <!-- apellidos -->
                             <div>
                                 <label for="apellido" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Apellido</label>
-                                <input type="text" id="apellido" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                                <input type="text" id="apellido" name="apellidos" value="<?= $datosPac['APELLIDOS'] ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
                             </div>
                             <!-- fecha nacimiento -->
                             <div>
                                 <label for="fecha" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de
                                     Nacimiento</label>
-                                <input type="date" id="fecha" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                                <input type="date" id="fecha" name="fecha" value="<?= $datosPac['FECHA_NAC'] ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
                             </div>
                             <!-- celular -->
                             <div>
                                 <label for="celular" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Celular</label>
-                                <input type="text" id="celular" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                                <input type="text" id="celular" name="celular" value="<?= $datosPac['CELULAR'] ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
                             </div>
-                            <!-- direccion -->
-                            <div>
-                                <label for="direccion" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Dirección</label>
-                                <input type="text" id="direccion" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
-                            </div>
+
                             <!-- correo electronico -->
                             <div>
                                 <label for="correo" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Correo</label>
-                                <input type="text" id="correo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                                <input type="text" name="correo" id="correo" value="<?= $datosPac['CORREO'] ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
                             </div>
                             <!-- genero -->
                             <div>
                                 <label for="genero" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Género</label>
-                                <input type="text" id="genero" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                                <select id="genero" name="genero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled="">
+                                    <option value="">Seleccione una opción</option>
+                                    <?php foreach ($generos as $genero) : ?>
+                                        <option value="<?= $genero['id_genero'] ?>" <?= ($datosPac['IDG'] ?? '') == $genero['id_genero'] ? 'selected' : '' ?>>
+                                            <?= $genero['tipo_genero'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             <!-- prevision -->
                             <div>
-                                <label for="prevision" class="block text-sm font-medium text-gray-700">Previsión</label>
+                                <label for="prevision" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Previsión</label>
                                 <select id="prevision" name="prevision" disabled class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                    <option value="fonasa">Fonasa</option>
-                                    <option value="isapre">Isapre</option>
+                                    <option value="">Seleccione una opción</option>
+                                    <?php foreach ($previsiones as $prevision) : ?>
+                                        <option value="<?= $prevision['id_prevision'] ?>" <?= ($datosPac['IDP'] ?? '') == $prevision['id_prevision'] ? 'selected' : '' ?>>
+                                            <?= $prevision['prev_nombre'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
+
+                        <div class="mt-8 flex justify-around">
+                            <button id="Historial" data-id="<?= $datosPac['ID'] ?? '' ?>" type="button" class="abrirModalHistorial mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Ver
+                                mi Historial</button>
+                            <button id="editar" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Editar
+                                información</button>
+                            <button type="submit" class="w-full md:w-auto px-6 py-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-300 focus:ring-opacity-50">Guardar
+                                Cambios</button>
+                        </div>
                     </form>
-                    <div class="mt-8 flex justify-around">
-                        <button id="historial" type="button" class="abrirModalHistorial mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Ver
-                            mi Historial</button>
-                        <button id="editar" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Editar
-                            información</button>
-                        <button type="submit" class="w-full md:w-auto px-6 py-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-300 focus:ring-opacity-50">Guardar
-                            Cambios</button>
-                    </div>
                 </div>
 
             </div>
@@ -108,19 +117,14 @@
             <span id="cerrarModalBtn2" class="cerrarModalhisto absolute top-0 right-0 mr-2  text-gray-500 cursor-pointer text-4xl hover:text-red-600 transform hover:scale-110 transition-transform">&times;</span>
 
             <div class=" text-center">
-                <h1 class="text-4xl py-4 text-black">Ver Historial del Paciente</h1>
+                <h1 class="text-4xl py-4 text-black">Mi historial de atención</h1>
             </div>
-            <span>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quaerat est labore rem ea numquam blanditiis
-                ipsa dignissimos tempora voluptas quis unde beatae, enim provident impedit voluptates reiciendis praesentium
-                perspiciatis!
-            </span>
-
+            <div id="historialContainer"></div>
         </div>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
-
+    <script src="<?= base_url('js/DOC-mostrarHistorial.js') ?>"></script>
     <script>
         const abrirModalHisto = document.querySelector(".abrirModalHistorial");
         const cerrarModalHisto = document.querySelector(".cerrarModalhisto");

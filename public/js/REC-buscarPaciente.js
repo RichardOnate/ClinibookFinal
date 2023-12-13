@@ -26,12 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("rut").value = response.RUT;
                         document.getElementById("nombres").value = response.NOMBRES;
                         document.getElementById("apellidos").value = response.APELLIDOS;
-                        document.getElementById("fecha").value = response.FECHA_NAC;
+                        //document.getElementById("fecha").value = response.FECHA_NAC;
                         document.getElementById("celular").value = response.CELULAR;
                         document.getElementById("correo").value = response.CORREO;
                         document.getElementById("prevision").value = response.IDP;
                         document.getElementById("genero").value = response.IDG;
-                        document.getElementById("Historial").setAttribute("data-id", response.ID);
+                        //document.getElementById("Historial").setAttribute("data-id", response.ID);
 
                         //window.location.href = "/doc-atencion";
                     } catch (e) {

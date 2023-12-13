@@ -23,8 +23,8 @@
             <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
           </svg>
           <div class="flex flex-col sm:flex-row items-center ">
-            <h3 class="text-lg text-blue-700 font-bold md:text-2xl lg:text-5xl">Citas Pendientes por atender hoy : </h3>
-            <span class="text-xl text-blue-700 lg:text-4xl  justify-center text-center"><?= esc($conteo['citas']) ?></span>
+            <h3 class="text-lg text-blue-700 font-bold md:text-2xl lg:text-5xl">Citas Pendientes por atender hoy: </h3>
+            <span class="text-xl text-blue-700 lg:text-4xl  justify-center text-center"> <?= esc($conteo['citasP']) ?></span>
           </div>
         </div>
 
@@ -35,8 +35,8 @@
             <path d="M5 19h10v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2ZM5 7a5.008 5.008 0 0 1 4-4.9 3.988 3.988 0 1 0-3.9 5.859A4.974 4.974 0 0 1 5 7Zm5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm5-1h-.424a5.016 5.016 0 0 1-1.942 2.232A6.007 6.007 0 0 1 17 17h2a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5ZM5.424 9H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h2a6.007 6.007 0 0 1 4.366-5.768A5.016 5.016 0 0 1 5.424 9Z" />
           </svg>
           <div class="flex flex-col sm:flex-row items-center ">
-            <h3 class="text-lg text-red-700 font-bold md:text-2xl lg:text-5xl">Citas canceladas hoy :</h3>
-            <span class="text-xl text-red-700 sm:text-4xl  justify-center text-center">50</span>
+            <h3 class="text-lg text-red-700 font-bold md:text-2xl lg:text-5xl">Citas canceladas hoy: </h3>
+            <span class="text-xl text-red-700 sm:text-4xl  justify-center text-center"> <?= esc($conteo['citasC']) ?></span>
           </div>
         </div>
         <!-- ----------------------------------------------------------------------------------------------- -->
@@ -47,8 +47,8 @@
             <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
           </svg>
           <div class="flex flex-col sm:flex-row items-center ">
-            <h3 class="text-lg text-emerald-700 font-bold md:text-2xl lg:text-5xl">Total citas Atendidas :</h3>
-            <span class="text-xl text-emerald-700 sm:text-4xl  justify-center text-center">50</span>
+            <h3 class="text-lg text-emerald-700 font-bold md:text-2xl lg:text-5xl">Total citas Atendidas: </h3>
+            <span class="text-xl text-emerald-700 sm:text-4xl  justify-center text-center"> <?= esc($conteo['citasA']) ?></span>
           </div>
         </div>
       </div>

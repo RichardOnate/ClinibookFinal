@@ -32,7 +32,12 @@ class PacienteModel extends Model
     protected $useSoftDeletes = true;
     protected $deletedField  = 'eliminado';
 
-
+    private $session;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->session = \Config\Services::session();
+    }
     public function totalPacientes()
     {
         return $this->countAll();
@@ -205,7 +210,7 @@ class PacienteModel extends Model
             ->getRowArray();
         return $query;
     }
-    //DATE_FORMAT(p.pac_fecha_nac, "%d-%m-%Y")
+    //DATE_FORMAT(p.pac_fecha_nac, "%d/%m/%Y")
     public function detalleHistorial($idPaciente, $tipodetalle, $detalleCita)
     {
 
@@ -241,6 +246,47 @@ class PacienteModel extends Model
                     Alerta("error", "Error al insertar el detalle del historial", "", "/doc-atencion/$idPaciente");
                 }
             }
+        }
+    }
+
+    public function perfilPaciente()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_paciente p')
+            ->select('p.id_paciente AS ID, p.pac_rut as RUT, p.pac_nombres AS NOMBRES, p.pac_apellidos AS APELLIDOS, 
+            p.pac_fecha_nac as FECHA_NAC, p.pac_celular AS CELULAR, p.pac_correo AS CORREO, pv.id_prevision AS IDP, g.id_genero AS IDG')
+            ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
+            ->join('tbl_genero g', 'g.id_genero = p.id_genero')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            ->get()
+            ->getRowArray();
+        return $query;
+    }
+
+    public function actualizarPerfil($rut, $nombres, $apellidos, $celular, $correo, $fechaNac, $genero, $prevision, $rutaRedireccion)
+    {
+        $idUsuario = session('id_usuario');
+        $data_paciente = [
+            'pac_rut' => $rut,
+            'pac_nombres' => $nombres,
+            'pac_apellidos' => $apellidos,
+            'pac_celular' => $celular,
+            'pac_fecha_nac' => $fechaNac,
+            'pac_correo' => $correo,
+            'id_genero' => $genero,
+            'id_prevision' => $prevision,
+
+        ];
+
+        $actualizacionPaciente = $this->db->table('tbl_paciente')
+            ->where('id_usuario', $idUsuario)
+            ->update($data_paciente);
+
+        if ($actualizacionPaciente) {
+            Alerta("success", "Información actualizada correctamente.", "", $rutaRedireccion);
+        } else {
+            Alerta("error", "Error al actualizar la información.", "", $rutaRedireccion);
         }
     }
 }

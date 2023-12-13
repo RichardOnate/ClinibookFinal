@@ -9,6 +9,7 @@ use App\Models\HorariosModel;
 use App\Models\PacienteModel;
 use App\Models\TrabajadorModel;
 use App\Models\CitasModel;
+use Kint\Zval\Value;
 
 // En tus controladores
 require_once APPPATH . 'helpers/Alertas.php';
@@ -23,6 +24,7 @@ class CitasController extends BaseController
     private $pacienteModel;
     private $previsionModel;
     private $generosModel;
+    private $citasModel;
     public function __construct()
     {
         // Carga los modelos en el constructor
@@ -31,6 +33,7 @@ class CitasController extends BaseController
         $this->pacienteModel = new PacienteModel();
         $this->generosModel = new GenerosModel;
         $this->previsionModel = new PrevisionModel;
+        $this->citasModel = new CitasModel;
     }
 
     public function index()
@@ -57,19 +60,37 @@ class CitasController extends BaseController
 
     public function guardarDatos()
     {
-        $rut = $this->request->getPost('rut');
-        $correo = (string) $this->request->getPost('correo');
-
         $pacienteModel = new PacienteModel();
         $citasModel = new CitasModel();
+        $rolUsuario = session('rol_usuario');
+        $rut = $this->request->getPost('rut');
+        $correo = (string) $this->request->getPost('correo');
+        $doctor = $this->request->getPost('doctor');
+        $horario = $this->request->getPost('horario');
+        $fecha = $this->request->getPost("fecha");
 
-        if ($pacienteModel->pacienteExiste($rut, $correo)) {
-            Alerta("error", "Error de registro", "El Rut o correo ingresado ya se encuentra registrado", "/agendar");
+        if ($rolUsuario == 'Recepcionista') {
+            $Redireccion = '/recep';
+        } elseif ($rolUsuario == 'Paciente') {
+            $Redireccion = '/paciente';
+        } elseif (empty($rolUsuario)) {
+            $Redireccion = '/agendar';
+        }
+
+        $rutaRedireccion = 'window.history.back()';
+
+        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $rutaRedireccion)) {
+            return;
+        }
+
+        if ($this->pacienteModel->pacienteExiste($rut, $correo)) {
+            Alerta("error", "Error de registro", "El Rut o correo ingresado ya se encuentra registrado", $rutaRedireccion);
+            return;
         } else {
 
             $dataPaciente = [
                 'id_genero' => $this->request->getPost('genero'),
-                'id_sucursal' => $this->request->getPost('sucursal'),
+                'id_sucursal' => null,
                 'id_prevision' => $this->request->getPost('prevision'),
                 'id_usuario' => null,
                 'pac_rut' => $rut,
@@ -81,18 +102,18 @@ class CitasController extends BaseController
             ];
 
             // Insertar paciente
-            $idPaciente = $pacienteModel->insertPaciente($dataPaciente);
+            $idPaciente = $this->pacienteModel->insertPaciente($dataPaciente);
 
             if ($idPaciente) {
                 $dataCita = [
                     'id_paciente' => $idPaciente,
-                    'id_trabajador' => $this->request->getPost('doctor'),
-                    'id_horario' => $this->request->getPost('horario'),
-                    'cita_fecha' => Time::createFromFormat('d/m/Y', $this->request->getPost("fecha"))->format('Y-m-d'),
+                    'id_trabajador' => $doctor,
+                    'id_horario' => $horario,
+                    'cita_fecha' => Time::createFromFormat('d/m/Y', $fecha)->format('Y-m-d'),
                 ];
 
                 // Insertar cita
-                $idCita = $citasModel->insertCita($dataCita);
+                $idCita = $this->citasModel->insertCita($dataCita);
 
                 if ($idCita) {
                     $dataConfirmacion = [
@@ -107,7 +128,7 @@ class CitasController extends BaseController
                     ];
 
                     // Insertar confirmación de cita
-                    $citasModel->insertConfirmacionCita($dataConfirmacion);
+                    $this->citasModel->insertConfirmacionCita($dataConfirmacion);
 
                     $db = \Config\Database::connect();
                     $horamedica = $this->horariosModel->select('hor_hora_medica')
@@ -125,28 +146,113 @@ class CitasController extends BaseController
 
                     // Envío de correo
                     $subject = "Reservación Exitosa";
-                    $message = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $this->request->getPost("fecha") .
+                    $message = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $fecha .
                         "\nHorario de la cita: " . $hora_medica . " horas
                     \nEspecialista a cargo: " . $especialista .
-                        "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones@clinivision.clinibook.cl";
+                        "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
 
                     // Configuración de los encabezados
                     $headers = "From: reservaciones@clinivision.clinibook.cl\r\n";
                     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
                     $headers .= "Content-Transfer-Encoding: 8bit\r\n";
 
+
                     if (mail($correo, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers)) {
                         // Correo enviado con éxito
-                        Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", "/");
+                        Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", $Redireccion);
                     } else {
                         // Error al enviar el correo, pero registro exitoso
-                        Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", "/");
+                        Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", $Redireccion);
                     }
                 } else {
-                    Alerta("error", "Error de registro", "No se pudo registrar la cita", "/agendar");
+                    Alerta("error", "Error de registro", "No se pudo registrar la cita", $Redireccion);
                 }
             } else {
-                Alerta("error", "Error de registro", "No se pudo registrar el paciente", "/agendar");
+                Alerta("error", "Error de registro", "No se pudo registrar el paciente", $Redireccion);
+            }
+        }
+    }
+
+    public function recepAgendar()
+    {
+        var_dump($this->request->getPost('id_paciente'));
+
+        $rolUsuario = session('rol_usuario');
+        $idPaciente = $this->request->getPost('id_paciente');
+        $correo = (string) $this->request->getPost('correo');
+        $doctor = $this->request->getPost('doctor');
+        $horario = $this->request->getPost('horario');
+        $fecha = $this->request->getPost("fecha");
+
+        $rutaRedireccion = 'window.history.back()';
+
+
+        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $rutaRedireccion)) {
+            return;
+        }
+
+        if (empty($idPaciente)) {
+            $this->guardarDatos();
+        } else {
+            $dataCita = [
+                'id_paciente' => $idPaciente,
+                'id_trabajador' => $doctor,
+                'id_horario' => $horario,
+                'cita_fecha' => Time::createFromFormat('d/m/Y', $fecha)->format('Y-m-d'),
+            ];
+
+            $idCita = $this->citasModel->insertCita($dataCita);
+
+            if ($idCita) {
+                $dataConfirmacion = [
+                    'id_cita' => $idCita,
+                    'id_estado_cita' => $this->citasModel->db->table('tbl_estado_cita')
+                        ->select('id_estado_cita')
+                        ->where('estado_nombre', 'Agendada')
+                        ->get()
+                        ->getRow()
+                        ->id_estado_cita,
+                    'info_confirmacion' => date('Y-m-d H:i:s'), // Fecha y hora actuales
+                ];
+
+                // Insertar confirmación de cita
+                $this->citasModel->insertConfirmacionCita($dataConfirmacion);
+
+                $db = \Config\Database::connect();
+                $horamedica = $this->horariosModel->select('hor_hora_medica')
+                    ->where('id_horario', $this->request->getPost('horario'))
+                    ->get();
+                $resulthora = $horamedica->getRowArray();
+                $hora_medica = $resulthora['hor_hora_medica'];
+
+                $doc = $db->table('tbl_trabajador')
+                    ->select('CONCAT(trab_nombres, " ", trab_apellidos) as NOMBRE')
+                    ->where('id_trabajador', $this->request->getPost('doctor'))
+                    ->get();
+                $resultdoctor = $doc->getRowArray();
+                $especialista = $resultdoctor['NOMBRE'];
+
+                // Envío de correo
+                $subject = "Reservación Exitosa";
+                $message = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $fecha .
+                    "\nHorario de la cita: " . $hora_medica . " horas
+                \nEspecialista a cargo: " . $especialista .
+                    "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
+
+                // Configuración de los encabezados
+                $headers = "From: reservaciones@clinivision.clinibook.cl\r\n";
+                $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+                $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+
+                if (mail($correo, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers)) {
+                    // Correo enviado con éxito
+                    Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", '/recep-agendar');
+                } else {
+                    // Error al enviar el correo, pero registro exitoso
+                    Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", '/recep-agendar');
+                }
+            } else {
+                Alerta("error", "Error de registro", "No se pudo registrar la cita", '/recep-agendar');
             }
         }
     }
