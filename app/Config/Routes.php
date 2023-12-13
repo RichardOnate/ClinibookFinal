@@ -68,3 +68,7 @@ $routes->get('/recep-perfil', 'RecepController::recepPerfil');
 $routes->get('/receta', 'recetaController::index');
 // recuperar pass
 $routes->get('/recuperarPass', 'recuPassController::index');
+
+// confirmar cita
+$routes->get('/confirmarCita', 'confirmarCitaController::index');
+

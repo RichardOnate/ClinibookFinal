@@ -209,24 +209,12 @@
                     }, 1000);
                 }, 3000);
             }
-            function mostrarAlertaCorreos() {
-                // Muestra la alerta de error
-                var alertaError = document.getElementById("alertaCorreos");
-                alertaError.classList.remove("hidden", "animate__fadeOut");
-                alertaError.classList.add("animate__fadeIn");
 
-                // Ocultar la alerta después de 3 segundos (3000 milisegundos)
-                setTimeout(function () {
-                    // Ocultar la alerta con animación
-                    alertaError.classList.remove("animate__fadeIn");
-                    alertaError.classList.add("animate__fadeOut");
 
-                    // Agregar la clase hidden después de la duración de la animación (1 segundo)
-                    setTimeout(function () {
-                        alertaError.classList.add("hidden");
-                    }, 1000);
-                }, 3000);
-            }
+
+
+
+
         });
 
 
