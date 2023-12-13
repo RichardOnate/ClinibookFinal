@@ -63,8 +63,11 @@ class TrabajadorController extends BaseController
         } elseif ($rolUsuario == 'Especialista') {
             $rutaRedireccion = '/doc';
         } elseif ($rolUsuario == 'Enfermera') {
-            $rutaRedireccion = '/dashboard/enfer';
-        }
+            $rutaRedireccion = '/enfer';
+        } elseif ($rolUsuario == 'Recepcionista') {
+            $rutaRedireccion = '/recep';
+        } else
+            $rutaRedireccion = '/paciente';
 
         // Llamar a la función en el modelo
         $this->trabajadorModel->actualizarPerfil($idUsuario, $rut, $nombres, $apellidos, $celular, $usuario, $pass, $repetirpass, $rutaRedireccion);

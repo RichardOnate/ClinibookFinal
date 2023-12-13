@@ -4,14 +4,22 @@ namespace App\Controllers;
 
 use CodeIgniter\Controller;
 use App\Models\PacienteModel;
+use App\Models\GenerosModel;
+use App\Models\PrevisionModel;
 
 class PacienteController extends BaseController
 {
     private $pacienteModel;
+    private $previsionModel;
+    private $generosModel;
+    private $session;
     public function __construct()
     {
         // Carga los modelos en el constructor
         $this->pacienteModel = new PacienteModel;
+        $this->generosModel = new GenerosModel;
+        $this->previsionModel = new PrevisionModel;
+        $this->session = \Config\Services::session();
     }
     public function index()
     {
@@ -19,10 +27,21 @@ class PacienteController extends BaseController
         return view('dashboard/paciente', $data);
     }
 
-
     public function pacienteHistorial()
     {
-        $data['active_page'] = 'paciente-historial';
+
+        $genero = $this->generosModel->listarGeneros();
+        $prevision = $this->previsionModel->listarPrevision();
+        $datosPac = $this->pacienteModel->perfilPaciente();
+
+        $data = [
+            'active_page' => 'paciente-historial',
+            "generos" => $genero,
+            'previsiones' => $prevision,
+            'datosPac' => $datosPac,
+        ];
+
+        // $data['active_page'] = 'paciente-historial';
         return view('dashboard/paciente-historial', $data);
     }
     public function pacienteDocumentos()
@@ -62,5 +81,26 @@ class PacienteController extends BaseController
     public function eliminarPaciente($id)
     {
         $this->pacienteModel->eliminarPaciente($id);
+    }
+
+    public function actualizarPerfil()
+    {
+
+        $rolUsuario = session('rol_usuario');
+        $rut = $this->request->getPost('rut');
+        $nombres = $this->request->getPost('nombres');
+        $apellidos = $this->request->getPost('apellidos');
+        $celular = $this->request->getPost('celular');
+        $correo = $this->request->getPost('correo');
+        $fechaNac = $this->request->getPost('fecha');
+        $genero = $this->request->getPost('genero');
+        $prevision = $this->request->getPost('prevision');
+
+
+        if ($rolUsuario == 'Paciente') {
+            $rutaRedireccion = '/paciente-historial';
+        }
+
+        $this->pacienteModel->actualizarPerfil($rut, $nombres, $apellidos, $celular, $correo, $fechaNac, $genero, $prevision, $rutaRedireccion);
     }
 }

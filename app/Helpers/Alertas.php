@@ -15,7 +15,12 @@ function Alerta($icono, $titulo, $msg, $pagina)
                         timer: 2000
                     }).then(function() {
                         if ('$pagina' !== '') {
-                            window.location = '$pagina';
+                            // Manejar la redirección con JavaScript
+                            if ('$pagina' === 'window.history.back()') {
+                                window.history.back();
+                            } else {
+                                window.location = '$pagina';
+                            }
                         }
                     });
                 });

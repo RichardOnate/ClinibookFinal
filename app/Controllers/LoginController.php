@@ -47,8 +47,8 @@ class LoginController extends BaseController
                 'Administrador' => 'dashboard/admin',
                 'Especialista' => '/doc',
                 'Enfermera' => '/enfer',
-                'Recepcionista' => 'dashboard/recep',
-                'Paciente' => 'dashboard/paciente'
+                'Recepcionista' => '/recep',
+                'Paciente' => '/paciente'
             ];
 
             if (isset($redirectRoutes[$nombreRol['rol_nombre']])) {

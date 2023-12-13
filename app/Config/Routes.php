@@ -35,13 +35,11 @@ $routes->get('/obtener-provincias/(:num)', 'AdminController::obtenerProvincias/$
 $routes->get('/obtener-comunas/(:num)', 'AdminController::obtenerComunas/$1');
 
 
-
-
 // ruta doctor
 $routes->get('/doc', 'DocController::index');
 $routes->get('/doc-perfil', 'DocController::perfilDoc');
 $routes->get('/doc-atencion', 'DocController::atencionDoc');
-$routes->post('/act-perfil', 'TrabajadorController::actualizarPerfil');
+//$routes->post('/act-perfil', 'TrabajadorController::actualizarPerfil');
 $routes->get('/doc-atencion/(:any)', 'DocController::atenderPaciente/$1');
 $routes->get('/doc-atencion2/(:any)', 'DocController::atenderPacienteRut/$1');
 $routes->post('/act-paciente', 'DocController::actualizarPacienteD');
@@ -58,12 +56,14 @@ $routes->get('/paciente', 'PacienteController::index');
 $routes->get('/paciente-historial', 'PacienteController::pacienteHistorial');
 $routes->get('/paciente-documentos', 'PacienteController::pacienteDocumentos');
 $routes->post('/act-pacm', 'PacienteController::actualizarPacienteM');
+$routes->post('/pac-perfil', 'PacienteController::actualizarPerfil');
 $routes->get('/del-pac/(:num)', 'PacienteController::eliminarPaciente/$1');
 
 // Ruta Recepcionista
 $routes->get('/recep', 'RecepController::index');
 $routes->get('/recep-agendar', 'RecepController::recepAgendar');
 $routes->get('/recep-perfil', 'RecepController::recepPerfil');
+$routes->post('/agendar-cita', 'CitasController::recepAgendar');
 
 // receta
 $routes->get('/receta', 'recetaController::index');
