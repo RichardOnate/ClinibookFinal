@@ -9,7 +9,6 @@ use App\Models\HorariosModel;
 use App\Models\PacienteModel;
 use App\Models\TrabajadorModel;
 use App\Models\CitasModel;
-use Kint\Zval\Value;
 
 // En tus controladores
 require_once APPPATH . 'helpers/Alertas.php';
@@ -60,8 +59,7 @@ class CitasController extends BaseController
 
     public function guardarDatos()
     {
-        $pacienteModel = new PacienteModel();
-        $citasModel = new CitasModel();
+        //$citasModel = new CitasModel();
         $rolUsuario = session('rol_usuario');
         $rut = $this->request->getPost('rut');
         $correo = (string) $this->request->getPost('correo');
@@ -118,7 +116,7 @@ class CitasController extends BaseController
                 if ($idCita) {
                     $dataConfirmacion = [
                         'id_cita' => $idCita,
-                        'id_estado_cita' => $citasModel->db->table('tbl_estado_cita')
+                        'id_estado_cita' => $this->citasModel->db->table('tbl_estado_cita')
                             ->select('id_estado_cita')
                             ->where('estado_nombre', 'Agendada')
                             ->get()
@@ -175,9 +173,9 @@ class CitasController extends BaseController
 
     public function recepAgendar()
     {
-        var_dump($this->request->getPost('id_paciente'));
+        //var_dump($this->request->getPost('id_paciente'));
 
-        $rolUsuario = session('rol_usuario');
+        //$rolUsuario = session('rol_usuario');
         $idPaciente = $this->request->getPost('id_paciente');
         $correo = (string) $this->request->getPost('correo');
         $doctor = $this->request->getPost('doctor');
@@ -255,5 +253,15 @@ class CitasController extends BaseController
                 Alerta("error", "Error de registro", "No se pudo registrar la cita", '/recep-agendar');
             }
         }
+    }
+
+    public function atenderPaciente($id)
+    {
+        $this->citasModel->atenderPaciente($id);
+    }
+
+    public function finalizarAtencion($id)
+    {
+        $this->citasModel->finalizarAtencion($id);
     }
 }

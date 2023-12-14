@@ -31,7 +31,7 @@
 
 
 
-        <a title="Generar nueva Receta" onclick="abrirVentana()" class="abrirModalReceta cursor-pointer w-auto md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-700 rounded-lg hover:bg-white focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">
+        <a title="Generar nueva Receta" id="Receta" onclick="abrirVentana(<?= $datosPac['IDC'] ?? '' ?>)" class="abrirModalReceta cursor-pointer w-auto md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-700 rounded-lg hover:bg-white focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">
           <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M.188 5H5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707c-.358.362-.617.81-.753 1.3C.148 5.011.166 5 .188 5ZM14 8a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm2 7h-1v1a1 1 0 0 1-2 0v-1h-1a1 1 0 0 1 0-2h1v-1a1 1 0 0 1 2 0v1h1a1 1 0 0 1 0 2Z" />
             <path d="M6 14a7.969 7.969 0 0 1 10-7.737V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H.188A.909.909 0 0 1 0 6.962V18a1.969 1.969 0 0 0 1.933 2h6.793A7.976 7.976 0 0 1 6 14Z" />
@@ -111,8 +111,8 @@
             <div class="w-full px-3">
               <h2 class="text-lg font-semibold text-gray-700 mb-2">Generar Credenciales</h2>
               <div class="flex flex-col md:flex-row gap-6">
-                <input type="text" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full md:w-1/2 mt-1 md:mr-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Usuario" disabled>
-                <input type="password" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full md:w-1/2 mt-1 md:ml-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Contraseña" disabled>
+                <input type="text" id="usuario" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full md:w-1/2 mt-1 md:mr-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Usuario" disabled>
+                <input type="password" id="pass" value="<?= $datosPac['RUT'] ?? '' ?>" class="w-full md:w-1/2 mt-1 md:ml-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50" placeholder="Contraseña" disabled>
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@
               Historial anterior</button>
             <button type="submit" class="w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Guardar
               Cambios</button>
-
+            <button type="button" id="Finalizar" data-id="<?= $datosPac['IDC'] ?? '' ?>" class="w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">Finalizar Atención</button>
           </div>
         </form>
       </div>
@@ -199,10 +199,12 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
   <script src="<?= base_url('js/docFuncionalidad.js') ?>"></script>
   <script src="<?= base_url('js/controlVentana.js') ?>"></script>
   <script src="<?= base_url('js/DOC-atenderPaciente.js') ?>"></script>
   <script src="<?= base_url('js/DOC-mostrarHistorial.js') ?>"></script>
+  <script src="<?= base_url('js/DOC-finalizarAtencion.js') ?>"></script>
 </body>
 
 </html>

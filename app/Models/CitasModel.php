@@ -39,10 +39,15 @@ class CitasModel extends Model
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_cita c')
             ->select('COUNT(*) as totalCitas')
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
             ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->where('u.id_usuario', $idUsuario)
             ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Agendada')
             ->get();
 
         return $query->getRow();
@@ -52,34 +57,37 @@ class CitasModel extends Model
     {
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_cita c')
-            ->select("p.id_paciente as ID, DATE_FORMAT(c.cita_fecha, '%d/%m/%y') as FECHA, CONCAT(p.pac_nombres, ' ', p.pac_apellidos) AS 'NOMBRE PACIENTE', 
+            ->select("p.id_paciente as ID, c.id_cita as IDC, DATE_FORMAT(c.cita_fecha, '%d/%m/%y') as FECHA, CONCAT(p.pac_nombres, ' ', p.pac_apellidos) AS 'NOMBRE PACIENTE', 
             CONCAT(TIME_FORMAT(h.hor_hora_medica, '%H:%i'), ' HORAS') as HORARIO")
             ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
             ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
             ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->where('u.id_usuario', $idUsuario)
             ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Agendada')
             ->orderBy('HORARIO', 'ASC')
             ->get()
             ->getResultArray();
         return $query;
     }
 
-
-
     public function citasCanceladasHoy()
     {
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_cita c')
             ->select('COUNT(*) as totalCancel')
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
             ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
-            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
             ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->where('u.id_usuario', $idUsuario)
-            ->where('cc.info_confirmacion', 'Cancelada')
             ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Cancelada')
             ->get();
 
         return $query->getRow();
@@ -90,13 +98,15 @@ class CitasModel extends Model
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_cita c')
             ->select('COUNT(*) as totalAtend')
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
             ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
-            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
             ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->where('u.id_usuario', $idUsuario)
-            ->where('cc.info_confirmacion', 'Atendida')
             ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Atendida')
             ->get();
         return $query->getRow();
     }
@@ -122,7 +132,51 @@ class CitasModel extends Model
         }
     }
 
-    public function actualizarEstadoCita($id)
+    public function rellenarReceta($idCita)
     {
+        $query = $this->db->table('tbl_cita c')
+            ->select('t.id_trabajador as IDT, h.id_historial as IDH, CONCAT(t.trab_nombres, " ", t.trab_apellidos) as ESPECIALISTA, 
+            CONCAT(p.pac_nombres, " ", p.pac_apellidos) as NOMBRES, p.pac_rut as RUT')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_ficha_medica fm', 'p.id_paciente = fm.id_paciente')
+            ->join('tbl_detalle_historial dh', 'fm.id_ficha = dh.id_ficha')
+            ->join('tbl_historial h', 'h.id_historial = dh.id_ficha')
+            ->where('c.id_cita', $idCita)
+            ->get()
+            ->getRowArray();
+
+        return $query;
+    }
+
+    public function atenderPaciente($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Atendiendo')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+    }
+
+    public function finalizarAtencion($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Atendida')
+            ->get();
+
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $finalizada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($finalizada) {
+            Alerta("success", "Cita finalizada correctamente", "", '/doc');
+        } else {
+            Alerta("error", "No se pudo finalizar la cita", "", '/doc-atencion');
+        }
     }
 }

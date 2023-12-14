@@ -45,6 +45,9 @@ $routes->get('/doc-atencion2/(:any)', 'DocController::atenderPacienteRut/$1');
 $routes->post('/act-paciente', 'DocController::actualizarPacienteD');
 $routes->post('/insert-historial', 'DocController::añadirHistorial');
 $routes->get('/traer-historial/(:num)', 'DocController::obtenerHistorial/$1');
+$routes->get('/atender-pac/(:num)', 'CitasController::atenderPaciente/$1');
+$routes->get('/finalizar-aten/(:num)', 'CitasController::finalizarAtencion/$1');
+$routes->post('/insert-receta', 'DocController::guardarReceta');
 
 //ruta enfermera
 $routes->get('/enfer', 'EnferController::index');
@@ -67,5 +70,6 @@ $routes->post('/agendar-cita', 'CitasController::recepAgendar');
 
 // receta
 $routes->get('/receta', 'recetaController::index');
+$routes->get('/rellenar-receta/(:num)', 'recetaController::rellenarReceta/$1');
 // recuperar pass
 $routes->get('/recuperarPass', 'recuPassController::index');

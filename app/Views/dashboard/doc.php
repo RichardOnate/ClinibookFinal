@@ -64,7 +64,7 @@
                 <h3 class="mt-2 text-xl font-semibold text-gray-800 dark:text-white">Paciente: <?= esc($cita['NOMBRE PACIENTE']) ?></h3>
                 <p class="mt-2 text-gray-600 dark:text-gray-400">Hora de la cita: <?= esc($cita['HORARIO']) ?></p>
                 <div class="py-5">
-                  <a href="/doc-atencion/<?= esc($cita['ID']) ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Atender</a>
+                  <a href="/doc-atencion/<?= esc($cita['ID']) ?>" id="Atender" data-id="<?= esc($cita['IDC']) ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Atender</a>
                 </div>
               </div>
             </div>
@@ -88,9 +88,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js" integrity="sha384-1z39Pl0VH8aB+DIEJT8uzMlBGO11AJJeUFSQsnrEz4gjgLEg3NUbIG4rUJGU2z6L" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/es.min.js" integrity="sha384-AbUj+CrZTOrEWHZOpZ/IMDHSCp/Z7mLaD/mclK5XEYAJvA3GOoF0MwgsMEmIcVEj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
   <script src="
   https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js
     "></script>
+  <script src="<?= base_url('js/DOC-confirmarAtencion.js') ?>"></script>
 </body>
 
 </html>
