@@ -49,6 +49,10 @@ $routes->get('/atender-pac/(:num)', 'CitasController::atenderPaciente/$1');
 $routes->get('/finalizar-aten/(:num)', 'CitasController::finalizarAtencion/$1');
 $routes->post('/insert-receta', 'DocController::guardarReceta');
 
+
+
+
+
 //ruta enfermera
 $routes->get('/enfer', 'EnferController::index');
 $routes->get('/enfer-perfil', 'EnferController::perfilEnfer');
@@ -70,7 +74,8 @@ $routes->post('/agendar-cita', 'CitasController::recepAgendar');
 
 // receta
 $routes->get('/receta', 'recetaController::index');
-$routes->get('recetaController/generarPDF', 'recetaController::generarPDF');
+
+
 
 $routes->get('/rellenar-receta/(:num)', 'recetaController::rellenarReceta/$1');
 // recuperar pass

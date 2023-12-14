@@ -107,7 +107,7 @@ class CitasController extends BaseController
                     'id_paciente' => $idPaciente,
                     'id_trabajador' => $doctor,
                     'id_horario' => $horario,
-                    'cita_fecha' => Time::createFromFormat('d/m/Y', $fecha)->format('Y-m-d'),
+                    'cita_fecha' => $fecha,
                 ];
 
                 // Insertar cita
