@@ -53,6 +53,7 @@ $routes->post('/insert-receta', 'DocController::guardarReceta');
 $routes->get('/enfer', 'EnferController::index');
 $routes->get('/enfer-perfil', 'EnferController::perfilEnfer');
 $routes->get('/enfer-verPaciente', 'EnferController::verPacienteEnfer');
+$routes->get('/verPaciente/(:any)', 'EnferController::verPacienteRut/$1');
 
 // Ruta Paciente
 $routes->get('/paciente', 'PacienteController::index');

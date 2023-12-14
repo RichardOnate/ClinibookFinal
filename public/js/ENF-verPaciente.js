@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function buscarPaciente(searchTerm) {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/doc-atencion2/" + searchTerm, true);
+        xhr.open("GET", "/verPaciente/" + searchTerm, true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -40,7 +40,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("correo").value = response.CORREO;
                         document.getElementById("prevision").value = response.IDP;
                         document.getElementById("genero").value = response.IDG;
-                        //document.getElementById("Historial").setAttribute("data-id", response.ID);
+                        document.getElementById("historial").value = 
+                        "FECHA: " + response.FECHA + "\n" +
+                        "DIAGNÓSTICO: " + response.DIAGNOSTICO + "\n" +
+                        "OBSERVACIONES: " + response.DETALLE;
+
 
                         //window.location.href = "/doc-atencion";
                     } catch (e) {
