@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             });
                         } else {
                             var mensajeSinHistoriales = document.createElement("p");
-                            mensajeSinHistoriales.innerText = "Paciente sin historiales";
+                            mensajeSinHistoriales.innerText = "Paciente sin historial ni ficha médica. Actualice los datos personales y guarde los cambios.";
                             document.getElementById("historialContainer").appendChild(mensajeSinHistoriales);
                         }
                 

@@ -18,7 +18,7 @@
     <ul class="space-y-2 font-medium">
       <li class="max-w-xs p-4 bg-blue-700 border border-gray-200 rounded-lg shadow">
         <h2 class="text-xl font-bold text-gray-200 dark:text-white">Bienvenido:</h2>
-        <span class="text-xl text-white">Nombre Apellido</span>
+        <span class="text-xl text-white"></span>
         <p class="text-gray-300">Especialista</p>
         <p id="hora" class="text-gray-100  text-xl"></p>
         <p id="fecha" class="text-gray-100  text-md"></p>

@@ -31,9 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("correo").value = response.CORREO;
                         document.getElementById("prevision").value = response.IDP;
                         document.getElementById("genero").value = response.IDG;
+                        document.getElementById("usuario").value = response.RUT;
+                        document.getElementById("pass").value = response.RUT;       
                         document.getElementById("Historial").setAttribute("data-id", response.ID);
-
-                        //window.location.href = "/doc-atencion";
+                        document.getElementById("Receta").setAttribute("onclick", "abrirVentana(" + response.IDC + ")");
                     } catch (e) {
                         console.error("Error al parsear JSON:", e);
                     }

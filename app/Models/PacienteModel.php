@@ -115,18 +115,6 @@ class PacienteModel extends Model
         }
     }
 
-    public function atenderPaciente($id)
-    {
-        $query = $this->db->table('tbl_paciente p')
-            ->select('p.id_paciente AS ID, p.pac_rut as RUT, p.pac_nombres AS NOMBRES, p.pac_apellidos AS APELLIDOS, 
-            p.pac_fecha_nac as FECHA_NAC, p.pac_celular AS CELULAR, p.pac_correo AS CORREO, pv.id_prevision AS IDP, g.id_genero AS IDG')
-            ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
-            ->join('tbl_genero g', 'g.id_genero = p.id_genero')
-            ->where('p.id_paciente', $id)
-            ->get()
-            ->getRowArray();
-        return $query;
-    }
 
     public function actualizarPacienteD($id, $rut, $nombres, $apellidos, $celular, $correo, $fechaNac, $genero, $prevision)
     {
@@ -197,14 +185,30 @@ class PacienteModel extends Model
         }
     }
 
+    public function atenderPaciente($id)
+    {
+        $query = $this->db->table('tbl_paciente p')
+            ->select('p.id_paciente AS ID, p.pac_rut as RUT, p.pac_nombres AS NOMBRES, p.pac_apellidos AS APELLIDOS, 
+            p.pac_fecha_nac as FECHA_NAC, p.pac_celular AS CELULAR, p.pac_correo AS CORREO, pv.id_prevision AS IDP, g.id_genero AS IDG, c.id_cita as IDC')
+            ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
+            ->join('tbl_genero g', 'g.id_genero = p.id_genero')
+            ->join('tbl_cita c', 'p.id_paciente = c.id_paciente')
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('p.id_paciente', $id)
+            ->get()
+            ->getRowArray();
+        return $query;
+    }
     public function atenderPacienteRut($rut)
     {
         $query = $this->db->table('tbl_paciente p')
             ->select('p.id_paciente AS ID, p.pac_rut as RUT, p.pac_nombres AS NOMBRES, p.pac_apellidos AS APELLIDOS, 
             p.pac_fecha_nac as FECHA_NAC, p.pac_celular AS CELULAR, p.pac_correo AS CORREO, 
-        pv.id_prevision AS IDP, g.id_genero AS IDG')
+        pv.id_prevision AS IDP, g.id_genero AS IDG, c.id_cita as IDC')
             ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
             ->join('tbl_genero g', 'g.id_genero = p.id_genero')
+            ->join('tbl_cita c', 'p.id_paciente = c.id_paciente')
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
             ->where('p.pac_rut', $rut)
             ->get()
             ->getRowArray();
@@ -288,5 +292,23 @@ class PacienteModel extends Model
         } else {
             Alerta("error", "Error al actualizar la información.", "", $rutaRedireccion);
         }
+    }
+
+    public function verPacienteRut($rut)
+    {
+        $query = $this->db->table('tbl_paciente p')
+            ->select('p.id_paciente AS ID, p.pac_rut as RUT, p.pac_nombres AS NOMBRES, p.pac_apellidos AS APELLIDOS, 
+            p.pac_fecha_nac as FECHA_NAC, p.pac_celular AS CELULAR, p.pac_correo AS CORREO, 
+        pv.id_prevision AS IDP, g.id_genero AS IDG,')
+            ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
+            ->join('tbl_genero g', 'g.id_genero = p.id_genero')
+            ->join('tbl_ficha_medica fm', 'p.id_paciente = fm.id_paciente')
+            ->join('tbl_detalle_historial dh', 'fm.id_ficha = dh.id_ficha')
+            ->join('tbl_tipo_detalle_historial td', 'td.id_tipo_detalle = dh.id_tipo_detalle')
+            ->join('tbl_historial h', 'h.id_historial = dh.id_ficha')
+            ->where('p.pac_rut', $rut)
+            ->get()
+            ->getRowArray();
+        return $query;
     }
 }
