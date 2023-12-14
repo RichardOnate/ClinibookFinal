@@ -299,7 +299,8 @@ class PacienteModel extends Model
         $query = $this->db->table('tbl_paciente p')
             ->select('p.id_paciente AS ID, p.pac_rut as RUT, p.pac_nombres AS NOMBRES, p.pac_apellidos AS APELLIDOS, 
             p.pac_fecha_nac as FECHA_NAC, p.pac_celular AS CELULAR, p.pac_correo AS CORREO, 
-        pv.id_prevision AS IDP, g.id_genero AS IDG,')
+        pv.id_prevision AS IDP, g.id_genero AS IDG, DATE_FORMAT(h.historial_fecha, "%d/%m/%Y") as FECHA, 
+        td.tipo_det_nombre as DIAGNOSTICO, dh.historial_detalle as DETALLE')
             ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
             ->join('tbl_genero g', 'g.id_genero = p.id_genero')
             ->join('tbl_ficha_medica fm', 'p.id_paciente = fm.id_paciente')

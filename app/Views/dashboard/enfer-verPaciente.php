@@ -98,7 +98,7 @@
           <!-- historial -->
           <div class="mt-4">
             <h3 class="text-lg font-bold text-gray-900 dark:text-white">Historial paciente</h3>
-            <textarea class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg bg-gray-100" disabled></textarea>
+            <textarea id="historial" class="w-full h-[30rem] px-4 py-2 mt-2 border border-gray-300 rounded-lg bg-gray-100" disabled></textarea>
           </div>
           <div class="mt-4">
             <button id="editar" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Editar</button>

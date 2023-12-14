@@ -57,6 +57,7 @@ $routes->post('/insert-receta', 'DocController::guardarReceta');
 $routes->get('/enfer', 'EnferController::index');
 $routes->get('/enfer-perfil', 'EnferController::perfilEnfer');
 $routes->get('/enfer-verPaciente', 'EnferController::verPacienteEnfer');
+$routes->get('/verPaciente/(:any)', 'EnferController::verPacienteRut/$1');
 
 // Ruta Paciente
 $routes->get('/paciente', 'PacienteController::index');
@@ -82,5 +83,6 @@ $routes->get('/rellenar-receta/(:num)', 'recetaController::rellenarReceta/$1');
 $routes->get('/recuperarPass', 'recuPassController::index');
 
 // confirmar cita
-$routes->get('/confirmarCita', 'confirmarCitaController::index');
-
+$routes->get('/confirmarCita/(:num)', 'confirmarCitaController::index/$1');
+$routes->get('/confirm-cita/(:num)', 'confirmarCitaController::confirmarCita/$1');
+$routes->get('/cancel-cita/(:num)', 'confirmarCitaController::cancelarCita/$1');

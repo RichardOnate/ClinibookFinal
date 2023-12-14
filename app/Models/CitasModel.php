@@ -47,7 +47,7 @@ class CitasModel extends Model
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->where('u.id_usuario', $idUsuario)
             ->where('DATE(c.cita_fecha)', date('Y-m-d'))
-            ->where('ec.estado_nombre', 'Agendada')
+            ->where('ec.estado_nombre', 'Confirmada')
             ->get();
 
         return $query->getRow();
@@ -67,7 +67,7 @@ class CitasModel extends Model
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->where('u.id_usuario', $idUsuario)
             ->where('DATE(c.cita_fecha)', date('Y-m-d'))
-            ->where('ec.estado_nombre', 'Agendada')
+            ->where('ec.estado_nombre', 'Confirmada')
             ->orderBy('HORARIO', 'ASC')
             ->get()
             ->getResultArray();
@@ -177,6 +177,42 @@ class CitasModel extends Model
             Alerta("success", "Cita finalizada correctamente", "", '/doc');
         } else {
             Alerta("error", "No se pudo finalizar la cita", "", '/doc-atencion');
+        }
+    }
+
+    public function confirmarCita($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Confirmada')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $confirmada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($confirmada) {
+            Alerta("success", "Cita confirmada correctamente", "", '/');
+        } else {
+            Alerta("error", "No se pudo confirmar la cita", "", '/');
+        }
+    }
+
+    public function cancelarCita($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Cancelada')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $cancelada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($cancelada) {
+            Alerta("success", "Cita cancelada correctamente", "", '/');
+        } else {
+            Alerta("error", "No se pudo cancelar la cita", "", '/');
         }
     }
 }
