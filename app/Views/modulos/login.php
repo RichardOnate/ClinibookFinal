@@ -14,7 +14,7 @@
 
     <?= view('modulos/navbar.php'); ?>
     <!-- alertas -->
-    <div id="alerta" class="hidden absolute left-1/2 transform -translate-x-1/2 w-xl p-4 -mt-[30.5rem] text-sm text-green-900 rounded-lg bg-green-200  dark:bg-gray-800
+    <!-- <div id="alerta" class="hidden absolute left-1/2 transform -translate-x-1/2 w-xl p-4 -mt-[30.5rem] text-sm text-green-900 rounded-lg bg-green-200  dark:bg-gray-800
         dark:text-green-400 animate__animated animate__fadeIn" role="alert">
         <span class="font-medium">Todos los campos correctos!!</span>
     </div>
@@ -22,7 +22,7 @@
         class="hidden absolute left-1/2 transform -translate-x-1/2 w-xl p-4 -mt-[30.5rem] text-sm text-red-900 rounded-lg bg-red-200  animate__animated animate__fadeIn"
         role="alert">
         <span class="font-medium">Por favor, complete todos los campos correctamente!!.</span>
-    </div>
+    </div> -->
 
 
     <!-- fin alertas -------------- -->
@@ -46,6 +46,7 @@
                 </label>
                 <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                     name="pass" placeholder="••••••••" id="password" type="password" />
+                    
             </div>
 
 

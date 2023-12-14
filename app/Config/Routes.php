@@ -67,6 +67,8 @@ $routes->post('/agendar-cita', 'CitasController::recepAgendar');
 
 // receta
 $routes->get('/receta', 'recetaController::index');
+$routes->get('recetaController/generarPDF', 'recetaController::generarPDF');
+
 // recuperar pass
 $routes->get('/recuperarPass', 'recuPassController::index');
 

@@ -13,41 +13,31 @@
 <body class="flex items-center justify-center h-screen bg-gray-100">
 
     <?= view('modulos/navbar.php'); ?>
-    <!-- alertas -->
-    <div id="alerta" class="hidden absolute left-1/2 transform -translate-x-1/2 w-xl p-4 -mt-[30.5rem] text-sm text-green-900 rounded-lg bg-green-200  dark:bg-gray-800
-        dark:text-green-400 animate__animated animate__fadeIn" role="alert">
-        <span class="font-medium">Todos los campos correctos!!</span>
-    </div>
-    <div id="alertaError"
-        class="hidden absolute left-1/2 transform -translate-x-1/2 w-xl p-4 -mt-[30.5rem] text-sm text-red-900 rounded-lg bg-red-200  animate__animated animate__fadeIn"
-        role="alert">
-        <span class="font-medium">Por favor, complete todos los campos correctamente!!.</span>
-    </div>
-
-
-    <!-- fin alertas -------------- -->
-    <form class="max-w-sm w-full bg-white rounded-lg shadow-xl shadow-blue-500 border border-blue-600">
+    <form id="recuperar-form"
+        class="max-w-sm w-full bg-white rounded-lg shadow-xl shadow-blue-500 border border-blue-600">
         <div class="p-6 space-y-4">
             <p class="text-2xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                 Recuperar contraseña
             </p>
             <!-- Rut -->
-            <div>
+            <div class="relative">
                 <label class="block mb-2 text-lg font-medium text-gray-900">
                     Ingrese Rut
                 </label>
-                <input placeholder=""
+                <input placeholder="xxxxxxx-x"
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                     id="rut" type="text" />
+                <label id="rut-label" class="hidden absolute right-2 top-2 text-[13px] text-red-500"></label>
             </div>
             <!-- correo -->
-            <div>
+            <div class="relative">
                 <label class="block mb-2 text-lg font-medium text-gray-900">
                     Ingrese Correo
                 </label>
-                <input placeholder=""
+                <input placeholder="correo@ejemplo.com"
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                     id="email" type="email" />
+                <label id="email-label" class="hidden absolute right-2 top-2 text-[13px] text-red-500"></label>
             </div>
             <!-- verificar correo -->
             <div class="relative">
@@ -55,9 +45,8 @@
                     Verificar Correo
                 </label>
                 <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                    placeholder="" id="veri-email" type="email" />
-                <label id="veri-email-label" class="hidden absolute right-2 top-2 text-red-500">Los correos no
-                    coinciden</label>
+                    placeholder="correo@ejemplo.com" id="veri-email" type="email" />
+                <label id="veri-email-label" class="hidden absolute right-2 top-2 text-[13px] text-red-500"></label>
             </div>
 
 
@@ -73,152 +62,111 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
     <script>
+        function validarCampo(event) {
+            const campo = event.target;
+            const etiqueta = document.getElementById(`${campo.id}-label`);
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Agrega el evento de clic al botón usando addEventListener
-            document.querySelector("form").addEventListener("submit", function (event) {
-                event.preventDefault();
-                validarRecuperacion();
+            if (campo.value.trim() === '') {
+                // Campo vacío, cambia el color del borde a rojo, muestra el label de error y establece el mensaje correspondiente
+                campo.style.border = '1px solid #e53e3e';
+                etiqueta.innerText = `Complete el campo correctamente`;
+                etiqueta.classList.remove('hidden');
+                return false; // Datos no validados
+            }
+
+            // Validar el RUT
+            if (campo.id === 'rut') {
+                const rut = campo.value.trim().replace(/[^0-9kK]/g, ''); // Eliminar caracteres no numéricos ni 'k' ni 'K'
+
+                if (rut.length < 9 || rut.length > 10) {
+                    // RUT no cumple con el tamaño requerido
+                    campo.style.border = '1px solid #e53e3e';
+                    etiqueta.innerText = 'Complete el campo correctamente';
+                    etiqueta.classList.remove('hidden');
+                    return false; // Datos no validados
+                } else {
+                    // RUT válido, ocultar mensaje de error
+                    campo.style.border = '1px solid #48bb78';
+                    etiqueta.classList.add('hidden');
+                }
+            }
+
+            // Validar formato de correo
+            if (campo.id === 'email' || campo.id === 'veri-email') {
+                const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!regexCorreo.test(campo.value.trim())) {
+                    // Formato de correo no válido
+                    campo.style.border = '1px solid #e53e3e';
+                    etiqueta.innerText = '* Formato de correo no válido';
+                    etiqueta.classList.remove('hidden');
+                    return false; // Datos no validados
+                } else {
+                    // Formato de correo válido, ocultar mensaje de error
+                    campo.style.border = '1px solid #48bb78';
+                    etiqueta.classList.add('hidden');
+                }
+            }
+
+            // Validar que los correos coincidan solo si al menos uno de los campos tiene contenido
+            if (campo.id === 'veri-email' && (campo.value.trim() !== '' || document.getElementById('email').value.trim() !== '')) {
+                const email = document.getElementById('email');
+                const veriEmail = campo;
+
+                const emailLabel = document.getElementById('email-label');
+                const veriEmailLabel = etiqueta;
+
+                if (email.value.trim() !== veriEmail.value.trim()) {
+                    // Correos no coinciden, mostrar mensaje de error en el campo veri-email
+                    veriEmail.style.border = '1px solid #e53e3e';
+                    veriEmailLabel.innerText = '* Los correos no coinciden';
+                    veriEmailLabel.classList.remove('hidden');
+                    return false; // Datos no validados
+                } else {
+                    // Correos coinciden, ocultar mensaje de error en el campo veri-email
+                    veriEmail.style.border = '1px solid #48bb78';
+                    veriEmailLabel.classList.add('hidden');
+                }
+            }
+
+            // Si llegamos hasta aquí, todos los datos han sido validados correctamente
+            return true;
+        }
+
+        function validarFormulario() {
+            // Validar cada campo antes de enviar el formulario
+            const campos = document.querySelectorAll('input');
+            let datosValidos = true;
+
+            campos.forEach(campo => {
+                if (!validarCampo({ target: campo })) {
+                    datosValidos = false;
+                }
             });
 
-            var Fn = {
-                // Valida el rut con su cadena completa "XXXXXXXX-X"
-                validaRut: function (rutCompleto) {
-                    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto) || rutCompleto.length < 9 || rutCompleto.length > 10)
-                        return false;
-                    var tmp = rutCompleto.split('-');
-                    var digv = tmp[1];
-                    var rut = tmp[0];
-                    if (digv == 'K') digv = 'k';
-                    return (Fn.dv(rut) == digv);
-                },
-                dv: function (T) {
-                    var M = 0, S = 1;
-                    for (; T; T = Math.floor(T / 10))
-                        S = (S + T % 10 * (9 - M++ % 6)) % 11;
-                    return S ? S - 1 : 'k';
-                }
+            if (datosValidos) {
+                // Si todos los datos son válidos, entonces envía el formulario
+                document.getElementById('recuperar-form').submit();
+            } else {
+
+                // Si hay datos no válidos, no envía el formulario y muestra un mensaje (puedes personalizar esto según tus necesidades)
+                alert('Por favor, complete todos los campos correctamente antes de enviar el formulario.');
             }
+        }
 
-            var rutInput = document.getElementById("rut");
-
-            // Agregar un evento de escucha al input del rut
-            rutInput.addEventListener("input", function () {
-                validarCampo(rutInput);
-            });
-
-            function validarRecuperacion() {
-                var rut = document.getElementById("rut").value;
-                var correo = document.getElementById("email").value;
-                var veriCorreo = document.getElementById("veri-email").value;
-
-                // Reiniciar colores de borde
-                cambiarColorBorde(document.getElementById("rut"), "");
-                cambiarColorBorde(document.getElementById("email"), "");
-                cambiarColorBorde(document.getElementById("veri-email"), "");
-
-                // Validar Rut
-                if (!rut || !validarCampo(rut)) {
-                    cambiarColorBorde(document.getElementById("rut"), "red");
-                }
-
-                // Validar Correo
-                if (!correo || !validarCorreo(correo)) {
-                    cambiarColorBorde(document.getElementById("email"), "red");
-
-                }
-
-                // Validar Verificación de Correo
-                if (!veriCorreo || correo !== veriCorreo) {
-                    cambiarColorBorde(document.getElementById("veri-email"), "red");
-
-                    mostrarAlertaCorreos();
-                }
-
-                // Verificar si hay algún campo marcado en rojo
-                if (
-                    document.getElementById("rut").style.border === "1.4px solid red" ||
-                    document.getElementById("email").style.border === "1.4px solid red" ||
-                    document.getElementById("veri-email").style.border === "1.4px solid red"
-                ) {
-                    // Mostrar alerta de error
-                    mostrarAlertaError();
-                    return;
-                }
-
-                // Si todos los campos están completos, mostrar alerta de éxito
-                mostrarAlertaExito();
-            }
-
-            function cambiarColorBorde(elemento, color) {
-                elemento.style.border = "1.4px solid " + color;
-            }
-
-            function validarCampo(input) {
-                switch (input.id) {
-                    case "rut":
-
-                        if (Fn.validaRut(input.value)) {
-                            cambiarColorBorde(input, "green");
-                        } else {
-                            cambiarColorBorde(input, "red");
-                        }
-                        break;
-
-                }
-            }
-
-            function validarCorreo(valor) {
-                return /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(valor);
-            }
-
-            function mostrarAlertaExito() {
-                // Muestra la alerta de éxito
-                var alertaExito = document.getElementById("alerta");
-                alertaExito.classList.remove("hidden", "animate__fadeOut");
-                alertaExito.classList.add("animate__fadeIn");
-
-                // Ocultar la alerta después de 3 segundos (3000 milisegundos)
-                setTimeout(function () {
-                    // Ocultar la alerta con animación
-                    alertaExito.classList.remove("animate__fadeIn");
-                    alertaExito.classList.add("animate__fadeOut");
-
-                    // Agregar la clase hidden después de la duración de la animación (1 segundo)
-                    setTimeout(function () {
-                        alertaExito.classList.add("hidden");
-                    }, 1000);
-                }, 3000);
-            }
-
-            function mostrarAlertaError() {
-                // Muestra la alerta de error
-                var alertaError = document.getElementById("alertaError");
-                alertaError.classList.remove("hidden", "animate__fadeOut");
-                alertaError.classList.add("animate__fadeIn");
-
-                // Ocultar la alerta después de 3 segundos (3000 milisegundos)
-                setTimeout(function () {
-                    // Ocultar la alerta con animación
-                    alertaError.classList.remove("animate__fadeIn");
-                    alertaError.classList.add("animate__fadeOut");
-
-                    // Agregar la clase hidden después de la duración de la animación (1 segundo)
-                    setTimeout(function () {
-                        alertaError.classList.add("hidden");
-                    }, 1000);
-                }, 3000);
-            }
-
-
-
-
-
-
+        // Agregar el evento blur a todos los campos
+        const campos = document.querySelectorAll('input');
+        campos.forEach(campo => {
+            campo.addEventListener('blur', validarCampo);
         });
 
-
+        // Agregar el evento click al botón Recuperar
+        const botonRecuperar = document.getElementById('recuperar-btn');
+        botonRecuperar.addEventListener('click', validarFormulario);
     </script>
+
+
+
 </body>
 
 </html>

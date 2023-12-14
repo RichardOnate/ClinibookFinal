@@ -6,6 +6,7 @@ namespace app\Controllers;
 use CodeIgniter\Controller;
 use App\Models\TipoRecetaModel;
 
+
 class recetaController extends Controller
 {
     private $session;
