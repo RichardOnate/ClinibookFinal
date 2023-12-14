@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="<?= base_url() ?>css/styles.css?v=1.0">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
   <title>CliniVision-receta</title>
 </head>
 
@@ -17,10 +21,13 @@
         <h3 class="text-4xl py-4 m-2 text-black">Generar receta</h1>
           <div class=" ">
 
-            <select name="tipos-receta" id="secciones" onchange="mostrarSeccion()" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <select name="tipos-receta" id="secciones" onchange="mostrarSeccion()"
+              class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
               <option value="" disabled="" selected="">Seleccione una opción</option>
-              <?php foreach ($tipos as $tipo) : ?>
-                <option value="<?= $tipo['id_tipo_receta'] ?>"><?= $tipo['tipo_rec_nombre'] ?></option>
+              <?php foreach ($tipos as $tipo): ?>
+                <option value="<?= $tipo['id_tipo_receta'] ?>">
+                  <?= $tipo['tipo_rec_nombre'] ?>
+                </option>
               <?php endforeach; ?>
             </select>
           </div>
@@ -154,12 +161,14 @@
           </div>
           <div>
             <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+            <textarea id="descripcion" name="descripcion" rows="3"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
           </div>
           <div class="m-4 md:flex md:justify-between">
             <button type="submit" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">
               Guardar</button>
-            <button type="button" class=" abrirModal w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
+            <button type="button"
+              class=" abrirModal w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
               PDF </button>
           </div>
         </div>
@@ -187,12 +196,14 @@
           </div>
           <div>
             <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+            <textarea id="descripcion" name="descripcion" rows="3"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
           </div>
           <div class="m-4 md:flex md:justify-between">
             <button type="submit" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">
               Guardar</button>
-            <button type="button" class=" abrirModal w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
+            <button type="button"
+              class=" w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
               PDF </button>
           </div>
         </div>

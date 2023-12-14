@@ -83,5 +83,4 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
       <script src="<?= base_url('js/perfilFuncionalidad.js') ?>"></script>
 </body>
-
 </html>
