@@ -107,7 +107,7 @@ class CitasController extends BaseController
                     'id_paciente' => $idPaciente,
                     'id_trabajador' => $doctor,
                     'id_horario' => $horario,
-                    'cita_fecha' => Time::createFromFormat('d/m/Y', $fecha)->format('Y-m-d'),
+                    'cita_fecha' => $fecha,
                 ];
 
                 // Insertar cita
@@ -142,31 +142,39 @@ class CitasController extends BaseController
                     $resultdoctor = $doc->getRowArray();
                     $especialista = $resultdoctor['NOMBRE'];
 
+                    $linkConfirmacion = "http://localhost:8080/confirmarCita/" . $idCita;
                     // Envío de correo
-                    $subject = "Reservación Exitosa";
-                    $message = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $fecha .
+                    $subject1 = "Reservación Exitosa";
+                    $message1 = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $fecha .
                         "\nHorario de la cita: " . $hora_medica . " horas
-                    \nEspecialista a cargo: " . $especialista .
+                \nEspecialista a cargo: " . $especialista .
                         "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
 
+                    $subject2 = "Confirmación Cita";
+                    $message2 = "¡Hola!\n\nTu cita agendada para el día" . $fecha .
+                        " a las " . $hora_medica . " horas con el especialista " . $especialista .
+                        " está a la espera de confirmación. Por favor ingresa al siguiente enlace y confirma tu asistencia: " . $linkConfirmacion;
+                    "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
+
                     // Configuración de los encabezados
-                    $headers = "From: reservaciones@clinivision.clinibook.cl\r\n";
+                    $headers = "From: reservaciones.clinivision@clinibook.cl\r\n";
                     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
                     $headers .= "Content-Transfer-Encoding: 8bit\r\n";
 
+                    $envioAgenda = mail($correo, '=?UTF-8?B?' . base64_encode($subject1) . '?=', $message1, $headers);
+                    $envioConfirmacion = mail($correo, '=?UTF-8?B?' . base64_encode($subject2) . '?=', $message2, $headers);
 
-                    if (mail($correo, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers)) {
+                    if ($envioAgenda) {
                         // Correo enviado con éxito
-                        Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", $Redireccion);
+                        $envioConfirmacion;
+                        Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", '/recep-agendar');
                     } else {
                         // Error al enviar el correo, pero registro exitoso
-                        Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", $Redireccion);
+                        Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", '/recep-agendar');
                     }
                 } else {
-                    Alerta("error", "Error de registro", "No se pudo registrar la cita", $Redireccion);
+                    Alerta("error", "Error de registro", "No se pudo registrar la cita", '/recep-agendar');
                 }
-            } else {
-                Alerta("error", "Error de registro", "No se pudo registrar el paciente", $Redireccion);
             }
         }
     }
@@ -230,20 +238,31 @@ class CitasController extends BaseController
                 $resultdoctor = $doc->getRowArray();
                 $especialista = $resultdoctor['NOMBRE'];
 
+                $linkConfirmacion = "http://localhost:8080/confirmarCita/" . $idCita;
                 // Envío de correo
-                $subject = "Reservación Exitosa";
-                $message = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $fecha .
+                $subject1 = "Reservación Exitosa";
+                $message1 = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $fecha .
                     "\nHorario de la cita: " . $hora_medica . " horas
                 \nEspecialista a cargo: " . $especialista .
                     "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
 
+                $subject2 = "Confirmación Cita";
+                $message2 = "¡Hola!\n\nTu cita agendada para el día" . $fecha .
+                    " a las " . $hora_medica . " horas con el especialista " . $especialista .
+                    " está a la espera de confirmación. Por favor ingresa al siguiente enlace y confirma tu asistencia: " . $linkConfirmacion;
+                "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
+
                 // Configuración de los encabezados
-                $headers = "From: reservaciones@clinivision.clinibook.cl\r\n";
+                $headers = "From: reservaciones.clinivision@clinibook.cl\r\n";
                 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
                 $headers .= "Content-Transfer-Encoding: 8bit\r\n";
 
-                if (mail($correo, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers)) {
+                $envioAgenda = mail($correo, '=?UTF-8?B?' . base64_encode($subject1) . '?=', $message1, $headers);
+                $envioConfirmacion = mail($correo, '=?UTF-8?B?' . base64_encode($subject2) . '?=', $message2, $headers);
+
+                if ($envioAgenda) {
                     // Correo enviado con éxito
+                    $envioConfirmacion;
                     Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", '/recep-agendar');
                 } else {
                     // Error al enviar el correo, pero registro exitoso

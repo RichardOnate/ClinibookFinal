@@ -78,5 +78,6 @@ $routes->get('/rellenar-receta/(:num)', 'recetaController::rellenarReceta/$1');
 $routes->get('/recuperarPass', 'recuPassController::index');
 
 // confirmar cita
-$routes->get('/confirmarCita', 'confirmarCitaController::index');
-
+$routes->get('/confirmarCita/(:num)', 'confirmarCitaController::index/$1');
+$routes->get('/confirm-cita/(:num)', 'confirmarCitaController::confirmarCita/$1');
+$routes->get('/cancel-cita/(:num)', 'confirmarCitaController::cancelarCita/$1');

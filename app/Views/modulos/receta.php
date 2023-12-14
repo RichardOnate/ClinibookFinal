@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="<?= base_url() ?>css/styles.css?v=1.0">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
-
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
 
   <title>CliniVision-receta</title>
 </head>
@@ -21,10 +20,9 @@
         <h3 class="text-4xl py-4 m-2 text-black">Generar receta</h1>
           <div class=" ">
 
-            <select name="tipos-receta" id="secciones" onchange="mostrarSeccion()"
-              class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <select name="tipos-receta" id="secciones" onchange="mostrarSeccion()" class="w-full mt-1 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
               <option value="" disabled="" selected="">Seleccione una opción</option>
-              <?php foreach ($tipos as $tipo): ?>
+              <?php foreach ($tipos as $tipo) : ?>
                 <option value="<?= $tipo['id_tipo_receta'] ?>">
                   <?= $tipo['tipo_rec_nombre'] ?>
                 </option>
@@ -161,14 +159,12 @@
           </div>
           <div>
             <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="3"
-              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+            <textarea id="descripcion" name="descripcion" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
           </div>
           <div class="m-4 md:flex md:justify-between">
             <button type="submit" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">
               Guardar</button>
-            <button type="button"
-              class=" abrirModal w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
+            <button type="button" class=" abrirModal w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
               PDF </button>
           </div>
         </div>
@@ -196,14 +192,12 @@
           </div>
           <div>
             <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="3"
-              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+            <textarea id="descripcion" name="descripcion" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
           </div>
           <div class="m-4 md:flex md:justify-between">
             <button type="submit" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">
               Guardar</button>
-            <button type="button"
-              class=" w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
+            <button type="button" id="btn-export-pdf" class=" w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50">Generar
               PDF </button>
           </div>
         </div>
@@ -214,6 +208,89 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
     <script src="<?= base_url('js/mostrarRecetas.js') ?>"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-export-pdf').addEventListener('click', function() {
+          // Obtener los datos del formulario
+          var especialista = document.getElementById('especialista_3').value;
+          var rut = document.getElementById('rut_3').value;
+          var nombre = document.getElementById('nombre_3').value;
+          var descripcion = document.getElementById('descripcion').value;
+
+          // Definir los estilos
+          var styles = {
+            header: {
+              fontSize: 24,
+              bold: true,
+              alignment: 'center',
+              margin: [0, 0, 0, 5],
+              color: '#000'
+            },
+            label: {
+              bold: true,
+              color: '#2c3e50',
+              margin: [0, 0, 0, 5]
+            },
+            field: {
+              margin: [0, 0, 0, 5],
+              color: '#34495e'
+            },
+            separator: {
+              margin: [0, 10, 0, 10],
+              color: '#666',
+              lineColor: '#666'
+            }
+          };
+
+          // Definir la estructura del documento PDF
+          var documentDefinition = {
+            content: [{
+                text: 'Datos del Usuario',
+                style: 'header'
+              },
+              {
+                canvas: [{
+                  type: 'line',
+                  x1: 0,
+                  y1: 0,
+                  x2: 520,
+                  y2: 0
+                }],
+                style: 'separator'
+              },
+              {
+                // Crear una tabla con una sola fila
+                table: {
+                  widths: ['auto', '*'], // Ancho de las columnas
+                  body: [
+                    ['Especialista:', especialista], // Fila 1
+                    ['RUT Paciente:', rut], // Fila 2
+                    ['Nombre Paciente:', nombre], // Fila 3
+                    ['Descripción:', descripcion] // Fila 4
+                  ]
+                }
+              },
+              {
+                canvas: [{
+                  type: 'line',
+                  x1: 0,
+                  y1: 0,
+                  x2: 520,
+                  y2: 0
+                }],
+                style: 'separator'
+              }
+            ],
+            styles: styles
+          };
+
+          // Generar y descargar el PDF
+          pdfMake.createPdf(documentDefinition).download('registro_usuario.pdf');
+        });
+      });
+    </script>
+
 </body>
 
 </html>

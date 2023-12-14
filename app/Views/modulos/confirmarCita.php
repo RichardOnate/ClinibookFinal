@@ -16,16 +16,13 @@
 
     <form class=" max-w-lg p-4 w-full bg-white rounded-lg shadow-xl shadow-blue-500 border border-blue-600">
         <div class="flex items-center justify-center h-full">
-            <div
-                class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 text-center">
+            <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 text-center">
                 <h5 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Confirmar asistencia a
                     cita oftalmologica</h5>
                 <div class="flex justify-center mb-4 space-x-4">
-                    <button
-                        class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800">Confirmar
+                    <button id="Confirmar" type="button" class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800">Confirmar
                         cita</button>
-                    <button
-                        class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">Cancelar
+                    <button id="Cancelar" type="button" class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">Cancelar
                         cita</button>
                 </div>
             </div>
@@ -33,6 +30,8 @@
     </form>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <script src="<?= base_url('js/PAC-confirmarCita.js') ?>"></script>
 </body>
 
 </html>
