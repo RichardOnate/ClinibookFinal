@@ -70,8 +70,9 @@ if (!$session) {
                 <p class="text-sm text-gray-600 dark:text-gray-400">Fecha: <?= esc($cita['FECHA']) ?></p>
                 <h3 class="mt-2 text-xl font-semibold text-gray-800 dark:text-white">Paciente: <?= esc($cita['NOMBRE PACIENTE']) ?></h3>
                 <p class="mt-2 text-gray-600 dark:text-gray-400">Hora de la cita: <?= esc($cita['HORARIO']) ?></p>
-                <div class="py-5">
+                <div class="py-5 flex gap-2">
                   <a href="/doc-atencion/<?= esc($cita['ID']) ?>" id="Atender" data-id="<?= esc($cita['IDC']) ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Atender</a>
+                  <button type="button" id="Cancelar" data-id="<?= esc($cita['IDC']) ?>" class="mt-6 bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Cancelar</button>
                 </div>
               </div>
             </div>
@@ -100,6 +101,7 @@ if (!$session) {
   https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js
     "></script>
   <script src="<?= base_url('js/DOC-confirmarAtencion.js') ?>"></script>
+  <script src="<?= base_url('js/DOC-cancelarCita.js') ?>"></script>
 </body>
 
 </html>

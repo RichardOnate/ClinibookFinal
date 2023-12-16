@@ -331,4 +331,18 @@ class PacienteModel extends Model
             ->getRowArray();
         return $query;
     }
+
+    public function buscarPacienteRut($rut)
+    {
+        $query = $this->db->table('tbl_paciente p')
+            ->select('p.id_paciente AS ID, p.pac_rut as RUT, p.pac_nombres AS NOMBRES, p.pac_apellidos AS APELLIDOS, 
+            p.pac_fecha_nac as FECHA_NAC, p.pac_celular AS CELULAR, p.pac_correo AS CORREO, 
+        pv.id_prevision AS IDP, g.id_genero AS IDG')
+            ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
+            ->join('tbl_genero g', 'g.id_genero = p.id_genero')
+            ->where('p.pac_rut', $rut)
+            ->get()
+            ->getRowArray();
+        return $query;
+    }
 }

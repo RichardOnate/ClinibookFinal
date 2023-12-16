@@ -48,7 +48,7 @@ $routes->get('/traer-historial/(:num)', 'DocController::obtenerHistorial/$1');
 $routes->get('/atender-pac/(:num)', 'CitasController::atenderPaciente/$1');
 $routes->get('/finalizar-aten/(:num)', 'CitasController::finalizarAtencion/$1');
 $routes->post('/insert-receta', 'DocController::guardarReceta');
-
+$routes->get('/cancel-citaD/(:num)', 'DocController::cancelarCitaDoc/$1');
 
 
 
@@ -72,6 +72,7 @@ $routes->get('/recep', 'RecepController::index');
 $routes->get('/recep-agendar', 'RecepController::recepAgendar');
 $routes->get('/recep-perfil', 'RecepController::recepPerfil');
 $routes->post('/agendar-cita', 'CitasController::recepAgendar');
+$routes->get('/buscar-paciente/(:any)', 'RecepController::buscarPacienteRut/$1');
 
 // receta
 $routes->get('/receta', 'recetaController::index');

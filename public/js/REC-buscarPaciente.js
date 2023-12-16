@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function buscarPaciente(searchTerm) {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/doc-atencion2/" + searchTerm, true);
+        xhr.open("GET", "/buscar-paciente/" + searchTerm, true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {

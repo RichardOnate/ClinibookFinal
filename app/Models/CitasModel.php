@@ -215,4 +215,22 @@ class CitasModel extends Model
             Alerta("error", "No se pudo cancelar la cita", "", '/');
         }
     }
+
+    public function cancelarCitaDoc($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Cancelada')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $cancelada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($cancelada) {
+            Alerta("success", "Cita cancelada correctamente", "", '/doc');
+        } else {
+            Alerta("error", "No se pudo cancelar la cita", "", '/doc');
+        }
+    }
 }

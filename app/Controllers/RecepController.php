@@ -8,6 +8,7 @@ use App\Models\TrabajadorModel;
 use App\Models\GenerosModel;
 use App\Models\PrevisionModel;
 use App\Models\HorariosModel;
+use App\Models\PacienteModel;
 
 
 class RecepController extends Controller
@@ -16,13 +17,15 @@ class RecepController extends Controller
     private $previsionModel;
     private $generosModel;
     private $horariosModel;
+    private $pacienteModel;
 
     public function __construct()
     {
-        $this->trabajadorModel = new TrabajadorModel();
+        $this->trabajadorModel = new TrabajadorModel;
         $this->generosModel = new GenerosModel;
         $this->previsionModel = new PrevisionModel;
-        $this->horariosModel = new HorariosModel();
+        $this->horariosModel = new HorariosModel;
+        $this->pacienteModel = new PacienteModel;
     }
     public function index()
     {
@@ -57,5 +60,11 @@ class RecepController extends Controller
 
         // $data['active_page'] = 'recep-perfil';
         return view('dashboard/recep-perfil', $data);
+    }
+
+    public function buscarPacienteRut($rut)
+    {
+        $datosPac = $this->pacienteModel->buscarPacienteRut($rut);
+        return $this->response->setJSON($datosPac);
     }
 }
