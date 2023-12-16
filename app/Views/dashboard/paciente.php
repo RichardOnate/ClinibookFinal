@@ -83,87 +83,10 @@ if (!$session) {
       <div class="fixed top-0 left-0 w-full h-full bg-black opacity-50"></div>
 
       <div class=" h-auto rounded-lg bg-white p-4 relative ">
-        <span id="cerrarModalBtn2" class="cerrarModalhisto absolute top-2 right-0 mr-4  text-gray-500 cursor-pointer text-4xl hover:text-red-600 transform hover:scale-110 transition-transform">&times;</span>
+        <span id="cerrarModalBtn2" class="cerrarModalhisto absolute top-2 right-2 mr-4  text-gray-500 cursor-pointer text-4xl hover:text-red-600 transform hover:scale-110 transition-transform">&times;</span>
 
         <form action="">
-          <div id="form1" class="max-w-4xl p-6 bg-white border border-blue-800 rounded-lg shadow-lg  mt-32 pb-36 sm:mt-16 lg:mt-16">
-
-            <div class="flex mb-4 items-center justify-center">
-              <h1 class="text-2xl text-center text-blue-800">Agendar Cita - Ingrese datos</h1>
-            </div>
-
-            <div class="flex flex-col sm:flex-row mb-4 gap-2">
-              <!-- Rut -->
-              <div class="w-full sm:w-1/2 sm:mr-2 mb-2 sm:mb-0">
-                <label for="rut" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">RUT</label>
-                <input type="text" id="rut" name="rut" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" placeholder="Ingrese su RUT" required="" />
-              </div>
-
-              <!-- Nombres -->
-              <div class="w-full sm:w-1/2 sm:ml-2">
-                <label for="nombres" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Nombres</label>
-                <input type="text" id="nombres" name="nombres" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" placeholder="Ingrese sus nombres" required="" />
-              </div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row mb-4 gap-2">
-              <!-- Apellidos -->
-              <div class="w-full sm:w-1/2 sm:mr-2 mb-2 sm:mb-0">
-                <label for="apellidos" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Apellidos</label>
-                <input type="text" id="apellidos" name="apellidos" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" placeholder="Ingrese sus apellidos" required="" />
-              </div>
-
-              <!-- Correo -->
-              <div class="w-full sm:w-1/2 sm:ml-2">
-                <label for="correo" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Correo</label>
-                <input type="email" id="correo" name="correo" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" placeholder="Ingrese su correo" required="" />
-              </div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row mb-4 gap-2">
-              <!-- Celular -->
-              <div class="w-full sm:w-1/2 sm:mr-2 mb-2 sm:mb-0">
-                <label for="celular" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Celular</label>
-                <input type="tel" id="celular" name="celular" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" placeholder="Ingrese su número de celular" required="" />
-              </div>
-
-              <!-- Previsión -->
-              <div class="w-full sm:w-1/2 sm:ml-2">
-                <label for="prevision" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Previsión</label>
-                <select id="prevision" name="prevision" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" required="">
-                  <option value="" disabled="" selected="">Seleccione una opción</option>
-                  <option value="fonasa">Fonasa</option>
-                  <option value="isapre">Isapre</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="flex mb-4">
-              <!-- Género -->
-              <div class="w-full sm:w-1/2 sm:mr-2">
-                <label for="genero" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Género</label>
-                <select id="genero" name="genero" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" required="">
-                  <option value="" disabled="" selected="">Seleccione su género</option>
-                  <option value="masculino">Masculino</option>
-                  <option value="femenino">Femenino</option>
-                  <option value="otro">Otro</option>
-                </select>
-              </div>
-            </div>
-
-            <button id="siguiente" type="submit" class="w-full py-2.5 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-600">Siguiente</button>
-
-          </div>
-
-          <!-- ------------------------------------------------------------------ -->
-          <div id="form2" class=" max-w-3xl p-4 bg-white border border-blue-800 rounded-lg shadow-lg hidden">
-            <div>
-              <button id="AtrasModal">
-                <svg class="w-6 h-6 text-gray-800  hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4" />
-                </svg>
-              </button>
-            </div>
+          <div id="form2" class=" max-w-3xl p-4 bg-white border border-blue-800 rounded-lg shadow-lg">
 
             <div class="max-w-lg pb-4 px-4 block justify-center items-center ">
 

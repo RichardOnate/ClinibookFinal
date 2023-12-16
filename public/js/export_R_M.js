@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 },
                 {
-                    text: "Tratamiento:",
+                    text: "Medicamentos:",
                     style: "subheader",
                     margin: [0, 10, 0, 5],
                 },
