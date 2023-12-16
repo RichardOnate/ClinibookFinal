@@ -12,9 +12,10 @@ use App\Models\TipoDetalleHistorialModel;
 use App\Models\CitasModel;
 use App\Models\HistorialModel;
 use App\Models\RecetasModel;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class DocController extends BaseController
-
 {
     private $trabajadorModel;
     private $pacienteModel;
@@ -48,10 +49,10 @@ class DocController extends BaseController
             'active_page' => 'doc',
             'datos' => $datosCitas,
             'conteo' => [
-                'citasP' => $totalcitas ? $totalcitas->totalCitas : 0,
-                'citasC' => $totalcancel ? $totalcancel->totalCancel : 0,
-                'citasA' => $totalatend ? $totalatend->totalAtend : 0,
-            ],
+                    'citasP' => $totalcitas ? $totalcitas->totalCitas : 0,
+                    'citasC' => $totalcancel ? $totalcancel->totalCancel : 0,
+                    'citasA' => $totalatend ? $totalatend->totalAtend : 0,
+                ],
         ];
 
         return view('dashboard/doc', $data);
@@ -212,7 +213,60 @@ class DocController extends BaseController
             // Manejar el error
             Alerta("Error", "Error al crear la receta", "", 'window.history.back()');
         }
+        // Crear el contenido del PDF
+        $this->generarPDF();
     }
+    
+    private function generarPDF()
+    {
+    
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf = new Dompdf($options);
+    
+        // Crea un HTML con las variables
+        $html = '<h1>Hola mundo</h1>';
+    
+        // Carga el HTML en Dompdf
+        $dompdf->loadHtml($html);
+    
+        // Establece el tamaño del papel y la orientación (por ejemplo, A4, retrato)
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Renderiza el HTML en PDF
+        $dompdf->render();
+    
+        // Envía el PDF al navegador
+        $dompdf->stream('receta.pdf', ['Attachment' => false]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*public function nombre()
     {
