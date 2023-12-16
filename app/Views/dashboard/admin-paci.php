@@ -1,3 +1,10 @@
+<?php
+$session = session('id_usuario');
+if (!$session) {
+  echo '<script>window.location.href = "/login";</script>';
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -85,7 +92,7 @@
                       Celular
                     </th>
                     <th scope="col" class="px-6 py-3">
-                      Estado cita
+                      Estado última cita
                     </th>
                     <th scope="col" class="px-6 py-3">
                       Acción

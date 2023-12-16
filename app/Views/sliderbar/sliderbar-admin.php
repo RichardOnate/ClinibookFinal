@@ -1,3 +1,8 @@
+<?php
+$nombre = session('nombre_usuario');
+$rol = session('rol_usuario');
+?>
+
 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-white rounded-lg sm:hidden hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
 
   <span class="sr-only">Open sidebar</span>
@@ -18,8 +23,8 @@
     <ul class="space-y-2 font-medium">
       <li class="max-w-xs p-4 bg-blue-700 border border-gray-200 rounded-lg shadow">
         <h2 class="text-xl font-bold text-gray-200 dark:text-white">Bienvenido:</h2>
-        <span class="text-xl text-white">Nombre Usuario</span>
-        <p class="text-gray-300">Administrador</p>
+        <span class="text-xl text-white"><?= $nombre ?></span>
+        <p class="text-gray-300"><?= $rol ?></p>
         <p id="hora" class="text-gray-100  text-xl"></p>
         <p id="fecha" class="text-gray-100  text-md"></p>
       </li>

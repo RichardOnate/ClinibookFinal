@@ -6,6 +6,7 @@ namespace app\Controllers;
 use App\Controllers\BaseController;
 use App\Models\LoginModel;
 use App\Models\TrabajadorModel;
+use App\Models\PacienteModel;
 
 require_once APPPATH . 'helpers/Alertas.php';
 class LoginController extends BaseController
@@ -13,11 +14,13 @@ class LoginController extends BaseController
     private $session;
     private $trabajadorModel;
     private $loginModel;
+    private $pacienteModel;
     public function __construct()
     {
         $this->session = \Config\Services::session();
         $this->trabajadorModel = new TrabajadorModel();
         $this->loginModel = new LoginModel();
+        $this->pacienteModel = new PacienteModel();
     }
     public function index()
     {
@@ -36,11 +39,16 @@ class LoginController extends BaseController
             $idUsuario = $usuarioEncontrado['id_usuario'];
             $Rolusuario = $usuarioEncontrado['id_rol'];
             $nombreRol = $this->loginModel->obtenerRol($Rolusuario);
-            //$nombreUsuario = $this->trabajadorModel->nombreTrabajador($idUsuario);
+
+            if ($Rolusuario == '5') {
+                $nombreUsuario = $this->pacienteModel->nombrePaciente($idUsuario);
+            } else {
+                $nombreUsuario = $this->trabajadorModel->nombreTrabajador($idUsuario);
+            }
 
             $this->session->set('id_usuario', $idUsuario);
             $this->session->set('rol_usuario', $nombreRol['rol_nombre']);
-            //$this->session->set('nombre_usuario', $nombreUsuario['nombre']);
+            $this->session->set('nombre_usuario', $nombreUsuario['nombre']);
 
             // Definimos las rutas de redirección según el rol
             $redirectRoutes = [

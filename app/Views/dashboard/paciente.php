@@ -1,3 +1,10 @@
+<?php
+$session = session('id_usuario');
+if (!$session) {
+  echo '<script>window.location.href = "/login";</script>';
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 

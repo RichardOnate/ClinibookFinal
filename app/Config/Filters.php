@@ -25,7 +25,7 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'security' => \App\Filters\Security::class,
+        //'validarSesion' => \App\Filters\validarSesion::class,
     ];
 
     /**
@@ -37,14 +37,15 @@ class Filters extends BaseConfig
      */
     public array $globals = [
         'before' => [
+            //'validarSesion',
             // 'honeypot',
             // 'csrf',
-            // 'invalidchars',
+            // 'invalidchars'
         ],
         'after' => [
             'toolbar',
             // 'honeypot',
-            'secureheaders',
+            //'secureheaders',
         ],
     ];
 

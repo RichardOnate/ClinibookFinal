@@ -192,7 +192,7 @@
           </div>
           <div>
             <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+            <textarea id="descripcion3" name="descripcion" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
           </div>
           <div class="m-4 md:flex md:justify-between">
             <button type="submit" class="abrirModalHistorial w-full md:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 mb-2 md:mb-0">
@@ -216,7 +216,7 @@
           var especialista = document.getElementById('especialista_3').value;
           var rut = document.getElementById('rut_3').value;
           var nombre = document.getElementById('nombre_3').value;
-          var descripcion = document.getElementById('descripcion').value;
+          var descripcion = document.getElementById('descripcion3').value;
 
           // Definir los estilos
           var styles = {
@@ -286,7 +286,7 @@
           };
 
           // Generar y descargar el PDF
-          pdfMake.createPdf(documentDefinition).download('registro_usuario.pdf');
+          pdfMake.createPdf(documentDefinition).download('recetaMedica.pdf');
         });
       });
     </script>

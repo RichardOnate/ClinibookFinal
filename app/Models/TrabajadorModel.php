@@ -197,9 +197,9 @@ class TrabajadorModel extends Model
         return $query;
     }
 
-    public function nombreTrabajador()
+    public function nombreTrabajador($idUsuario)
     {
-        $idUsuario = session('id_usuario');
+        //$idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_trabajador t')
             ->select("CONCAT(t.trab_nombres, ' ', t.trab_apellidos) as nombre")
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')

@@ -67,13 +67,6 @@ class CitasController extends BaseController
         $horario = $this->request->getPost('horario');
         $fecha = $this->request->getPost("fecha");
 
-        if ($rolUsuario == 'Recepcionista') {
-            $Redireccion = '/recep';
-        } elseif ($rolUsuario == 'Paciente') {
-            $Redireccion = '/paciente';
-        } elseif (empty($rolUsuario)) {
-            $Redireccion = '/agendar';
-        }
 
         $rutaRedireccion = 'window.history.back()';
 
@@ -88,7 +81,7 @@ class CitasController extends BaseController
 
             $dataPaciente = [
                 'id_genero' => $this->request->getPost('genero'),
-                'id_sucursal' => null,
+                'id_sucursal' => 1,
                 'id_prevision' => $this->request->getPost('prevision'),
                 'id_usuario' => null,
                 'pac_rut' => $rut,
@@ -167,13 +160,13 @@ class CitasController extends BaseController
                     if ($envioAgenda) {
                         // Correo enviado con éxito
                         $envioConfirmacion;
-                        Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", '/recep-agendar');
+                        Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", '/');
                     } else {
                         // Error al enviar el correo, pero registro exitoso
-                        Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", '/recep-agendar');
+                        Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", '/');
                     }
                 } else {
-                    Alerta("error", "Error de registro", "No se pudo registrar la cita", '/recep-agendar');
+                    Alerta("error", "Error de registro", "No se pudo registrar la cita", '/agendar');
                 }
             }
         }
@@ -247,7 +240,7 @@ class CitasController extends BaseController
                     "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
 
                 $subject2 = "Confirmación Cita";
-                $message2 = "¡Hola!\n\nTu cita agendada para el día" . $fecha .
+                $message2 = "¡Hola!\n\nTu cita agendada para el día " . $fecha .
                     " a las " . $hora_medica . " horas con el especialista " . $especialista .
                     " está a la espera de confirmación. Por favor ingresa al siguiente enlace y confirma tu asistencia: " . $linkConfirmacion;
                 "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";

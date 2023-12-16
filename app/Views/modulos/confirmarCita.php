@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>css/styles.css?v=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <title>Clinibook-Recuperar pass</title>
+    <title>Clinibook-Confirmación</title>
 </head>
 
 <body class="flex items-center justify-center h-screen bg-gray-100">
