@@ -328,7 +328,7 @@
               {
                 margin: [0, 0, 0, 10],
                 table: {
-                  widths: ['auto', '*'],
+                  widths: ['auto', 'auto'],
                   body: [
                     [{
                         text: 'Lejos Ojo Derecho Esfera:',
@@ -337,9 +337,8 @@
                       {
                         text: lejosDerEsf,
                         style: 'field'
-                      }
-                    ],
-                    [{
+                      },
+                      {
                         text: 'Lejos Ojo Derecho Cilindro:',
                         style: 'label'
                       },
