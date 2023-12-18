@@ -44,7 +44,7 @@ class DocController extends BaseController
         $datosCitas = $this->citasModel->datosCitas();
         $totalcancel = $this->citasModel->citasCanceladasHoy();
         $totalatend = $this->citasModel->citasAtendidasHoy();
-        $eventos = $this->citasModel->citasHoyCalendario();
+        $eventos = $this->citasModel->citasCalendarioDoc();
 
         $data = [
             'active_page' => 'doc',

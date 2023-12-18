@@ -67,75 +67,120 @@ if (!$session) {
         </div>
       </div>
 
-      <div class="mb-3">
-        <h2 class="text-4xl text-gray-100 text-center font-bold">Calendario Citas</h2>
+      <!-- cartas de atencion -- -->
+      <div>
+        <h2 class=" text-white text-3xl font-bold p-3">Citas </h2>
+        <div class="flex items-center justify-center overflow-x-auto p-4 max-w-full">
+          <?php foreach ($citas as $cita) : ?>
+            <div class="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden mx-2">
+              <div class="px-4 py-2">
+                <p class="text-sm text-gray-600 dark:text-gray-400">Fecha: <?= esc($cita['FECHA']) ?></p>
+                <h3 class="mt-2 text-xl font-semibold text-gray-800 dark:text-white">Especialista: <?= esc($cita['ESPECIALISTA']) ?></h3>
+                <h3 class="mt-2 text-xl font-semibold text-gray-800 dark:text-white">Especialista: <?= esc($cita['PACIENTE']) ?></h3>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">Hora de la cita: <?= esc($cita['HORARIO']) ?></p>
+                <p class="mt-2 text-gray-600 dark:text-gray-400" data-id="<?= esc($cita['ESTADO_CITA']) ?>">Estado de la cita: <?= esc($cita['ESTADO_CITA']) ?></p>
+                <div class="py-5 flex gap-2">
+                  <button type="button" id="Confirmar" data-id="<?= esc($cita['IDC']) ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Confirmar</button>
+                  <button type="button" id="Cancelar" data-id="<?= esc($cita['IDC']) ?>" class="mt-6 bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+
+        <div class="mb-3">
+          <h2 class="text-4xl text-gray-100 text-center font-bold">Calendario Citas</h2>
+        </div>
+
+        <div class="">
+          <div id="calendar" class="w-full mx-auto rounded border-2 bg-gray-100"></div>
+        </div>
+
+
+
+
       </div>
-
-      <div class="">
-        <div id="calendar" class="w-full mx-auto rounded border-2 bg-gray-100"></div>
-      </div>
-
-
-
-
     </div>
-  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js" integrity="sha384-1z39Pl0VH8aB+DIEJT8uzMlBGO11AJJeUFSQsnrEz4gjgLEg3NUbIG4rUJGU2z6L" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/es.min.js" integrity="sha384-AbUj+CrZTOrEWHZOpZ/IMDHSCp/Z7mLaD/mclK5XEYAJvA3GOoF0MwgsMEmIcVEj" crossorigin="anonymous"></script>
-  <script src="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js" integrity="sha384-1z39Pl0VH8aB+DIEJT8uzMlBGO11AJJeUFSQsnrEz4gjgLEg3NUbIG4rUJGU2z6L" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/es.min.js" integrity="sha384-AbUj+CrZTOrEWHZOpZ/IMDHSCp/Z7mLaD/mclK5XEYAJvA3GOoF0MwgsMEmIcVEj" crossorigin="anonymous"></script>
+    <script src="
   https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js
     "></script>
     <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var calendarEl = document.getElementById('calendar');
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        contentHeight: 500,
-        aspectRatio: 2,
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
-        events: [{
-            title: 'Evento de prueba',
-            start: '2023-12-08T10:00:00',
-            end: '2023-12-08T12:00:00',
-            backgroundColor: '#36A2EB',
-            borderColor: '#36A2EB',
-            timezone: 'UTC' // O ajusta a tu zona horaria específica   // Color del borde personalizado
-          }
-          // Puedes agregar más eventos si es necesario
-        ],
-        editable: true,
-        dayMaxEvents: true,
-        locale: 'es',
-        buttonText: {
-          today: 'Hoy',
-          month: 'Mes',
-          week: 'Semana',
-          day: 'Día',
-        },
-        views: {
-          dayGridMonth: { // name of view
-            titleFormat: {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            }
-            // other view-specific options here
-          }
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var eventosConf = <?php echo json_encode($eventos['confirm']); ?>;
+        var eventosCanc = <?php echo json_encode($eventos['cancel']); ?>;
 
-        }
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          contentHeight: 500,
+          aspectRatio: 2,
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          events: [
+            // Eventos Confirmados
+            ...eventosConf.map(function(evento) {
+              var start = evento['FECHA'] + 'T' + evento['HORARIO'] + ':00';
+              //var end = 'Paciente: ' + evento['PACIENTE'];
+              var title = 'Dr: ' + evento['DOCTOR'] + '\n\n' + 'Pac.: ' + evento['PACIENTE'];
+
+              return {
+                title: title,
+                start: start,
+                end: "",
+                backgroundColor: '#36A2EB',
+                borderColor: '#36A2EB',
+                timezone: 'UTC'
+              };
+            }),
+            // Eventos Cancelados
+            ...eventosCanc.map(function(evento) {
+              var start = evento['FECHA'] + 'T' + evento['HORARIO'] + ':00';
+              var title = 'Dr: ' + evento['DOCTOR'] + '\n\n' + 'Pac.: ' + evento['PACIENTE'];
+
+              return {
+                title: title,
+                start: start,
+                end: "",
+                backgroundColor: '#FF0000',
+                borderColor: '#FF0000',
+                timezone: 'UTC'
+              };
+            })
+          ],
+          editable: true,
+          dayMaxEvents: true,
+          locale: 'es',
+          buttonText: {
+            today: 'Hoy',
+            month: 'Mes',
+            week: 'Semana',
+            day: 'Día',
+          },
+          views: {
+            dayGridMonth: {
+              titleFormat: {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              }
+            }
+          }
+        });
+
+        calendar.render();
       });
-      calendar.render();
-    });
-  </script>
+    </script>
+
 
 
 </body>

@@ -40,6 +40,7 @@ class PacienteController extends BaseController
         $totalAtendidas = $this->citasModel->misCitasAtendidas();
         $totalCanceladas = $this->citasModel->misCitasCanceladas();
         $datosCitas = $this->citasModel->misCitas();
+        $eventos = $this->citasModel->citasCalendarioPac();
 
         $data = [
             'active_page' => 'paciente',
@@ -47,6 +48,7 @@ class PacienteController extends BaseController
             'horarios' => $horarios,
             'doctores' => $especialista,
             'datos' => $datosCitas,
+            'eventos' => $eventos,
             'conteo' => [
                 'citasT' => $totalCitas ? $totalCitas->totalCitas : 0,
                 'citasC' => $totalCanceladas ? $totalCanceladas->totalCitas : 0,

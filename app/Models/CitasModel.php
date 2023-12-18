@@ -378,7 +378,7 @@ class CitasModel extends Model
         }
     }
 
-    public function citasHoyCalendario()
+    public function citasCalendarioDoc()
     {
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_cita c')
@@ -394,6 +394,101 @@ class CitasModel extends Model
             //->where('DATE(c.cita_fecha)', date('Y-m-d'))
             ->where('ec.estado_nombre', 'Confirmada')
             ->orderBy('HORARIO', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
+    }
+
+    public function citasCalendarioPac()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select("c.cita_fecha as FECHA, CONCAT(t.trab_nombres, ' ', t.trab_apellidos) AS DOCTOR, 
+            TIME_FORMAT(h.hor_hora_medica, '%H:%i') as HORARIO")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            //->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Confirmada')
+            ->orderBy('HORARIO', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
+    }
+
+    public function citasCalendarioRecConf()
+    {
+        $query = $this->db->table('tbl_cita c')
+            ->select("c.cita_fecha as FECHA, CONCAT(t.trab_nombres, ' ', t.trab_apellidos) AS DOCTOR, 
+            CONCAT(p.pac_nombres, ' ', p.pac_apellidos) AS PACIENTE, TIME_FORMAT(h.hor_hora_medica, '%H:%i') as HORARIO")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            //->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Confirmada')
+            ->orderBy('HORARIO', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
+    }
+
+    public function citasCalendarioRecCanc()
+    {
+        $query = $this->db->table('tbl_cita c')
+            ->select("c.cita_fecha as FECHA, CONCAT(t.trab_nombres, ' ', t.trab_apellidos) AS DOCTOR, 
+            CONCAT(p.pac_nombres, ' ', p.pac_apellidos) AS PACIENTE, TIME_FORMAT(h.hor_hora_medica, '%H:%i') as HORARIO")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            //->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Cancelada')
+            ->orderBy('HORARIO', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
+    }
+
+    public function citasCalendarioEnf()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select("c.cita_fecha as FECHA, CONCAT(t.trab_nombres, ' ', t.trab_apellidos) AS DOCTOR, 
+            TIME_FORMAT(h.hor_hora_medica, '%H:%i') as HORARIO")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            //->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Confirmada')
+            ->orderBy('HORARIO', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
+    }
+
+    public function citasRecep()
+    {
+        $query = $this->db->table('tbl_cita c')
+            ->select("p.id_paciente as ID, c.id_cita as IDC, DATE_FORMAT(c.cita_fecha, '%d/%m/%y') as FECHA, CONCAT(p.pac_nombres, ' ', p.pac_apellidos) AS 'PACIENTE', 
+            CONCAT(t.trab_nombres, ' ', t.trab_apellidos) AS 'ESPECIALISTA', CONCAT(TIME_FORMAT(h.hor_hora_medica, '%H:%i'), ' HORAS') as HORARIO, ec.estado_nombre as ESTADO_CITA")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->orderBy('HORARIO', 'ASC')
+            ->orderBy('FECHA', 'ASC')
             ->get()
             ->getResultArray();
         return $query;
