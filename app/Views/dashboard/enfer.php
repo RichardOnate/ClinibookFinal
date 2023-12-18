@@ -90,10 +90,12 @@ if (!$session) {
   <script src="
   https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js
     "></script>
-    <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
+  <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
+      var eventos = <?php echo json_encode($eventos); ?>; // Convierte el array PHP a JSON
+
       var calendar = new FullCalendar.Calendar(calendarEl, {
         contentHeight: 500,
         aspectRatio: 2,
@@ -102,16 +104,19 @@ if (!$session) {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        events: [{
-            title: 'Evento de prueba',
-            start: '2023-12-08T10:00:00',
-            end: '2023-12-08T12:00:00',
+        events: eventos.map(function(evento) {
+          var start = evento['FECHA'] + 'T' + evento['HORARIO'] + ':00';
+          var title = 'Paciente: ' + evento['PACIENTE'];
+
+          return {
+            title: title,
+            start: start,
+            end: "",
             backgroundColor: '#36A2EB',
             borderColor: '#36A2EB',
-            timezone: 'UTC' // O ajusta a tu zona horaria específica   // Color del borde personalizado
-          }
-          // Puedes agregar más eventos si es necesario
-        ],
+            timezone: 'UTC'
+          };
+        }),
         editable: true,
         dayMaxEvents: true,
         locale: 'es',
@@ -130,9 +135,9 @@ if (!$session) {
             }
             // other view-specific options here
           }
-
         }
       });
+
       calendar.render();
     });
   </script>

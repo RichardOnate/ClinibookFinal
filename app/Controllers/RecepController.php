@@ -35,9 +35,19 @@ class RecepController extends Controller
         $totalCitasHoy = $this->citasModel->totalCitasHoy();
         $totalAtendidasHoy = $this->citasModel->totalCitasAtendidas();
         $totalCanceladasHoy = $this->citasModel->totalCitasCanceladas();
+        $eventosConf = $this->citasModel->citasCalendarioRecConf();
+        $eventosCanc = $this->citasModel->citasCalendarioRecCanc();
+        $citas = $this->citasModel->citasRecep();
+
+        $eventos = [
+            'confirm' => $eventosConf,
+            'cancel' => $eventosCanc,
+        ];
 
         $data = [
             'active_page' => 'recep',
+            'eventos' => $eventos,
+            'citas' => $citas,
             'conteo' => [
                 'citasP' => $totalCitasHoy ? $totalCitasHoy->totalCitas : 0,
                 'citasC' => $totalAtendidasHoy ? $totalAtendidasHoy->totalCitas : 0,
@@ -45,9 +55,9 @@ class RecepController extends Controller
             ],
         ];
 
-        //$data['active_page'] = 'recep';
         return view('dashboard/recep', $data);
     }
+
     public function recepAgendar()
     {
         $generos = $this->generosModel->listarGeneros();
