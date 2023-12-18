@@ -3,6 +3,7 @@ $nombre = session('nombre_usuario');
 $rol = session('rol_usuario');
 ?>
 
+
 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-white rounded-lg sm:hidden hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
 
   <span class="sr-only">Open sidebar</span>
@@ -96,10 +97,12 @@ $rol = session('rol_usuario');
       <!-- Fin desconectar -->
     </ul>
   </div>
-  <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
-</aside>
 
+</aside>
+ 
 <script>
+  
+
   function obtenerHora() {
     var fecha = new Date();
     var horas = fecha.getHours();
@@ -144,4 +147,5 @@ $rol = session('rol_usuario');
 
   // Llamar a la función cada segundo para actualizar la fecha en tiempo real
   setInterval(obtenerFecha, 1000);
+
 </script>
