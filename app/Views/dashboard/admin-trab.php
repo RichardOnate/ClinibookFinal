@@ -296,6 +296,7 @@ if (!$session) {
   <script src="<?= base_url('js/trabFuncionalidad.js') ?>"></script>
   <script src="<?= base_url('js/AD-actualizarTrabajador.js') ?>"></script>
   <script src="<?= base_url('js/AD-eliminarTrabajador.js') ?>"></script>
+  <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 </body>
 
 </html>

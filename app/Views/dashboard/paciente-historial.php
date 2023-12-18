@@ -172,7 +172,8 @@ if (!$session) {
                 }, 1000);
             }, 3000);
         });
-    </script>s
+    </script>
+    <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 </body>
 
 </html>

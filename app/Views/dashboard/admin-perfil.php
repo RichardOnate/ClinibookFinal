@@ -92,6 +92,7 @@ if (!$session) {
             <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
             <script src="<?= base_url('js/perfilFuncionalidad.js') ?>"></script>
+            <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 </body>
 
 </html>

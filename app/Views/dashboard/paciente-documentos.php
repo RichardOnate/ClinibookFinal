@@ -77,6 +77,7 @@ if (!$session) {
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+        <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 </body>
 
 </html>

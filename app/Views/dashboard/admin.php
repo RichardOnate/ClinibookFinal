@@ -16,6 +16,7 @@ if (!$session) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 
   <title>CliniVision-ADMIN</title>
+ 
 
 </head>
 
@@ -452,7 +453,7 @@ if (!$session) {
   <script defer src="<?= base_url('js/llenarCombos.js') ?>"></script>
   <script defer src="<?= base_url('js/llenarCombosModal.js') ?>"></script>
   <script src="<?= base_url('js/AD-actualizarSucursal.js') ?>"></script>
-
+  <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 
 </body>
 
