@@ -9,6 +9,7 @@ use App\Models\GenerosModel;
 use App\Models\PrevisionModel;
 use App\Models\HorariosModel;
 use App\Models\PacienteModel;
+use App\Models\CitasModel;
 
 
 class RecepController extends Controller
@@ -18,6 +19,7 @@ class RecepController extends Controller
     private $generosModel;
     private $horariosModel;
     private $pacienteModel;
+    private $citasModel;
 
     public function __construct()
     {
@@ -26,10 +28,24 @@ class RecepController extends Controller
         $this->previsionModel = new PrevisionModel;
         $this->horariosModel = new HorariosModel;
         $this->pacienteModel = new PacienteModel;
+        $this->citasModel = new CitasModel;
     }
     public function index()
     {
-        $data['active_page'] = 'recep';
+        $totalCitasHoy = $this->citasModel->totalCitasHoy();
+        $totalAtendidasHoy = $this->citasModel->totalCitasAtendidas();
+        $totalCanceladasHoy = $this->citasModel->totalCitasCanceladas();
+
+        $data = [
+            'active_page' => 'recep',
+            'conteo' => [
+                'citasP' => $totalCitasHoy ? $totalCitasHoy->totalCitas : 0,
+                'citasC' => $totalAtendidasHoy ? $totalAtendidasHoy->totalCitas : 0,
+                'citasA' => $totalCanceladasHoy ? $totalCanceladasHoy->totalCitas : 0,
+            ],
+        ];
+
+        //$data['active_page'] = 'recep';
         return view('dashboard/recep', $data);
     }
     public function recepAgendar()

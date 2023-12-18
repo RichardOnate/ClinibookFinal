@@ -9,8 +9,8 @@ use App\Models\HorariosModel;
 use App\Models\PacienteModel;
 use App\Models\TrabajadorModel;
 use App\Models\CitasModel;
+//use App\CodeIgniter\Timer;
 
-// En tus controladores
 require_once APPPATH . 'helpers/Alertas.php';
 
 
@@ -149,6 +149,18 @@ class CitasController extends BaseController
                         " está a la espera de confirmación. Por favor ingresa al siguiente enlace y confirma tu asistencia: " . $linkConfirmacion;
                     "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
 
+                    $subject3 = "Confirmación Cita";
+                    $message3 = "¡Hola!\n\nTu cita agendada para el día" . $fecha .
+                        " a las " . $hora_medica . " horas con el especialista " . $especialista .
+                        " está a la espera de confirmación. Por favor ingresa al siguiente enlace y confirma tu asistencia: " . $linkConfirmacion;
+                    "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
+
+                    $subject4 = "Cancelación Cita";
+                    $message4 = "¡Hola!\n\nTu cita agendada para el día" . $fecha .
+                        " a las " . $hora_medica . " horas con el especialista " . $especialista .
+                        " ha sido cancelada debido a que no fue confirmada con anterioridad. Favor asigna una nueva cita ";
+                    "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
+
                     // Configuración de los encabezados
                     $headers = "From: reservaciones.clinivision@clinibook.cl\r\n";
                     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
@@ -156,6 +168,8 @@ class CitasController extends BaseController
 
                     $envioAgenda = mail($correo, '=?UTF-8?B?' . base64_encode($subject1) . '?=', $message1, $headers);
                     $envioConfirmacion = mail($correo, '=?UTF-8?B?' . base64_encode($subject2) . '?=', $message2, $headers);
+                    $envioAviso = mail($correo, '=?UTF-8?B?' . base64_encode($subject3) . '?=', $message3, $headers);
+                    $envioCancelacion = mail($correo, '=?UTF-8?B?' . base64_encode($subject4) . '?=', $message4, $headers);
 
                     if ($envioAgenda) {
                         // Correo enviado con éxito
@@ -263,6 +277,94 @@ class CitasController extends BaseController
                 }
             } else {
                 Alerta("error", "Error de registro", "No se pudo registrar la cita", '/recep-agendar');
+            }
+        }
+    }
+
+    public function pacienteAgendar()
+    {
+        $idPaciente = $this->request->getPost('id_paciente');
+        $correo = (string) $this->request->getPost('correo');
+        $doctor = $this->request->getPost('doctor');
+        $horario = $this->request->getPost('horario');
+        $fecha = $this->request->getPost("fecha");
+
+        $rutaRedireccion = 'window.history.back()';
+
+
+        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $rutaRedireccion)) {
+            return;
+        } else {
+            $dataCita = [
+                'id_paciente' => $idPaciente,
+                'id_trabajador' => $doctor,
+                'id_horario' => $horario,
+                'cita_fecha' => $fecha,
+            ];
+
+            $idCita = $this->citasModel->insertCita($dataCita);
+
+            if ($idCita) {
+                $dataConfirmacion = [
+                    'id_cita' => $idCita,
+                    'id_estado_cita' => $this->citasModel->db->table('tbl_estado_cita')
+                        ->select('id_estado_cita')
+                        ->where('estado_nombre', 'Agendada')
+                        ->get()
+                        ->getRow()
+                        ->id_estado_cita,
+                    'info_confirmacion' => date('Y-m-d H:i:s'), // Fecha y hora actuales
+                ];
+
+                // Insertar confirmación de cita
+                $this->citasModel->insertConfirmacionCita($dataConfirmacion);
+
+                $db = \Config\Database::connect();
+                $horamedica = $this->horariosModel->select('hor_hora_medica')
+                    ->where('id_horario', $this->request->getPost('horario'))
+                    ->get();
+                $resulthora = $horamedica->getRowArray();
+                $hora_medica = $resulthora['hor_hora_medica'];
+
+                $doc = $db->table('tbl_trabajador')
+                    ->select('CONCAT(trab_nombres, " ", trab_apellidos) as NOMBRE')
+                    ->where('id_trabajador', $this->request->getPost('doctor'))
+                    ->get();
+                $resultdoctor = $doc->getRowArray();
+                $especialista = $resultdoctor['NOMBRE'];
+
+                $linkConfirmacion = "http://localhost:8080/confirmarCita/" . $idCita;
+                // Envío de correo
+                $subject1 = "Reservación Exitosa";
+                $message1 = "¡Hola!\n\nTu cita oftalmológica fue reservada.\n\nDía de la cita: " . $fecha .
+                    "\nHorario de la cita: " . $hora_medica . " horas
+                \nEspecialista a cargo: " . $especialista .
+                    "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
+
+                $subject2 = "Confirmación Cita";
+                $message2 = "¡Hola!\n\nTu cita agendada para el día " . $fecha .
+                    " a las " . $hora_medica . " horas con el especialista " . $especialista .
+                    " está a la espera de confirmación. Por favor ingresa al siguiente enlace y confirma tu asistencia: " . $linkConfirmacion;
+                "\n\n\n\n\n\n\n\ncorreo generado automáticamente por: reservaciones.clinivision@clinibook.cl";
+
+                // Configuración de los encabezados
+                $headers = "From: reservaciones.clinivision@clinibook.cl\r\n";
+                $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+                $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+
+                $envioAgenda = mail($correo, '=?UTF-8?B?' . base64_encode($subject1) . '?=', $message1, $headers);
+                $envioConfirmacion = mail($correo, '=?UTF-8?B?' . base64_encode($subject2) . '?=', $message2, $headers);
+
+                if ($envioAgenda) {
+                    // Correo enviado con éxito
+                    $envioConfirmacion;
+                    Alerta("success", "La cita fue registrada correctamente y se ha enviado un correo con los detalles.", "", '/paciente');
+                } else {
+                    // Error al enviar el correo, pero registro exitoso
+                    Alerta("info", "La cita fue registrada correctamente, pero hubo un error al enviar el correo de confirmación.", "", '/paciente');
+                }
+            } else {
+                Alerta("error", "Error de registro", "No se pudo registrar la cita", '/paciente');
             }
         }
     }

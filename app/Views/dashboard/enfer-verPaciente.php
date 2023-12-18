@@ -47,43 +47,43 @@ if (!$session) {
             </button>
           </div>
           <!-- formulario -->
-          <form>
+          <form action="/act-pacienteEnf" method="post">
             <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
-              <input type="hidden" id="id_p" name="id" value="">
+              <input type="hidden" id="id_p" name="id_paciente" value="">
               <!-- rut -->
               <div>
                 <label for="rut" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">RUT</label>
-                <input type="text" id="rut" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="text" id="rut" name="rut" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- nombre -->
               <div>
                 <label for="nombre" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
-                <input type="text" id="nombres" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="text" id="nombres" name="nombres" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- apellidos -->
               <div>
                 <label for="apellido" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Apellido</label>
-                <input type="text" id="apellidos" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="text" id="apellidos" name="apellidos" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- fecha nacimiento -->
               <div>
                 <label for="fecha" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Fecha</label>
-                <input type="date" id="fecha" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="date" id="fecha" name="fecha" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- celular -->
               <div>
                 <label for="celular" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Celular</label>
-                <input type="text" id="celular" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="text" id="celular" name="celular" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- correo electronico -->
               <div>
                 <label for="correo" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Correo</label>
-                <input type="text" id="correo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
+                <input type="text" id="correo" name="correo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" disabled="">
               </div>
               <!-- genero -->
               <div>
                 <label for="genero" class="block text-sm font-medium text-gray-700"">Género</label>
-                <select disabled class=" mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" id="genero" name="genero">
+                <select disabled name=" genero" class=" mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" id="genero" name="genero">
                   <option selected>Seleccione una opción</option>
                   <?php foreach ($generos as $genero) : ?>
                     <option value="<?= $genero['id_genero'] ?>"><?= $genero['tipo_genero'] ?></option>
@@ -101,17 +101,18 @@ if (!$session) {
                 </select>
               </div>
             </div>
+
+            <!-- historial -->
+            <div class="mt-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white">Historial paciente</h3>
+              <textarea id="historial" class="w-full h-[30rem] px-4 py-2 mt-2 border border-gray-300 rounded-lg bg-gray-100" disabled></textarea>
+            </div>
+            <div class="mt-4">
+              <button id="editar" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Editar</button>
+              <button type="submit" class="w-full md:w-auto px-6 py-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-300 focus:ring-opacity-50">Guardar
+                Cambios</button>
+            </div>
           </form>
-          <!-- historial -->
-          <div class="mt-4">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Historial paciente</h3>
-            <textarea id="historial" class="w-full h-[30rem] px-4 py-2 mt-2 border border-gray-300 rounded-lg bg-gray-100" disabled></textarea>
-          </div>
-          <div class="mt-4">
-            <button id="editar" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Editar</button>
-            <button type="submit" class="w-full md:w-auto px-6 py-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-300 focus:ring-opacity-50">Guardar
-              Cambios</button>
-          </div>
         </div>
 
       </div>

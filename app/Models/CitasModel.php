@@ -23,6 +23,7 @@ class CitasModel extends Model
         return $this->countAll();
     }
 
+
     public function insertCita($data)
     {
         $this->db->table('tbl_cita')->insert($data);
@@ -34,6 +35,113 @@ class CitasModel extends Model
         $this->db->table('tbl_confirmaciones_citas')->insert($data);
     }
 
+    public function totalCitasHoy()
+    {
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalCitas')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Confirmada')
+            ->get();
+
+        return $query->getRow();
+    }
+
+    public function totalCitasAtendidas()
+    {
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalCitas')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Atendida')
+            ->get();
+
+        return $query->getRow();
+    }
+
+    public function totalCitasCanceladas()
+    {
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalCitas')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Cancelada')
+            ->get();
+
+        return $query->getRow();
+    }
+
+    ////////////////////////////////////////////////////////////////
+
+    public function misCitasTotales()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalCitas')
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            ->get();
+
+        return $query->getRow();
+    }
+    public function misCitasAtendidas()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalCitas')
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            ->where('ec.estado_nombre', 'Atendida')
+            ->get();
+
+        return $query->getRow();
+    }
+
+    public function misCitasCanceladas()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select('COUNT(*) as totalCitas')
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            ->where('ec.estado_nombre', 'Cancelada')
+            ->get();
+
+        return $query->getRow();
+    }
+
+    public function misCitas()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select("p.id_paciente as ID, c.id_cita as IDC, DATE_FORMAT(c.cita_fecha, '%d/%m/%y') as FECHA, CONCAT(t.trab_nombres, ' ', t.trab_apellidos) AS 'ESPECIALISTA', 
+            CONCAT(TIME_FORMAT(h.hor_hora_medica, '%H:%i'), ' HORAS') as HORARIO, ec.estado_nombre as ESTADO CITA")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            ->where('ec.estado_nombre', 'Agendada')
+            ->orderBy('HORARIO', 'ASC')
+            ->orderBy('FECHA', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
+    }
+
+    ////////////////////////////////////////////////////////////
     public function citasHoy()
     {
         $idUsuario = session('id_usuario');
@@ -232,5 +340,62 @@ class CitasModel extends Model
         } else {
             Alerta("error", "No se pudo cancelar la cita", "", '/doc');
         }
+    }
+
+    public function confirmarCitaPaciente($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Confirmada')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $confirmada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($confirmada) {
+            Alerta("success", "Cita confirmada correctamente", "", '/paciente');
+        } else {
+            Alerta("error", "No se pudo confirmar la cita", "", '/paciente');
+        }
+    }
+
+    public function cancelarCitaPaciente($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Cancelada')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $cancelada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($cancelada) {
+            Alerta("success", "Cita cancelada correctamente", "", '/paciente');
+        } else {
+            Alerta("error", "No se pudo cancelar la cita", "", '/paciente');
+        }
+    }
+
+    public function citasHoyCalendario()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select("c.cita_fecha as FECHA, CONCAT(p.pac_nombres, ' ', p.pac_apellidos) AS 'PACIENTE', 
+            TIME_FORMAT(h.hor_hora_medica, '%H:%i') as HORARIO")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            //->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Confirmada')
+            ->orderBy('HORARIO', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
     }
 }

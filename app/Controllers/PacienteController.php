@@ -6,24 +6,55 @@ use CodeIgniter\Controller;
 use App\Models\PacienteModel;
 use App\Models\GenerosModel;
 use App\Models\PrevisionModel;
+use App\Models\HorariosModel;
+use App\Models\TrabajadorModel;
+use App\Models\CitasModel;
 
 class PacienteController extends BaseController
 {
+    private $trabajadorModel;
     private $pacienteModel;
     private $previsionModel;
     private $generosModel;
     private $session;
+    private $citasModel;
+    private $horariosModel;
+
     public function __construct()
     {
         // Carga los modelos en el constructor
         $this->pacienteModel = new PacienteModel;
         $this->generosModel = new GenerosModel;
         $this->previsionModel = new PrevisionModel;
+        $this->horariosModel = new HorariosModel;
+        $this->trabajadorModel = new TrabajadorModel;
+        $this->citasModel = new CitasModel;
         $this->session = \Config\Services::session();
     }
     public function index()
     {
-        $data['active_page'] = 'paciente';
+        $datosPac = $this->pacienteModel->perfilPaciente();
+        $horarios = $this->horariosModel->listarHorarios();
+        $especialista = $this->trabajadorModel->listarEspecialistas();
+        $totalCitas = $this->citasModel->misCitasTotales();
+        $totalAtendidas = $this->citasModel->misCitasAtendidas();
+        $totalCanceladas = $this->citasModel->misCitasCanceladas();
+        $datosCitas = $this->citasModel->misCitas();
+
+        $data = [
+            'active_page' => 'paciente',
+            'datosPac' => $datosPac,
+            'horarios' => $horarios,
+            'doctores' => $especialista,
+            'datos' => $datosCitas,
+            'conteo' => [
+                'citasT' => $totalCitas ? $totalCitas->totalCitas : 0,
+                'citasC' => $totalCanceladas ? $totalCanceladas->totalCitas : 0,
+                'citasA' => $totalAtendidas ? $totalAtendidas->totalCitas : 0,
+            ],
+        ];
+
+        //$data['active_page'] = 'paciente';
         return view('dashboard/paciente', $data);
     }
 
@@ -86,7 +117,6 @@ class PacienteController extends BaseController
     public function actualizarPerfil()
     {
 
-        $rolUsuario = session('rol_usuario');
         $rut = $this->request->getPost('rut');
         $nombres = $this->request->getPost('nombres');
         $apellidos = $this->request->getPost('apellidos');
@@ -95,12 +125,22 @@ class PacienteController extends BaseController
         $fechaNac = $this->request->getPost('fecha');
         $genero = $this->request->getPost('genero');
         $prevision = $this->request->getPost('prevision');
+        $usuario = $this->request->getPost('usuario');
+        $pass = $this->request->getPost('pass');
+        $repetirpass = $this->request->getPost('repetirpass');
 
+        $rutaRedireccion = '/paciente-historial';
 
-        if ($rolUsuario == 'Paciente') {
-            $rutaRedireccion = '/paciente-historial';
-        }
+        $this->pacienteModel->actualizarPerfil($rut, $nombres, $apellidos, $celular, $correo, $fechaNac, $genero, $prevision, $usuario, $pass, $repetirpass, $rutaRedireccion);
+    }
 
-        $this->pacienteModel->actualizarPerfil($rut, $nombres, $apellidos, $celular, $correo, $fechaNac, $genero, $prevision, $rutaRedireccion);
+    public function confirmarCitaPaciente($id)
+    {
+        $this->citasModel->confirmarCitaPaciente($id);
+    }
+
+    public function cancelarCitaPaciente($id)
+    {
+        $this->citasModel->cancelarCitaPaciente($id);
     }
 }

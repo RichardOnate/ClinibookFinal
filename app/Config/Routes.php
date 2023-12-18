@@ -58,6 +58,7 @@ $routes->get('/enfer', 'EnferController::index');
 $routes->get('/enfer-perfil', 'EnferController::perfilEnfer');
 $routes->get('/enfer-verPaciente', 'EnferController::verPacienteEnfer');
 $routes->get('/verPaciente/(:any)', 'EnferController::verPacienteRut/$1');
+$routes->post('/act-pacienteEnf', 'EnferController::actualizarPacienteE');
 
 // Ruta Paciente
 $routes->get('/paciente', 'PacienteController::index');
@@ -66,6 +67,9 @@ $routes->get('/paciente-documentos', 'PacienteController::pacienteDocumentos');
 $routes->post('/act-pacm', 'PacienteController::actualizarPacienteM');
 $routes->post('/pac-perfil', 'PacienteController::actualizarPerfil');
 $routes->get('/del-pac/(:num)', 'PacienteController::eliminarPaciente/$1');
+$routes->post('/agendar-pac', 'CitasController::pacienteAgendar');
+$routes->get('/conf-pac/(:num)', 'PacienteController::confirmarCitaPaciente/$1');
+$routes->get('/cancel-pac/(:num)', 'PacienteController::cancelarCitaPaciente/$1');
 
 // Ruta Recepcionista
 $routes->get('/recep', 'RecepController::index');

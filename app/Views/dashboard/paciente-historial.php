@@ -98,6 +98,20 @@ if (!$session) {
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <div class="mt-2">
+                                <label for="usuario" class="block text-sm font-medium text-gray-700">Usuario</label>
+                                <input type="text" id="usuario" name="usuario" value="<?= $datosPac['USUARIO'] ?? '' ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
+                            </div>
+                            <div class="mt-2">
+                                <label for="contrasena" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                                <input type="password" id="contrasena" name="pass" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
+                            </div>
+                            <div class="mt-2">
+                                <label for="repetirContrasena" class="block text-sm font-medium text-gray-700">Repetir
+                                    Contraseña</label>
+                                <input type="password" id="repetirContrasena" name="repetirpass" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
+                            </div>
+
                         </div>
 
                         <div class="mt-8 flex justify-around">
@@ -172,7 +186,7 @@ if (!$session) {
                 }, 1000);
             }, 3000);
         });
-    </script>s
+    </script>
 </body>
 
 </html>

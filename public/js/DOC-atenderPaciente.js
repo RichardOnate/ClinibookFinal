@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("pass").value = response.RUT;       
                         document.getElementById("Historial").setAttribute("data-id", response.ID);
                         document.getElementById("Receta").setAttribute("onclick", "abrirVentana(" + response.IDC + ")");
+                        document.getElementById("Finalizar").setAttribute("data-id", response.IDC);
                     } catch (e) {
                         console.error("Error al parsear JSON:", e);
                     }

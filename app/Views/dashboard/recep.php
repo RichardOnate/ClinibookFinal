@@ -31,8 +31,8 @@ if (!$session) {
             </svg>
           </div>
           <div class="flex">
-            <h3 class="text-xl text-blue-700 font-bold md:text-2xl lg:text-5xl">Citas por atender hoy : </h3>
-            <span class="text-xl text-blue-700 lg:text-4xl  justify-center text-center">50</span>
+            <h3 class="text-xl text-blue-700 font-bold md:text-2xl lg:text-5xl">Citas por atender hoy: </h3>
+            <span class="text-xl text-blue-700 lg:text-4xl  justify-center text-center"> <?= esc($conteo['citasP']) ?></span>
           </div>
         </div>
 
@@ -46,8 +46,8 @@ if (!$session) {
           </div>
 
           <div class="flex">
-            <h3 class="text-lg text-red-700 font-bold md:text-2xl lg:text-5xl">Citas canceladas hoy :</h3>
-            <span class="text-xl text-red-700 sm:text-4xl  justify-center text-center">50</span>
+            <h3 class="text-lg text-red-700 font-bold md:text-2xl lg:text-5xl">Citas canceladas hoy: </h3>
+            <span class="text-xl text-red-700 sm:text-4xl  justify-center text-center"> <?= esc($conteo['citasC']) ?></span>
           </div>
         </div>
         <!-- ----------------------------------------------------------------------------------------------- -->
@@ -61,8 +61,8 @@ if (!$session) {
           </div>
 
           <div class="flex">
-            <h3 class="text-lg text-emerald-700 font-bold md:text-2xl lg:text-5xl">Total citas Atendidas :</h3>
-            <span class="text-xl text-emerald-700 sm:text-4xl  justify-center text-center">50</span>
+            <h3 class="text-lg text-emerald-700 font-bold md:text-2xl lg:text-5xl">Total citas Atendidas: </h3>
+            <span class="text-xl text-emerald-700 sm:text-4xl  justify-center text-center"> <?= esc($conteo['citasA']) ?></span>
           </div>
         </div>
       </div>

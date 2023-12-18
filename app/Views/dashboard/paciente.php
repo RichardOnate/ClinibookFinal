@@ -32,8 +32,8 @@ if (!$session) {
               </svg>
             </div>
             <div class="flex">
-              <h3 class="text-xl text-blue-700 font-bold md:text-2xl lg:text-5xl"> </h3>
-              <span class="text-xl text-blue-700 lg:text-4xl  justify-center text-center">50</span>
+              <h3 class="text-xl text-blue-700 font-bold md:text-2xl lg:text-5xl">Mis citas totales: </h3>
+              <span class="text-xl text-blue-700 lg:text-4xl  justify-center text-center"><?= esc($conteo['citasT']) ?></span>
             </div>
           </div>
 
@@ -47,8 +47,8 @@ if (!$session) {
             </div>
 
             <div class="flex">
-              <h3 class="text-lg text-red-700 font-bold md:text-2xl lg:text-5xl"> :</h3>
-              <span class="text-xl text-red-700 sm:text-4xl  justify-center text-center">50</span>
+              <h3 class="text-lg text-red-700 font-bold md:text-2xl lg:text-5xl">Mis citas canceladas: </h3>
+              <span class="text-xl text-red-700 sm:text-4xl  justify-center text-center"><?= esc($conteo['citasC']) ?></span>
             </div>
           </div>
           <!-- ----------------------------------------------------------------------------------------------- -->
@@ -62,20 +62,54 @@ if (!$session) {
             </div>
 
             <div class="flex">
-              <h3 class="text-lg text-emerald-700 font-bold md:text-2xl lg:text-5xl"></h3>
-              <span class="text-xl text-emerald-700 sm:text-4xl  justify-center text-center">50</span>
+              <h3 class="text-lg text-emerald-700 font-bold md:text-2xl lg:text-5xl">Mis citas atendidas: </h3>
+              <span class="text-xl text-emerald-700 sm:text-4xl  justify-center text-center"><?= esc($conteo['citasA']) ?></span>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-between gap-2 mb-3">
+        <!-- cartas de atencion -- -->
+        <div>
+          <h2 class=" text-white text-3xl font-bold p-3">Mis Citas</h2>
+          <div class="flex items-center justify-center overflow-x-auto p-4 max-w-full">
+            <?php foreach ($datos as $cita) : ?>
+              <div class="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden mx-2">
+                <div class="px-4 py-2">
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Fecha: <?= esc($cita['FECHA']) ?></p>
+                  <h3 class="mt-2 text-xl font-semibold text-gray-800 dark:text-white">Especialista: <?= esc($cita['ESPECIALISTA']) ?></h3>
+                  <p class="mt-2 text-gray-600 dark:text-gray-400">Hora de la cita: <?= esc($cita['HORARIO']) ?></p>
+                  <p class="mt-2 text-gray-600 dark:text-gray-400">Estado de la cita: <?= esc($cita['ESTADO CITA']) ?></p>
+                  <div class="py-5 flex gap-2">
+                    <button type="button" id="Confirmar" data-id="<?= esc($cita['IDC']) ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Confirmar</button>
+                    <button type="button" id="Cancelar" data-id="<?= esc($cita['IDC']) ?>" class="mt-6 bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+
+          <div class="flex justify-between gap-2 mb-3">
+            <h2 class="text-4xl text-gray-100 pl-3 text-center font-bold">Calendario Citas</h2>
+
+            <button id="agendarPaciente" type="button" class="abrirBtnAgendar px-2 py-2 mb-2 md:mb-0 w-full md:w-auto text-sm font-medium text-gray-200 bg-gray-800 rounded-md hover:bg-emerald-600 focus:ring focus:ring-opacity-50">Agendar Nueva Cita</button>
+          </div>
+
+          <div class="">
+            <div id="calendar" class="w-full mx-auto rounded border-2 bg-gray-100"></div>
+          </div>
+
+
+
+        </div>
+
+        <!--<div class="flex justify-between gap-2 mb-3">
           <h2 class="text-4xl text-gray-100 pl-3 text-center font-bold">Calendario Citas</h2>
 
           <button id="agendarPaciente" type="button" class="abrirBtnAgendar px-2 py-2 mb-2 md:mb-0 w-full md:w-auto text-sm font-medium text-gray-200 bg-gray-800 rounded-md hover:bg-emerald-600 focus:ring focus:ring-opacity-50">Agendar Nueva Cita</button>
         </div>
         <div class="">
           <div id="calendar" class="w-full mx-auto rounded border-2 bg-gray-100"></div>
-        </div>
+        </div>-->
     </div>
 
     <!-- Modal agendar------------------------------------------------------------- -->
@@ -85,7 +119,10 @@ if (!$session) {
       <div class=" h-auto rounded-lg bg-white p-4 relative ">
         <span id="cerrarModalBtn2" class="cerrarModalhisto absolute top-2 right-2 mr-4  text-gray-500 cursor-pointer text-4xl hover:text-red-600 transform hover:scale-110 transition-transform">&times;</span>
 
-        <form action="">
+        <form action="/agendar-pac" method="post">
+
+          <input type="hidden" id="id_p" name="id_paciente" value="<?= $datosPac['ID'] ?>">
+          <input type="hidden" id="correo" name="correo" value="<?= $datosPac['CORREO'] ?>">
           <div id="form2" class=" max-w-3xl p-4 bg-white border border-blue-800 rounded-lg shadow-lg">
 
             <div class="max-w-lg pb-4 px-4 block justify-center items-center ">
@@ -99,91 +136,44 @@ if (!$session) {
                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                   </svg>
                 </div>
-                <input datepicker datepicker-format="dd/mm/yyyy" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Seleccione una fecha">
+                <input type="date" name="fecha" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Seleccione una fecha">
               </div>
+              <!-- horario -->
               <!-- horario -->
               <div class="flex justify-between mt-4 mb-2 gap-2">
                 <div>
                   <h3 class="text-lg text-center font-semibold text-gray-900 dark:text-white">Mañana</h3>
                   <div class="mt-2 space-y-2 gap-1">
-                    <div>
-                      <input type="radio" id="1" name="hosting" value="1" class="hidden peer w-full" required>
-                      <label for="1" class="flex items-center py-1 px-10 text-gray-500  bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="2" name="hosting" value="2" class="hidden peer w-full" required>
-                      <label for="2" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="3" name="hosting" value="3" class="hidden peer w-full" required>
-                      <label for="3" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="4" name="hosting" value="4" class="hidden peer w-full" required>
-                      <label for="4" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="5" name="hosting" value="5" class="hidden peer w-full" required>
-                      <label for="5" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="6" name="hosting" value="6" class="hidden peer w-full" required>
-                      <label for="6" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
+                    <?php $count = 1; ?>
+                    <?php foreach ($horarios as $horario) : ?>
+                      <?php if ($count <= 6) : ?>
+                        <div>
+                          <input type="radio" id="<?= $horario['id_horario'] ?>" name="horario" value="<?= $horario['id_horario'] ?>" class="hidden peer w-full">
+                          <label for="<?= $horario['id_horario'] ?>" class="flex items-center py-1 px-10 text-gray-500  bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
+                            <?= $horario['hor_hora_medica'] ?>
+                          </label>
+                        </div>
+                      <?php endif; ?>
+                      <?php $count++; ?>
+                    <?php endforeach; ?>
                   </div>
                 </div>
 
                 <div>
                   <h3 class="text-lg text-center font-semibold text-gray-900 dark:text-white">Tarde</h3>
                   <div class="mt-2 space-y-2 gap-1">
-                    <div class="w-full">
-                      <input type="radio" id="7" name="hosting" value="7" class="hidden peer w-full" required>
-                      <label for="7" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="8" name="hosting" value="8" class="hidden peer w-full" required>
-                      <label for="8" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="9" name="hosting" value="9" class="hidden peer w-full" required>
-                      <label for="9" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="10" name="hosting" value="10" class="hidden peer w-full" required>
-                      <label for="10" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="11" name="hosting" value="11" class="hidden peer w-full" required>
-                      <label for="11" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
-                    <div>
-                      <input type="radio" id="12" name="hosting" value="12" class="hidden peer w-full" required>
-                      <label for="12" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                        09:00
-                      </label>
-                    </div>
+                    <?php $count1 = 6; ?>
+                    <?php foreach ($horarios as $horario) : ?>
+                      <?php if ($count1 >= 12) : ?>
+                        <div class="w-full">
+                          <input type="radio" id="<?= $horario['id_horario'] ?>" name="horario" value="<?= $horario['id_horario'] ?>" class="hidden peer w-full">
+                          <label for="<?= $horario['id_horario'] ?>" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
+                            <?= $horario['hor_hora_medica'] ?>
+                          </label>
+                        </div>
+                      <?php endif; ?>
+                      <?php $count1++; ?>
+                    <?php endforeach; ?>
                   </div>
                 </div>
               </div>
@@ -193,12 +183,11 @@ if (!$session) {
             <!-- select doctor -->
             <div class=" mb-4">
               <label for="underline_select" class="sr-only">Underline select</label>
-              <select id="underline_select" class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-blue-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+              <select id="underline_select" name="doctor" class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-blue-600 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                 <option selected>Seleccionar Doctor</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                <?php foreach ($doctores as $doctor) : ?>
+                  <option value="<?= $doctor['ID'] ?>"><?= $doctor['NOMBRE'] ?></option>
+                <?php endforeach; ?>
               </select>
 
             </div>
@@ -215,6 +204,7 @@ if (!$session) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js" integrity="sha384-1z39Pl0VH8aB+DIEJT8uzMlBGO11AJJeUFSQsnrEz4gjgLEg3NUbIG4rUJGU2z6L" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/es.min.js" integrity="sha384-AbUj+CrZTOrEWHZOpZ/IMDHSCp/Z7mLaD/mclK5XEYAJvA3GOoF0MwgsMEmIcVEj" crossorigin="anonymous"></script>
+    <script src="<?= base_url('js/PAC-confirmaciones.js') ?>"></script>
     <script src="
   https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js
     "></script>

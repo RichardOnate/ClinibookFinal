@@ -44,10 +44,12 @@ class DocController extends BaseController
         $datosCitas = $this->citasModel->datosCitas();
         $totalcancel = $this->citasModel->citasCanceladasHoy();
         $totalatend = $this->citasModel->citasAtendidasHoy();
+        $eventos = $this->citasModel->citasHoyCalendario();
 
         $data = [
             'active_page' => 'doc',
             'datos' => $datosCitas,
+            'eventos' => $eventos,
             'conteo' => [
                 'citasP' => $totalcitas ? $totalcitas->totalCitas : 0,
                 'citasC' => $totalcancel ? $totalcancel->totalCancel : 0,
@@ -57,8 +59,6 @@ class DocController extends BaseController
 
         return view('dashboard/doc', $data);
     }
-
-
 
     public function perfilDoc()
     {
