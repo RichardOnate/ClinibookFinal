@@ -75,7 +75,6 @@ $rol = session('rol_usuario');
     </ul>
   </div>
 </aside>
-<script src="<?= base_url('js/restri_usuario.js') ?>"></script>
 
 <script>
   function obtenerHora() {
