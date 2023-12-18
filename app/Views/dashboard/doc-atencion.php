@@ -212,6 +212,7 @@ if (!$session) {
   <script src="<?= base_url('js/DOC-atenderPaciente.js') ?>"></script>
   <script src="<?= base_url('js/DOC-mostrarHistorial.js') ?>"></script>
   <script src="<?= base_url('js/DOC-finalizarAtencion.js') ?>"></script>
+  <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 </body>
 
 </html>

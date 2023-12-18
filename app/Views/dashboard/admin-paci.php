@@ -292,6 +292,7 @@ if (!$session) {
   <script src="<?= base_url('js/trabFuncionalidad.js') ?>"></script>
   <script src="<?= base_url('js/AD-actualizarPaciente.js') ?>"></script>
   <script src="<?= base_url('js/AD-eliminarPaciente.js') ?>"></script>
+  <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 </body>
 
 </html>

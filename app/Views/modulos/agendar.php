@@ -138,44 +138,33 @@
           <h2 class="mb-4 text-2xl text-center font-bold text-gray-900 dark:text-white">Selecciona Un Horario</h2>
 
           <!-- Date picker  -->
+
           <div class="relative w-auto">
             <label for="fecha" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Fecha</label>
             <input type="date" id="fecha" name="fecha"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600"
-              placeholder="Ingrese su número de celular" />
+              placeholder="Ingrese su número de celular" onchange="validarFecha()" />
           </div>
+
           <!-- horario -->
-          <div class="flex  mt-4 mb-2 ">
-            <div class=" w-auto">
-              <label for="fecha" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Seleccione un
-                Horario AM o PM</label>
+          <div class="flex mt-4 mb-2">
+            <div class="w-auto">
+              <label for="hora" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Seleccione una
+                Hora</label>
               <div class="flex items-center justify-between h-full">
-                <div class="mr-8">
-                  <select id="am" name="horario" onchange="togglePM(this)"
+                <div>
+                  <select id="hora" name="horario"
                     class="block w-36 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:focus:ring-blue-600 dark:text-gray-300 dark:bg-gray-800">
-                    <option value="9:00" data-hora="09:00">9:00 AM</option>
-                    <option value="9:30" data-hora="09:30">9:30 AM</option>
-                    <option value="10:00" data-hora="10:00">10:00 AM</option>
-                    <option value="10:30" data-hora="10:30">10:30 AM</option>
-                    <option value="11:00" data-hora="11:00">11:00 AM</option>
-                    <option value="11:30" data-hora="11:30">11:30 AM</option>
+                    <option>Seleccionar Hora </option>
+                    <?php foreach ($horarios as $horario): ?>
+                      <option value="<?= $horario['id_horario'] ?>">
+                        <?= $horario['hor_hora_medica'] ?>
+                      </option>
+                    <?php endforeach; ?>
                   </select>
                 </div>
                 <div>
-                  <select id="pm" name="horario" onchange="toggleAM(this)"
-                    class="block w-36 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:focus:ring-blue-600 dark:text-gray-300 dark:bg-gray-800">
-                    <option value="12:00" data-hora="12:00">12:00 PM</option>
-                    <option value="12:30" data-hora="12:30">12:30 PM</option>
-                    <option value="13:00" data-hora="13:00">13:00 PM</option>
-                    <option value="13:30" data-hora="13:30">13:30 PM</option>
-                    <option value="14:00" data-hora="14:00">14:00 PM</option>
-                    <option value="14:30" data-hora="14:30">14:30 PM</option>
-                    <option value="15:00" data-hora="15:00">15:00 PM</option>
-                    <option value="15:30" data-hora="15:30">15:30 PM</option>
-                  </select>
-                </div>
-                <div>
-                  <button type="button" id="limpiar" onclick="habilitarAmbos()"
+                  <button type="button" id="limpiar" onclick="habilitarHorario()"
                     class="ml-8 px-4 py-2 text-[12px] font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-600 dark:bg-blue-700">Borrar
                     Selección</button>
                 </div>
@@ -215,57 +204,42 @@
   <script src="<?= base_url('js/modalAgendar.js') ?>"></script>
 
   <script>
+  function validarFecha() {
+    var fechaInput = document.getElementById('fecha');
+    var horaSelect = document.getElementById('hora');
+    var fechaSeleccionada = new Date(fechaInput.value + 'T00:00:00');
+    var horaActual = new Date();
 
-
-    function togglePM(selectAM) {
-      const selectPM = document.getElementById('pm');
-      selectPM.disabled = selectAM.value !== '';
+    // Deshabilitar fechas anteriores a la actual
+    if (fechaSeleccionada < horaActual) {
+      fechaInput.setCustomValidity('Seleccione una fecha futura');
+    } else {
+      fechaInput.setCustomValidity('');
     }
 
-    function toggleAM(selectPM) {
-      const selectAM = document.getElementById('am');
-      selectAM.disabled = selectPM.value !== '';
+    // Deshabilitar opciones anteriores a la hora actual si la fecha seleccionada es hoy
+    if (
+      fechaSeleccionada.toDateString() === horaActual.toDateString() &&
+      horaSelect.options.length > 0
+    ) {
+      var horaActualFormato = horaActual.getHours() + ':' + horaActual.getMinutes() + ':00';
+      for (var i = 0; i < horaSelect.options.length; i++) {
+        var opcionHora = horaSelect.options[i].text;
+        if (opcionHora < horaActualFormato) {
+          horaSelect.options[i].disabled = true;
+        }
+      }
+    } else {
+      // Habilitar todas las opciones si la fecha no es hoy
+      for (var i = 0; i < horaSelect.options.length; i++) {
+        horaSelect.options[i].disabled = false;
+      }
     }
+  }
 
-    function habilitarAmbos() {
-      const selectAM = document.getElementById('am');
-      const selectPM = document.getElementById('pm');
-      selectAM.disabled = false;
-      selectPM.disabled = false;
-    }
-
-
-  // Obtener la fecha y hora actual
-  const ahora = new Date();
-  const horaActual = ahora.getHours() * 100 + ahora.getMinutes(); // Convertir la hora a un formato numérico (HHMM)
-
-  // Deshabilitar opciones pasadas
-  const opcionesAM = document.getElementById('am').querySelectorAll('option');
-  const opcionesPM = document.getElementById('pm').querySelectorAll('option');
-
-  opcionesAM.forEach((opcion) => {
-    const horaOpcion = parseInt(opcion.value.replace(':', ''));
-    if (horaOpcion < horaActual) {
-      opcion.disabled = true;
-    }
-  });
-
-  opcionesPM.forEach((opcion) => {
-    const horaOpcion = parseInt(opcion.value.replace(':', ''));
-    if (horaOpcion < horaActual) {
-      opcion.disabled = true;
-    }
-  });
-    // Obtén el elemento de entrada de fecha y tiempo
-    const fechaInput = document.getElementById('fecha');
-
-
-    // Obtén la fecha actual en formato ISO (AAAA-MM-DD)
-    const currentDate = new Date().toISOString().split('T')[0];
-
-    // Establece el atributo 'min' en el input de fecha para bloquear fechas pasadas
-    fechaInput.setAttribute('min', currentDate);
-  </script>
+  // Llamar a la función al cargar la página
+  window.onload = validarFecha;
+</script>
 
 </body>
 

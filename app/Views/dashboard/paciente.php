@@ -273,6 +273,7 @@ if (!$session) {
         calendar.render();
       });
     </script>
+     <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
 
 
 </body>
