@@ -10,13 +10,13 @@
     <title>Clinibook-Confirmación</title>
 </head>
 
-<body class="flex items-center justify-center h-screen bg-gray-100">
+<body class="flex items-center justify-center bg-gray-100">
 
     <?= view('modulos/navbar.php'); ?>
 
-    <form class=" max-w-lg p-4 w-full bg-white rounded-lg shadow-xl shadow-blue-500 border border-blue-600">
+    <form class=" p-4 w-full bg-white rounded-lg shadow-xl shadow-blue-500 border border-blue-600">
         <div class="flex items-center justify-center h-full">
-            <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 text-center">
+            <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 text-center">
                 <h5 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Confirmar asistencia a
                     cita oftalmologica</h5>
                 <div class="flex justify-center mb-4 space-x-4">

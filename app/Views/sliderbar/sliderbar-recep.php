@@ -16,7 +16,6 @@ $rol = session('rol_usuario');
 
   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
     <a href="/recep" class="flex items-center ps-2.5 mb-5">
-      <img src="#" class="h-6 me-3 sm:h-7" alt="" />
       <span class="self-center text-3xl text-blue-700 text-center font-semibold whitespace-nowrap  ">CliniVision</span>
     </a>
     <ul class="space-y-2 font-medium">
