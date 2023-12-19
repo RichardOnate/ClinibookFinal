@@ -184,11 +184,11 @@
       var horaActual = new Date();
 
       // Deshabilitar fechas anteriores a la actual
-      /*/if (fechaSeleccionada < horaActual) {
-        fechaInput.setCustomValidity('Seleccione una fecha futura');
-      } else {
-        fechaInput.setCustomValidity('');
-      }*/
+      // if (fechaSeleccionada < horaActual) {
+      //   fechaInput.setCustomValidity('Seleccione una fecha futura');
+      // } else {
+      //   fechaInput.setCustomValidity('');
+      // }
 
       // Deshabilitar opciones anteriores a la hora actual si la fecha seleccionada es hoy
       if (
@@ -212,6 +212,22 @@
 
     // Llamar a la función al cargar la página
     window.onload = validarFecha;
+    // Obtener la fecha actual en el formato YYYY-MM-DD
+    function obtenerFechaActual() {
+      const fechaActual = new Date();
+      const year = fechaActual.getFullYear();
+      let month = fechaActual.getMonth() + 1;
+      let day = fechaActual.getDate();
+
+      // Asegurarse de que el mes y el día tengan dos dígitos
+      month = month < 10 ? '0' + month : month;
+      day = day < 10 ? '0' + day : day;
+
+      return `${year}-${month}-${day}`;
+    }
+
+    // Configurar el atributo 'min' del input date con la fecha actual
+    document.getElementById('fecha').min = obtenerFechaActual();
   </script>
 
 </body>
