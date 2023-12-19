@@ -68,11 +68,12 @@ if (!$session) {
       </div>
 
       <!-- cartas de atencion -- -->
-      <div>
+      <div   >
         <h2 class=" text-white text-3xl font-bold p-3">Citas </h2>
-        <div class="flex items-center justify-center overflow-x-auto p-4 max-w-full">
+        <div class="flex flex-row items-center justify-start border border-gray-200 px-8 rounded-lg p-4 mb-4 overflow-x-auto">
           <?php foreach ($citas as $cita) : ?>
-            <div class="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden mx-2">
+            
+            <div data-id="<?= esc($cita['ESTADO_CITA']) ?>" class="max-w-md w-full bg-white shadow-lg rounded-lg mx-5 carta">
               <div class="px-4 py-2">
                 <p class="text-sm text-gray-600 dark:text-gray-400">Fecha: <?= esc($cita['FECHA']) ?></p>
                 <h3 class="mt-2 text-xl font-semibold text-gray-800 dark:text-white">Especialista: <?= esc($cita['ESPECIALISTA']) ?></h3>
@@ -109,6 +110,40 @@ if (!$session) {
   https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js
     "></script>
     <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var cartas = document.querySelectorAll('.carta'); // Asigna una clase común a las cartas
+
+        cartas.forEach(function(carta) {
+            var estadoCita = carta.getAttribute('data-id');
+
+            switch (estadoCita) {
+                case 'Agendada':
+                    carta.classList.remove('bg-white');
+                    carta.classList.add('bg-purple-200'); // Clase de color para estado 'Agendada'
+                    break;
+                case 'Cancelada':
+                    carta.classList.remove('bg-white');
+                    carta.classList.add('bg-red-200'); // Clase de color para estado 'Cancelada'
+                    break;
+                case 'Confirmada':
+                    carta.classList.remove('bg-white');
+                    carta.classList.add('bg-blue-200'); // Clase de color para estado 'Confirmada'
+                    break;
+                case 'Atendiendo':
+                    carta.classList.remove('bg-white');
+                    carta.classList.add('bg-yellow-200'); 
+                    break;
+                case 'Atendida':
+                    carta.classList.remove('bg-white');
+                    carta.classList.add('bg-green-200'); 
+                    break;
+                // Agrega más casos según sea necesario
+            }
+        });
+    });
+</script>
 
 
 
@@ -180,6 +215,9 @@ if (!$session) {
         calendar.render();
       });
     </script>
+
+
+
 
 
 
