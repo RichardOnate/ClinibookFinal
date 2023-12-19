@@ -31,9 +31,17 @@ class EnferController extends BaseController
         $totalCitasHoy = $this->citasModel->totalCitasHoy();
         $totalAtendidasHoy = $this->citasModel->totalCitasAtendidas();
         $totalCanceladasHoy = $this->citasModel->totalCitasCanceladas();
+        $eventosConf = $this->citasModel->citasCalendarioRecConf();
+        $eventosCanc = $this->citasModel->citasCalendarioRecCanc();
+
+        $eventos = [
+            'confirm' => $eventosConf,
+            'cancel' => $eventosCanc,
+        ];
 
         $data = [
             'active_page' => 'enfer',
+            'eventos' => $eventos,
             'conteo' => [
                 'citasP' => $totalCitasHoy ? $totalCitasHoy->totalCitas : 0,
                 'citasC' => $totalAtendidasHoy ? $totalAtendidasHoy->totalCitas : 0,

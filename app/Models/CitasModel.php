@@ -456,26 +456,6 @@ class CitasModel extends Model
         return $query;
     }
 
-    public function citasCalendarioEnf()
-    {
-        $idUsuario = session('id_usuario');
-        $query = $this->db->table('tbl_cita c')
-            ->select("c.cita_fecha as FECHA, CONCAT(t.trab_nombres, ' ', t.trab_apellidos) AS DOCTOR, 
-            TIME_FORMAT(h.hor_hora_medica, '%H:%i') as HORARIO")
-            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
-            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
-            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
-            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
-            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
-            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
-            ->where('u.id_usuario', $idUsuario)
-            //->where('DATE(c.cita_fecha)', date('Y-m-d'))
-            ->where('ec.estado_nombre', 'Confirmada')
-            ->orderBy('HORARIO', 'ASC')
-            ->get()
-            ->getResultArray();
-        return $query;
-    }
 
     public function citasRecep()
     {
@@ -487,10 +467,12 @@ class CitasModel extends Model
             ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
             ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
             ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
-            ->orderBy('HORARIO', 'ASC')
+            ->where("DATE(c.cita_fecha) BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)")
+            //->orderBy('HORARIO', 'ASC')
             ->orderBy('FECHA', 'ASC')
             ->get()
             ->getResultArray();
+
         return $query;
     }
 }

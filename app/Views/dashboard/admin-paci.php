@@ -16,7 +16,7 @@ if (!$session) {
   <title>CliniVision-ADMIN</title>
 </head>
 
-<body class="bg-blue-500 overflow-hidden relative">
+<body class="bg-blue-500 relative">
 
   <!-- sliderbar -->
   <?= view('sliderbar/sliderbar-admin'); ?>
@@ -86,13 +86,13 @@ if (!$session) {
                       Nombre Completo
                     </th>
                     <th scope="col" class="px-6 py-3">
-                      Correo
+                      Especialista
                     </th>
                     <th scope="col" class="px-6 py-3">
                       Celular
                     </th>
                     <th scope="col" class="px-6 py-3">
-                      Estado última cita
+                      Estado citas
                     </th>
                     <th scope="col" class="px-6 py-3">
                       Acción
@@ -114,7 +114,7 @@ if (!$session) {
                         <?= $paciente['NOMBRE COMPLETO'] ?>
                       </td>
                       <td class="px-6 py-4">
-                        <?= $paciente['CORREO'] ?>
+                        <?= $paciente['ESPECIALISTA'] ?>
                       </td>
                       <td class="px-6 py-4">
                         <?= $paciente['CELULAR'] ?>

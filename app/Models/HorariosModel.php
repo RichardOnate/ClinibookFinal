@@ -12,11 +12,6 @@ class HorariosModel extends Model
 
     public function listarHorarios()
     {
-        $horarios = $this->findAll();
-        foreach ($horarios as &$horario) {
-            $horario['hor_hora_medica'] = date('H:i', strtotime($horario['hor_hora_medica']));
-        }
-
-        return $horarios;
+        return $this->findAll();
     }
 }

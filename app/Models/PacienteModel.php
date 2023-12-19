@@ -60,21 +60,15 @@ class PacienteModel extends Model
     public function listarPacientes()
     {
         $query = $this->db->table('tbl_paciente p')
-            ->select('p.id_paciente as ID, p.pac_rut as RUT, MAX(concat(p.pac_nombres, " ", p.pac_apellidos)) as "NOMBRE COMPLETO", 
-            MAX(p.pac_correo) as CORREO, MAX(p.pac_celular) as CELULAR, e.estado_nombre as "ESTADO CITA"')
+            ->select('p.id_paciente as ID, p.pac_rut as RUT, concat(p.pac_nombres, " ", p.pac_apellidos) as "NOMBRE COMPLETO", 
+            concat(t.trab_nombres, " ", t.trab_apellidos) as ESPECIALISTA, p.pac_celular as CELULAR, e.estado_nombre as "ESTADO CITA"')
             ->join('tbl_cita c', 'p.id_paciente = c.id_paciente')
-            ->join(
-                '(SELECT id_paciente, MAX(id_cita) as max_id_cita FROM tbl_cita GROUP BY id_paciente) ultima_cita',
-                'c.id_cita = ultima_cita.max_id_cita AND p.id_paciente = ultima_cita.id_paciente',
-                'left'
-            )
-            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita', 'left')
-            ->join('tbl_estado_cita e', 'cc.id_estado_cita = e.id_estado_cita', 'left')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita e', 'cc.id_estado_cita = e.id_estado_cita')
             ->where('p.eliminado', 0)
-            ->groupBy('p.pac_rut')
             ->get()
             ->getResultArray();
-
         return $query;
     }
 

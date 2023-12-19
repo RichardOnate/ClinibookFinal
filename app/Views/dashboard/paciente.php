@@ -130,50 +130,32 @@ if (!$session) {
               <h2 class="mb-4 text-2xl text-center font-bold text-gray-900 dark:text-white">Selecciona Un Horario</h2>
 
               <!-- Date picker  -->
-              <div class="relative w-auto">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                  </svg>
-                </div>
-                <input type="date" name="fecha" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Seleccione una fecha">
-              </div>
-              <!-- horario -->
-              <!-- horario -->
-              <div class="flex justify-between mt-4 mb-2 gap-2">
-                <div>
-                  <h3 class="text-lg text-center font-semibold text-gray-900 dark:text-white">Mañana</h3>
-                  <div class="mt-2 space-y-2 gap-1">
-                    <?php $count = 1; ?>
-                    <?php foreach ($horarios as $horario) : ?>
-                      <?php if ($count <= 6) : ?>
-                        <div>
-                          <input type="radio" id="<?= $horario['id_horario'] ?>" name="horario" value="<?= $horario['id_horario'] ?>" class="hidden peer w-full">
-                          <label for="<?= $horario['id_horario'] ?>" class="flex items-center py-1 px-10 text-gray-500  bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
-                            <?= $horario['hor_hora_medica'] ?>
-                          </label>
-                        </div>
-                      <?php endif; ?>
-                      <?php $count++; ?>
-                    <?php endforeach; ?>
-                  </div>
-                </div>
 
-                <div>
-                  <h3 class="text-lg text-center font-semibold text-gray-900 dark:text-white">Tarde</h3>
-                  <div class="mt-2 space-y-2 gap-1">
-                    <?php $count1 = 6; ?>
-                    <?php foreach ($horarios as $horario) : ?>
-                      <?php if ($count1 >= 12) : ?>
-                        <div class="w-full">
-                          <input type="radio" id="<?= $horario['id_horario'] ?>" name="horario" value="<?= $horario['id_horario'] ?>" class="hidden peer w-full">
-                          <label for="<?= $horario['id_horario'] ?>" class="flex items-center py-1 px-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400">
+              <div class="relative w-auto">
+                <label for="fecha" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">Fecha</label>
+                <input type="date" id="fechap" name="fecha" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600" placeholder="Ingrese su número de celular" onchange="validarFecha()" />
+              </div>
+
+              <!-- horario -->
+              <div class="flex mt-4 mb-2">
+                <div class="w-auto">
+                  <label for="hora" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Seleccione una
+                    Hora</label>
+                  <div class="flex items-center justify-between h-full">
+                    <div>
+                      <select id="horap" name="horario" class="block w-36 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:focus:ring-blue-600 dark:text-gray-300 dark:bg-gray-800">
+                        <option>Seleccionar Hora </option>
+                        <?php foreach ($horarios as $horario) : ?>
+                          <option value="<?= $horario['id_horario'] ?>">
                             <?= $horario['hor_hora_medica'] ?>
-                          </label>
-                        </div>
-                      <?php endif; ?>
-                      <?php $count1++; ?>
-                    <?php endforeach; ?>
+                          </option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                    <div>
+                      <button type="button" id="limpiar" onclick="habilitarHorario()" class="ml-8 px-4 py-2 text-[12px] font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-600 dark:bg-blue-700">Borrar
+                        Selección</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -208,9 +190,6 @@ if (!$session) {
     <script src="
   https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js
     "></script>
-
-
-
 
     <script>
       const abrirModalAgendar = document.querySelector(".abrirBtnAgendar");
@@ -279,8 +258,7 @@ if (!$session) {
       });
     </script>
     <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
-
-
+    <script src="<?= base_url('js/PAC-validacionHora.js') ?>"></script>
 </body>
 
 </html>
