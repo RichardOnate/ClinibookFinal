@@ -54,23 +54,12 @@ if (!$session) {
                     <span class="sr-only"></span>
                   </button>
                 </div>
-
-                <!-- <div>
-                  --Nuevo
-                  <button type="button" id="nuevoTrabajador" title="Nuevo Paciente" class="editarTrabajador w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-blue-800 text-white">
-                    <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                      <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z" />
-                    </svg>
-                  </button>
-                </div>
-              -->
-
               </div>
 
             </form>
 
 
-            <div class="relative overflow-x-auto mt-4 shadow-md sm:rounded-lg">
+            <div class="relative max-h-screen overflow-x-auto mt-4 shadow-md sm:rounded-lg">
               <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
@@ -119,7 +108,7 @@ if (!$session) {
                       <td class="px-6 py-4">
                         <?= $paciente['CELULAR'] ?>
                       </td>
-                      <td class="px-6 py-4">
+                      <td data-id="<?= $paciente['ESTADO CITA'] ?>" class="px-6 py-4 estado ">
                         <?= $paciente['ESTADO CITA'] ?>
                       </td>
                       <td class="flex items-center px-6 py-4">
@@ -293,6 +282,47 @@ if (!$session) {
   <script src="<?= base_url('js/AD-actualizarPaciente.js') ?>"></script>
   <script src="<?= base_url('js/AD-eliminarPaciente.js') ?>"></script>
   <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
+
+<script>
+ // Espera a que el documento esté completamente cargado
+document.addEventListener("DOMContentLoaded", function() {
+    // Obtén todas las celdas <td> con la clase 'estado'
+    var celdasEstado = document.querySelectorAll('.estado');
+
+    // Itera sobre cada celda
+    celdasEstado.forEach(function(estado) {
+        // Obtiene el valor de 'data-id'
+        var estadoCita = estado.getAttribute('data-id');
+
+        // Aplica las clases según el valor de 'data-id'
+        switch (estadoCita) {
+            case 'Agendada':
+                estado.classList.add('bg-purple-200');
+                break;
+            case 'Cancelada':
+                estado.classList.add('bg-red-200');
+                break;
+            case 'Confirmada':
+                estado.classList.add('bg-blue-200');
+                break;
+            case 'Atendiendo':
+                estado.classList.add('bg-yellow-200');
+                break;
+            case 'Atendida':
+                estado.classList.add('bg-green-200');
+                break;
+            // Agrega más casos según sea necesario
+            default:
+                // Puedes agregar un caso por defecto si es necesario
+                break;
+        }
+    });
+});
+
+</script>
+
+
+  
 </body>
 
 </html>

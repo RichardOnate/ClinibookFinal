@@ -468,10 +468,11 @@ class CitasModel extends Model
             ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
             ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
             ->where("DATE(c.cita_fecha) BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)")
-            //->orderBy('HORARIO', 'ASC')
+            // ->orderBy('HORARIO', 'ASC')
             ->orderBy('FECHA', 'ASC')
             ->get()
             ->getResultArray();
+
 
         return $query;
     }
