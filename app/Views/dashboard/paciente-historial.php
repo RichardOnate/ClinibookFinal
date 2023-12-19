@@ -34,11 +34,11 @@ if (!$session) {
         <!-- fin alertas -------------- -->
 
 
-        <div class=" p-3 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+        <div class=" p-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
             <div>
                 <div class="w-full">
-                    <div class="mb-3">
-                        <h2 class="text-4xl text-white text-center font-bold">Mis Datos</h2>
+                    <div class="mb-2">
+                        <h2 class="text-2xl text-white text-center font-bold">Mis Datos</h2>
                     </div>
                     <!-- formulario -->
                     <form action="/pac-perfil" method="post">
@@ -100,15 +100,15 @@ if (!$session) {
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="mt-2">
+                            <div class="mt-1">
                                 <label for="usuario" class="block text-sm font-medium text-gray-700">Usuario</label>
                                 <input type="text" id="usuario" name="usuario" value="<?= $datosPac['USUARIO'] ?? '' ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
                             </div>
-                            <div class="mt-2">
+                            <div class="mt-1">
                                 <label for="contrasena" class="block text-sm font-medium text-gray-700">Contraseña</label>
                                 <input type="password" id="contrasena" name="pass" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
                             </div>
-                            <div class="mt-2">
+                            <div class="mt-1">
                                 <label for="repetirContrasena" class="block text-sm font-medium text-gray-700">Repetir
                                     Contraseña</label>
                                 <input type="password" id="repetirContrasena" name="repetirpass" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" disabled>
@@ -116,12 +116,12 @@ if (!$session) {
 
                         </div>
 
-                        <div class="mt-8 flex justify-around">
-                            <button id="Historial" data-id="<?= $datosPac['ID'] ?? '' ?>" type="button" class="abrirModalHistorial mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Ver
+                        <div class="mt-3 flex justify-around gap-2">
+                            <button id="Historial" data-id="<?= $datosPac['ID'] ?? '' ?>" type="button" class="abrirModalHistorial mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-gray-700 rounded-md hover:bg-gray-800 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Ver
                                 mi Historial</button>
                             <button id="editar" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Editar
                                 información</button>
-                            <button type="submit" class="w-full md:w-auto px-6 py-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-300 focus:ring-opacity-50">Guardar
+                            <button type="submit" class="w-full md:w-auto px-6 py-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:ring focus:ring-blue-300 focus:ring-opacity-50">Guardar
                                 Cambios</button>
                         </div>
                     </form>
@@ -131,20 +131,25 @@ if (!$session) {
         </div>
     </div>
 
-
+<!-- modal historial paciente------------------------------------------------------------ -->
 
     <section class=" modalHisto fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 hidden">
         <div class="fixed top-0 left-0 w-full h-full bg-black opacity-50"></div>
 
-        <div class="max-w-lg h-auto mx-auto md:mb-28 rounded-lg bg-white p-4 relative">
+        <div class="max-w-lg max-h-[622px] mx-auto mt-28 md:mb-28 rounded-lg bg-white p-4 relative ">
             <span id="cerrarModalBtn2" class="cerrarModalhisto absolute top-0 right-0 mr-2  text-gray-500 cursor-pointer text-4xl hover:text-red-600 transform hover:scale-110 transition-transform">&times;</span>
 
             <div class=" text-center">
-                <h1 class="text-4xl py-4 text-black">Mi historial de atención</h1>
+                <h1 class="text-2xl font-bold py-4 text-black">Mi historial de atención</h1>
             </div>
-            <div id="historialContainer"></div>
-            <br></br>
-            <button id="Export-Historial" data-id="" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar historial</button>
+            <div class="mb-3">
+                <select name="filtrar-Fecha" id="filtrar-Fecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <option value="">Filtrar por fecha</option>
+                </select>
+            </div>
+            <div id="historialContainer" class="p-4 border border-black rounded-xl overflow-y-scroll" ></div>
+            
+            <button id="Export-Historial" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar historial</button>
         </div>
     </section>
 
