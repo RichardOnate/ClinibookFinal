@@ -102,13 +102,15 @@ if (!$session) {
     "></script>
   <script src="<?= base_url('js/DOC-confirmarAtencion.js') ?>"></script>
   <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
+  <script src="<?= base_url('js/DOC-cancelarCita.js') ?>"></script>
 </body>
 
 </html>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    var eventos = <?php echo json_encode($eventos); ?>; // Convierte el array PHP a JSON
+    var eventosConf = <?php echo json_encode($eventos['confirm']); ?>;
+    var eventosCanc = <?php echo json_encode($eventos['cancel']); ?>;
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       contentHeight: 500,
@@ -118,19 +120,36 @@ if (!$session) {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
-      events: eventos.map(function(evento) {
-        var start = evento['FECHA'] + 'T' + evento['HORARIO'] + ':00';
-        var title = 'Paciente: ' + evento['PACIENTE'];
+      events: [
+        // Eventos Confirmados
+        ...eventosConf.map(function(evento) {
+          var start = evento['FECHA'] + 'T' + evento['HORARIO'] + ':00';
+          var title = 'Paciente: ' + evento['PACIENTE'];
 
-        return {
-          title: title,
-          start: start,
-          end: "",
-          backgroundColor: '#36A2EB',
-          borderColor: '#36A2EB',
-          timezone: 'UTC'
-        };
-      }),
+          return {
+            title: title,
+            start: start,
+            end: "",
+            backgroundColor: '#36A2EB',
+            borderColor: '#36A2EB',
+            timezone: 'UTC'
+          };
+        }),
+        // Eventos Cancelados
+        ...eventosCanc.map(function(evento) {
+          var start = evento['FECHA'] + 'T' + evento['HORARIO'] + ':00';
+          var title = 'Paciente: ' + evento['PACIENTE'];
+
+          return {
+            title: title,
+            start: start,
+            end: "",
+            backgroundColor: '#FF0000',
+            borderColor: '#FF0000',
+            timezone: 'UTC'
+          };
+        })
+      ],
       editable: true,
       dayMaxEvents: true,
       locale: 'es',
@@ -141,13 +160,12 @@ if (!$session) {
         day: 'Día',
       },
       views: {
-        dayGridMonth: { // name of view
+        dayGridMonth: {
           titleFormat: {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
           }
-          // other view-specific options here
         }
       }
     });

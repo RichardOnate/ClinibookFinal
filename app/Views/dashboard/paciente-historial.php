@@ -14,6 +14,8 @@ if (!$session) {
     <link rel="stylesheet" href="<?= base_url() ?>css/styles.css?v=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
     <title>CliniVision-PACIENTE</title>
 </head>
 
@@ -141,11 +143,13 @@ if (!$session) {
                 <h1 class="text-4xl py-4 text-black">Mi historial de atención</h1>
             </div>
             <div id="historialContainer"></div>
+            <br></br>
+            <button id="Export-Historial" data-id="" type="button" class="mb-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar historial</button>
         </div>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
-    <script src="<?= base_url('js/DOC-mostrarHistorial.js') ?>"></script>
+    <script src="<?= base_url('js/PAC-Historial.js') ?>"></script>
     <script>
         const abrirModalHisto = document.querySelector(".abrirModalHistorial");
         const cerrarModalHisto = document.querySelector(".cerrarModalhisto");
@@ -188,6 +192,7 @@ if (!$session) {
         });
     </script>
     <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
+
 </body>
 
 </html>

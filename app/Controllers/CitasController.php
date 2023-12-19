@@ -70,7 +70,7 @@ class CitasController extends BaseController
 
         $rutaRedireccion = 'window.history.back()';
 
-        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $rutaRedireccion)) {
+        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $fecha, $rutaRedireccion)) {
             return;
         }
 
@@ -200,7 +200,7 @@ class CitasController extends BaseController
         $rutaRedireccion = 'window.history.back()';
 
 
-        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $rutaRedireccion)) {
+        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $fecha, $rutaRedireccion)) {
             return;
         }
 
@@ -292,7 +292,7 @@ class CitasController extends BaseController
         $rutaRedireccion = 'window.history.back()';
 
 
-        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $rutaRedireccion)) {
+        if ($this->citasModel->disponibilidadCitas($doctor, $horario, $fecha, $rutaRedireccion)) {
             return;
         } else {
             $dataCita = [

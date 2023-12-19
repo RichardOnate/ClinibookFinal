@@ -4,12 +4,12 @@ function validarFecha() {
         var fechaSeleccionada = new Date(fechaInput.value + 'T00:00:00');
         var horaActual = new Date();
 
-        // Deshabilitar fechas anteriores a la actual
-        if (fechaSeleccionada < horaActual) {
+       // Deshabilitar fechas anteriores a la actual
+        /*/if (fechaSeleccionada < horaActual) {
           fechaInput.setCustomValidity('Seleccione una fecha futura');
         } else {
           fechaInput.setCustomValidity('');
-        }
+        }*/
 
         // Deshabilitar opciones anteriores a la hora actual si la fecha seleccionada es hoy
         if (

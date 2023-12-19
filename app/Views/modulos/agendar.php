@@ -184,11 +184,11 @@
       var horaActual = new Date();
 
       // Deshabilitar fechas anteriores a la actual
-      if (fechaSeleccionada < horaActual) {
+      /*/if (fechaSeleccionada < horaActual) {
         fechaInput.setCustomValidity('Seleccione una fecha futura');
       } else {
         fechaInput.setCustomValidity('');
-      }
+      }*/
 
       // Deshabilitar opciones anteriores a la hora actual si la fecha seleccionada es hoy
       if (

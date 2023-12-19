@@ -53,24 +53,15 @@ if (!$session) {
                         </div>
                     </div>
                 </div>
-                <div class="w-full">
+                <!--<div class="w-full">
                     <div class="bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <h2 class="px-4 py-2 text-lg font-semibold text-gray-900 dark:text-white">Historial</h2>
                         <div class="px-4 py-2">
-                            <button type="button" id="Historial" data-id="<?= session('id_usuario') ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Exportar historial</button>
+                            <button type="button" id="Historial" data-id="/*<?= session('id_usuario') ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Exportar historial</button>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
-
-
-
-
-
-
-
-
-
 
         </div>
 
@@ -78,6 +69,8 @@ if (!$session) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
         <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
         <script src="<?= base_url('js/PAC-Historial.js') ?>"></script>
+
+
 </body>
 
 </html>

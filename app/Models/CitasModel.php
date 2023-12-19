@@ -219,7 +219,7 @@ class CitasModel extends Model
         return $query->getRow();
     }
 
-    public function disponibilidadCitas($idTrabajador, $idHorario, $rutaRedireccion)
+    public function disponibilidadCitas($idTrabajador, $idHorario, $fecha, $rutaRedireccion)
     {
         $query = $this->db->table('tbl_cita c')
             ->select('COUNT(*) as count')
@@ -228,9 +228,9 @@ class CitasModel extends Model
             ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
             ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
             ->where('t.id_trabajador', $idTrabajador)
-            ->where('ec.estado_nombre', 'Agendada')
+            ->whereIn('ec.estado_nombre', ['Agendada', 'Confirmada', 'Atendiendo', 'Atendida'])
             ->where('c.id_horario', $idHorario)
-            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('DATE(c.cita_fecha)', $fecha)
             ->get();
 
         $resultado = $query->getRow();
@@ -393,6 +393,27 @@ class CitasModel extends Model
             ->where('u.id_usuario', $idUsuario)
             //->where('DATE(c.cita_fecha)', date('Y-m-d'))
             ->where('ec.estado_nombre', 'Confirmada')
+            ->orderBy('HORARIO', 'ASC')
+            ->get()
+            ->getResultArray();
+        return $query;
+    }
+
+    public function citasCalendarioDocCan()
+    {
+        $idUsuario = session('id_usuario');
+        $query = $this->db->table('tbl_cita c')
+            ->select("c.cita_fecha as FECHA, CONCAT(p.pac_nombres, ' ', p.pac_apellidos) AS 'PACIENTE', 
+            TIME_FORMAT(h.hor_hora_medica, '%H:%i') as HORARIO")
+            ->join('tbl_paciente p', 'p.id_paciente = c.id_paciente')
+            ->join('tbl_horarios h', 'h.id_horario = c.id_horario')
+            ->join('tbl_trabajador t', 't.id_trabajador = c.id_trabajador')
+            ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
+            ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
+            ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            //->where('DATE(c.cita_fecha)', date('Y-m-d'))
+            ->where('ec.estado_nombre', 'Cancelada')
             ->orderBy('HORARIO', 'ASC')
             ->get()
             ->getResultArray();
