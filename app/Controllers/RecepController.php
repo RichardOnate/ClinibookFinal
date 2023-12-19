@@ -93,4 +93,14 @@ class RecepController extends Controller
         $datosPac = $this->pacienteModel->buscarPacienteRut($rut);
         return $this->response->setJSON($datosPac);
     }
+
+    public function confirmarCitaPaciente($id)
+    {
+        $this->citasModel->confirmarCitaRec($id);
+    }
+
+    public function cancelarCitaPaciente($id)
+    {
+        $this->citasModel->cancelarCitaRec($id);
+    }
 }

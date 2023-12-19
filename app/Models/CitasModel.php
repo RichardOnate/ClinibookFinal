@@ -489,12 +489,49 @@ class CitasModel extends Model
             ->join('tbl_confirmaciones_citas cc', 'c.id_cita = cc.id_cita')
             ->join('tbl_estado_cita ec', 'ec.id_estado_cita = cc.id_estado_cita')
             ->where("DATE(c.cita_fecha) BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)")
-            // ->orderBy('HORARIO', 'ASC')
             ->orderBy('FECHA', 'ASC')
+            ->orderBy('HORARIO', 'ASC')
             ->get()
             ->getResultArray();
 
 
         return $query;
+    }
+
+
+    public function confirmarCitaRec($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Confirmada')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $confirmada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($confirmada) {
+            Alerta("success", "Cita confirmada correctamente", "", '/recep');
+        } else {
+            Alerta("error", "No se pudo confirmar la cita", "", '/recep');
+        }
+    }
+
+    public function cancelarCitaRec($id)
+    {
+        $query = $this->db->table('tbl_estado_cita')
+            ->select('id_estado_cita')
+            ->where('estado_nombre', 'Cancelada')
+            ->get();
+        $data = ['id_estado_cita' => $query->getRow()->id_estado_cita,];
+        $cancelada = $this->db->table('tbl_confirmaciones_citas')
+            ->where('id_cita', $id)
+            ->update($data);
+
+        if ($cancelada) {
+            Alerta("success", "Cita cancelada correctamente", "", '/recep');
+        } else {
+            Alerta("error", "No se pudo cancelar la cita", "", '/recep');
+        }
     }
 }

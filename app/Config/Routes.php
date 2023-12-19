@@ -78,6 +78,8 @@ $routes->get('/recep-agendar', 'RecepController::recepAgendar');
 $routes->get('/recep-perfil', 'RecepController::recepPerfil');
 $routes->post('/agendar-cita', 'CitasController::recepAgendar');
 $routes->get('/buscar-paciente/(:any)', 'RecepController::buscarPacienteRut/$1');
+$routes->get('/confirm-cita/(:num)', 'RecepController::confirmarCitaPaciente/$1');
+$routes->get('/cancel-cita/(:num)', 'RecepController::cancelarCitaPaciente/$1');
 
 // receta
 $routes->get('/receta', 'recetaController::index');
