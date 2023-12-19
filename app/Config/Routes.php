@@ -70,6 +70,7 @@ $routes->get('/del-pac/(:num)', 'PacienteController::eliminarPaciente/$1');
 $routes->post('/agendar-pac', 'CitasController::pacienteAgendar');
 $routes->get('/conf-pac/(:num)', 'PacienteController::confirmarCitaPaciente/$1');
 $routes->get('/cancel-pac/(:num)', 'PacienteController::cancelarCitaPaciente/$1');
+$routes->get('/export-historial/(:num)', 'PacienteController::historialPDF/$1');
 
 // Ruta Recepcionista
 $routes->get('/recep', 'RecepController::index');

@@ -9,6 +9,7 @@ use App\Models\PrevisionModel;
 use App\Models\HorariosModel;
 use App\Models\TrabajadorModel;
 use App\Models\CitasModel;
+use App\Models\HistorialModel;
 
 class PacienteController extends BaseController
 {
@@ -18,6 +19,7 @@ class PacienteController extends BaseController
     private $generosModel;
     private $session;
     private $citasModel;
+    private $historialModel;
     private $horariosModel;
 
     public function __construct()
@@ -29,6 +31,7 @@ class PacienteController extends BaseController
         $this->horariosModel = new HorariosModel;
         $this->trabajadorModel = new TrabajadorModel;
         $this->citasModel = new CitasModel;
+        $this->historialModel = new HistorialModel;
         $this->session = \Config\Services::session();
     }
     public function index()
@@ -79,6 +82,7 @@ class PacienteController extends BaseController
     }
     public function pacienteDocumentos()
     {
+
         $data['active_page'] = 'paciente-documentos';
         return view('dashboard/paciente-documentos', $data);
     }
@@ -87,6 +91,12 @@ class PacienteController extends BaseController
     {
         $datosPac = $this->pacienteModel->modalEditar($id);
         return $this->response->setJSON($datosPac);
+    }
+
+    public function historialPDF($idUsuario)
+    {
+        $datos = $this->historialModel->pdfHistorial($idUsuario);
+        return $this->response->setJSON($datos);
     }
 
     public function actualizarPacienteM()

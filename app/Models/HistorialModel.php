@@ -41,4 +41,22 @@ class HistorialModel extends Model
 
         return $query;
     }
+
+    public function pdfHistorial($idUsuario)
+    {
+
+        $query = $this->db->table('tbl_detalle_historial dh')
+            ->select('concat(p.pac_nombres, " ", p.pac_apellidos) as NOMBRE, DATE_FORMAT(h.historial_fecha, "%d-%m-%Y") as FECHA, d.tipo_det_nombre as DIAGNOSTICO, dh.historial_detalle as OBSERVACIONES')
+            ->join('tbl_historial h', 'h.id_historial = dh.id_historial')
+            ->join('tbl_tipo_detalle_historial d', 'd.id_tipo_detalle = dh.id_tipo_detalle')
+            ->join('tbl_ficha_medica f', 'f.id_ficha = dh.id_ficha')
+            ->join('tbl_paciente p', 'p.id_paciente = f.id_paciente')
+            ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
+            ->where('u.id_usuario', $idUsuario)
+            ->orderBy('h.historial_fecha', 'desc')
+            ->get()
+            ->getResultArray();
+
+        return $query;
+    }
 }
