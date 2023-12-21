@@ -21,6 +21,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     try {
                         var response = JSON.parse(responseData);
 
+                        if(response == null){
+                            var botonFin = document.getElementById("Finalizar")
+                            var receta = document.getElementById("Receta");
+                            var notificacion = document.getElementById("Notificacion");
+                            var botonagHistorial = document.getElementById("agregarHistorial")
+                            var guardar = document.getElementById("Guardar");
+                            var historial = document.getElementById("Historial");
+                            notificacion.classList.remove("hidden");
+                            
+                            receta.disabled = true;
+                            botonFin.disabled = true;
+                            guardar.disabled = true;
+                            botonagHistorial.disabled = true;
+                            historial.disabled = true;                       
+                        }
+                       
+
                         // Rellena los campos del formulario con los datos recibidos
                         document.getElementById("id_p").value = response.ID;
                         document.getElementById("rut").value = response.RUT;
@@ -33,9 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("genero").value = response.IDG;
                         document.getElementById("usuario").value = response.RUT;
                         document.getElementById("pass").value = response.RUT;       
-                        document.getElementById("Historial").setAttribute("data-id", response.ID);
+                        document.getElementById("Historial").setAttribute("data-id", response.ID);               
                         document.getElementById("Receta").setAttribute("onclick", "abrirVentana(" + response.IDC + ")");
-                        document.getElementById("Finalizar").setAttribute("data-id", response.IDC);
+                        document.getElementById("Finalizar").setAttribute("data-id", response.IDC);   
+
+                  
                     } catch (e) {
                         console.error("Error al parsear JSON:", e);
                     }
@@ -48,3 +67,4 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.send();
     }
 });
+

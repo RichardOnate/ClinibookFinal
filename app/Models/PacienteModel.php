@@ -210,8 +210,8 @@ class PacienteModel extends Model
             ->join('tbl_prevision pv', 'pv.id_prevision = p.id_prevision')
             ->join('tbl_genero g', 'g.id_genero = p.id_genero')
             ->join('tbl_cita c', 'p.id_paciente = c.id_paciente')
-            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
             ->where('p.pac_rut', $rut)
+            ->where('DATE(c.cita_fecha)', date('Y-m-d'))
             ->get()
             ->getRowArray();
         return $query;
