@@ -5,6 +5,24 @@ if (!$session) {
   exit;
 }
 ?>
+
+<?php
+// Número de registros por página
+$registrosPorPagina = 8;
+
+// Página actual, por defecto es la primera página (1)
+$paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+
+// Calcular el índice de inicio
+$indiceInicio = ($paginaActual - 1) * $registrosPorPagina;
+
+// Obtener solo los registros de la página actual
+$registrosPagina = array_slice($lista, $indiceInicio, $registrosPorPagina);
+
+// Calcular el número total de páginas
+$totalPaginas = ceil(count($lista) / $registrosPorPagina);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -67,7 +85,8 @@ if (!$session) {
 
 
             <div class="relative max-h-screen overflow-x-auto mt-4 shadow-md sm:rounded-lg">
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <table id="tblPaciente"
+                class=" tblPaciente w-full max-h-screen text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" class="p-4">
@@ -96,12 +115,13 @@ if (!$session) {
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($lista as $paciente): ?>
-                    <tr
-                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td class="w-4 p-4">
+                  <?php foreach ($registrosPagina as $paciente): ?>
+                    <tr 
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      data-search="<?= strtolower($paciente['NOMBRE COMPLETO']) ?>">
+                      <td class="w-4 p-4" >
                         <div class="flex items-center">
-
+                          <!-- Contenido de la primera columna si es necesario -->
                         </div>
                       </td>
                       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -121,53 +141,33 @@ if (!$session) {
                       </td>
                       <td class="flex items-center px-6 py-4">
                         <button id="Editar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                          data-id="<?= $paciente['ID'] ?>">Editar</button>
+                          data-id="<?= $paciente['ID'] ?>">Editar
+                        </button>
                         <button id="Eliminar" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"
-                          data-id="<?= $paciente['ID'] ?>">Eliminar</button>
+                          data-id="<?= $paciente['ID'] ?>">Eliminar
+                        </button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
-              <div id="pagination-container" class="mt-4" >
-                <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-                  aria-label="Table navigation">
-                  <span
-                    class="text-sm font-normal text-gray-200 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando
-                    <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span
-                      class="font-semibold text-gray-900 dark:text-white">1000</span></span>
-                  <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                    <li>
-                      <a href="#"
-                        class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Anterior</a>
-                    </li>
-                    <li>
-                      <a href="#" aria-current="page"
-                        class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">1</a>
-                    </li>
-                    <li>
-                      <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                      <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">3</a>
-                    </li>
-                    <li>
-                      <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                      <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                      <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Siguiente</a>
-                    </li>
-                  </ul>
-                </nav>  
+              <div class="flex items-center justify-end p-4">
+                <div class="flex space-x-2">
+                  <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                    <a href="?pagina=<?= $i ?>"
+                      class="px-3 py-2 <?= $i == $paginaActual ? 'bg-gray-300' : 'bg-gray-200' ?> rounded">
+                      <?= $i ?>
+                    </a>
+                  <?php endfor; ?>
+                </div>
               </div>
+
+
+
+
+
+
+
             </div>
           </div>
         </div>
@@ -233,7 +233,7 @@ if (!$session) {
   </section>
 
 
-  
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -280,9 +280,23 @@ if (!$session) {
     });
 
   </script>
-  <script>
+ <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.getElementById('search-dropdown');
+        var rows = document.querySelectorAll('tbody tr');
 
-  </script>
+        searchInput.addEventListener('input', function () {
+            var searchTerm = searchInput.value.toLowerCase();
+
+            rows.forEach(function (row) {
+                var textContent = row.textContent.toLowerCase();
+                row.style.display = textContent.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    });
+</script>
+
+
 
 
 
