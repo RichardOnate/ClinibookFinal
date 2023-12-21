@@ -143,11 +143,11 @@ if (!$session) {
                 <h1 class="text-2xl font-bold py-4 text-black">Mi historial de atención</h1>
             </div>
             <div class="mb-3">
-                <select name="filtrar-Fecha" id="filtrar-Fecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                <select name="filtrar-Fecha" id="fechaSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="">Filtrar por fecha</option>
                 </select>
             </div>
-            <div id="historialContainer" class="p-4 border border-black rounded-xl overflow-y-scroll" ></div>
+            <div id="historialContainer" class="max-h-[441px]  min-w-[395px] p-4 border border-black rounded-xl overflow-y-scroll" ></div>
             
             <button id="Export-Historial" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar historial</button>
         </div>

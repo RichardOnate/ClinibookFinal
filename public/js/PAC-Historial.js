@@ -8,68 +8,119 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.getElementById("Export-Historial").addEventListener("click", function () {
-        // Obtener los datos del formulario
-        var nombre = document.getElementById("nombre").value + " " + document.getElementById("apellido").value;
-        var rut = document.getElementById("rut").value;
-
-        // Llamar a la función para exportar el PDF
-        exportarHistorialPDF(nombre, rut);
-    });
+    document
+        .getElementById("Export-Historial")
+        .addEventListener("click", function () {
+            var nombre =
+                document.getElementById("nombre").value +
+                " " +
+                document.getElementById("apellido").value;
+            var rut = document.getElementById("rut").value;
+            exportarHistorialPDF(nombre, rut);
+        });
 
     function obtenerDatosPersona(userId) {
-        // Envía el userId al archivo PHP para obtener los datos de la persona
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/traer-historial/" + userId, true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    var responseData = xhr.responseText.replace('<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>', '');
+                    var responseData = xhr.responseText.replace(
+                        '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>',
+                        ""
+                    );
                     console.log("Respuesta del servidor:", responseData);
 
                     try {
                         var response = JSON.parse(responseData);
 
-                        // Limpiar contenido anterior
                         document.getElementById("historialContainer").innerHTML = "";
 
                         if (response.length > 0) {
-                            response.forEach(function (historial, index) {
-                                var historialElement = document.createElement("div");
-                                historialElement.classList.add("historial-item");
+                            var fechas = response.map(function (historial) {
+                                return historial.FECHA;
+                            });
+                            var fechasUnicas = [...new Set(fechas)];
 
-                                // Rellena los campos del historial con los datos recibidos
-                                historialElement.innerHTML = `
-                                    <p>Fecha: ${historial.FECHA}</p>
-                                    <p>Diagnóstico: ${historial.DIAGNOSTICO}</p>
-                                    <p>Observaciones: ${historial.OBSERVACIONES}</p>
-                                `;
+                            var fechaSelector = document.getElementById("fechaSelector");
+                            fechaSelector.innerHTML = ""; // Limpiar opciones anteriores
 
-                                document.getElementById("historialContainer").appendChild(historialElement);
+                            fechasUnicas.forEach(function (fecha) {
+                                var option = document.createElement("option");
+                                option.value = fecha;
+                                option.text = fecha;
+                                fechaSelector.appendChild(option);
+                            });
+                            // Agregar una opción adicional para mostrar todos los registros
+                            var optionTodos = document.createElement("option");
+                            optionTodos.value = "todos";
+                            optionTodos.text = "Mostrar Todos";
+                            fechaSelector.appendChild(optionTodos);
 
-                                if (index < response.length - 1) {
-                                    var separator = document.createElement("br");
-                                    document.getElementById("historialContainer").appendChild(separator);
+                            fechaSelector.addEventListener("change", function () {
+                                var fechaSeleccionada = fechaSelector.value;
+                            
+                                if (fechaSeleccionada === "todos") {
+                                    // Mostrar todos los historiales
+                                    mostrarHistoriales(response);
+                                } else {
+                                    // Filtrar historiales por fecha seleccionada
+                                    var historialesFiltrados = response.filter(function (historial) {
+                                        return historial.FECHA === fechaSeleccionada;
+                                    });
+                            
+                                    // Mostrar historiales filtrados
+                                    mostrarHistoriales(historialesFiltrados);
                                 }
                             });
+                            // Mostrar todos los historiales al cargar la página
+                            mostrarHistoriales(response);
                         } else {
                             var mensajeSinHistoriales = document.createElement("p");
-                            mensajeSinHistoriales.innerText = "Paciente sin historial ni ficha médica. Actualice los datos personales y guarde los cambios.";
-                            document.getElementById("historialContainer").appendChild(mensajeSinHistoriales);
+                            mensajeSinHistoriales.innerText =
+                                "Paciente sin historial ni ficha médica. Actualice los datos personales y guarde los cambios.";
+                            document
+                                .getElementById("historialContainer")
+                                .appendChild(mensajeSinHistoriales);
                         }
-
-                        //document.querySelector(".modalHisto").classList.remove("hidden");
                     } catch (e) {
                         console.error("Error al parsear JSON:", e);
                     }
                 } else {
-                    console.error("Error en la solicitud AJAX:", xhr.status, xhr.statusText);
+                    console.error(
+                        "Error en la solicitud AJAX:",
+                        xhr.status,
+                        xhr.statusText
+                    );
                 }
             }
         };
 
         xhr.send();
+    }
+
+    function mostrarHistoriales(historiales) {
+        var historialContainer = document.getElementById("historialContainer");
+
+        // Limpiar contenido anterior
+        historialContainer.innerHTML = "";
+
+        historiales.forEach(function (historial, index) {
+            var historialElement = document.createElement("div");
+            historialElement.classList.add("historial-item");
+            historialElement.innerHTML = `
+                <p>Fecha: ${historial.FECHA}</p>
+                <p>Diagnóstico: ${historial.DIAGNOSTICO}</p>
+                <p>Observaciones: ${historial.OBSERVACIONES}</p>
+            `;
+            historialContainer.appendChild(historialElement);
+
+            if (index < historiales.length - 1) {
+                var separator = document.createElement("br");
+                historialContainer.appendChild(separator);
+            }
+        });
     }
 
     function exportarHistorialPDF(nombre, rut) {
@@ -125,40 +176,40 @@ document.addEventListener("DOMContentLoaded", function () {
                 {
                     margin: [0, 0, 0, 10],
                     table: {
-                        widths: ['auto', '*'], // Ancho de las columnas
+                        widths: ["auto", "*"], // Ancho de las columnas
                         body: [
                             [
                                 {
-                                    text: 'Fecha:',
-                                    style: 'label'
+                                    text: "Fecha:",
+                                    style: "label",
                                 },
                                 {
                                     text: new Date().toLocaleDateString(),
-                                    margin: [0, 0, 0, 10]
-                                }
+                                    margin: [0, 0, 0, 10],
+                                },
                             ],
                             [
                                 {
-                                    text: 'Nombre del Paciente:',
-                                    style: 'label'
+                                    text: "Nombre del Paciente:",
+                                    style: "label",
                                 },
                                 {
                                     text: nombre,
-                                    style: 'field'
-                                }
+                                    style: "field",
+                                },
                             ],
                             [
                                 {
-                                    text: 'RUT Paciente:',
-                                    style: 'label'
+                                    text: "RUT Paciente:",
+                                    style: "label",
                                 },
                                 {
                                     text: rut,
-                                    style: 'field'
-                                }
+                                    style: "field",
+                                },
                             ],
-                        ]
-                    }
+                        ],
+                    },
                 },
                 {
                     text: "Historial:",
@@ -168,9 +219,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 {
                     text: obtenerHistorialFormateado(),
                     style: "label",
-                    margin: [0,10, 0, 5],
+                    margin: [0, 10, 0, 5],
                 },
-                
             ],
             styles: styles,
         };
@@ -193,16 +243,22 @@ document.addEventListener("DOMContentLoaded", function () {
         var historialFormateado = [];
 
         historialItems.forEach(function (historialItem) {
-            var fecha = historialItem.querySelector("p:nth-child(1)").innerText.replace("Fecha: ", "");
-            var diagnostico = historialItem.querySelector("p:nth-child(2)").innerText.replace("Diagnóstico: ", "");
-            var observaciones = historialItem.querySelector("p:nth-child(3)").innerText.replace("Observaciones: ", "");
+            var fecha = historialItem
+                .querySelector("p:nth-child(1)")
+                .innerText.replace("Fecha: ", "");
+            var diagnostico = historialItem
+                .querySelector("p:nth-child(2)")
+                .innerText.replace("Diagnóstico: ", "");
+            var observaciones = historialItem
+                .querySelector("p:nth-child(3)")
+                .innerText.replace("Observaciones: ", "");
 
             var historialEntry = {
                 text: [
                     { text: "Fecha: " + fecha + "\n", bold: true },
                     { text: "Diagnóstico: " + diagnostico + "\n" },
                     { text: "Observaciones: " + observaciones + "\n" },
-                    { text: "\n"},
+                    { text: "\n" },
                 ],
             };
 
@@ -211,5 +267,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return historialFormateado;
     }
-
 });
