@@ -39,8 +39,8 @@ if (!$session) {
             <div class="flex flex-col items-center justify-between ">
                 <!-- exportar -->
                 <div class=" bg-white w-full p-4 border rounded-lg mb-4">
-                    <select name="filtrar-Fecha" id="fechaSelectorGrad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                        <option value="">Filtrar por fecha</option>
+                    <select name="filtrar-Fecha" id="fechaSelectorGrad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" >
+                        
                     </select>
                     <button id="Export-optica" data-id="<?= session('id_usuario') ?>" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Graduación Óptica</button>
                 </div>
