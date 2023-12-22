@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             };
 
-            pdfmake.createPdf(docDefinition).download();
+            pdfMake.createPdf(docDefinition).download();
         } else {
             console.log("Por favor, selecciona una fecha antes de generar el PDF.");
         }
