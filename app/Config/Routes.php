@@ -71,7 +71,9 @@ $routes->post('/agendar-pac', 'CitasController::pacienteAgendar');
 $routes->get('/conf-pac/(:num)', 'PacienteController::confirmarCitaPaciente/$1');
 $routes->get('/cancel-pac/(:num)', 'PacienteController::cancelarCitaPaciente/$1');
 $routes->get('/export-historial/(:num)', 'PacienteController::historialPDF/$1');
-
+$routes->get('/rec-graduacion', 'PacienteController::graduacionPDF');
+$routes->get('/rec-tratamiento', 'PacienteController::tratamientoPDF');
+$routes->get('/rec-medicamentos', 'PacienteController::medicamentosPDF');
 // Ruta Recepcionista
 $routes->get('/recep', 'RecepController::index');
 $routes->get('/recep-agendar', 'RecepController::recepAgendar');

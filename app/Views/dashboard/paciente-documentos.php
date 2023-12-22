@@ -39,24 +39,24 @@ if (!$session) {
             <div class="flex flex-col items-center justify-between ">
                 <!-- exportar -->
                 <div class=" bg-white w-full p-4 border rounded-lg mb-4">
-                    <select name="filtrar-Fecha" id="fechaSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <select name="filtrar-Fecha" id="fechaSelectorGrad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                         <option value="">Filtrar por fecha</option>
                     </select>
-                    <button id="Export-optica" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Graduación Óptica</button>
+                    <button id="Export-optica" data-id="<?= session('id_usuario') ?>" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Graduación Óptica</button>
                 </div>
                 <!-- Exportar -->
                 <div class=" bg-white w-full p-4 border rounded-lg mb-4 ">
                     <select name="filtrar-Fecha" id="fechaSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                         <option value="">Filtrar por fecha</option>
                     </select>
-                    <button id="Export-trata" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Tratamientos</button>
+                    <button id="Export-trata" data-id="<?= session('id_usuario') ?>" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Tratamientos</button>
                 </div>
                 <!-- Exportar -->
                 <div class=" bg-white w-full p-4 border rounded-lg">
                     <select name="filtrar-Fecha" id="fechaSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                         <option value="">Filtrar por fecha</option>
                     </select>
-                    <button id="Export-Medicamentos" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Medicamentos</button>
+                    <button id="Export-Medicamentos" data-id="<?= session('id_usuario') ?>" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Medicamentos</button>
                 </div>
 
 
@@ -67,7 +67,8 @@ if (!$session) {
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
         <script src="<?= base_url('js/retri_usuario.js') ?>"></script>
-        <script src="<?= base_url('js/PAC-Historial.js') ?>"></script>
+        <script src="<?= base_url('js/PAC-exportarGraduacion.js') ?>"></script>
+
 
 
 </body>

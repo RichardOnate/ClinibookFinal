@@ -10,6 +10,7 @@ use App\Models\HorariosModel;
 use App\Models\TrabajadorModel;
 use App\Models\CitasModel;
 use App\Models\HistorialModel;
+use App\Models\RecetasModel;
 
 class PacienteController extends BaseController
 {
@@ -18,6 +19,8 @@ class PacienteController extends BaseController
     private $previsionModel;
     private $generosModel;
     private $session;
+
+    private $recetasModel;
     private $citasModel;
     private $historialModel;
     private $horariosModel;
@@ -32,6 +35,7 @@ class PacienteController extends BaseController
         $this->trabajadorModel = new TrabajadorModel;
         $this->citasModel = new CitasModel;
         $this->historialModel = new HistorialModel;
+        $this->recetasModel = new RecetasModel;
         $this->session = \Config\Services::session();
     }
     public function index()
@@ -154,5 +158,23 @@ class PacienteController extends BaseController
     public function cancelarCitaPaciente($id)
     {
         $this->citasModel->cancelarCitaPaciente($id);
+    }
+
+    public function graduacionPDF()
+    {
+        $datos = $this->recetasModel->obtenerDatosRecetaGrad();
+        return $this->response->setJSON($datos);
+    }
+
+    public function tratamientoPDF()
+    {
+        $datos = $this->recetasModel->obtenerDatosRecetaTrat();
+        return $this->response->setJSON($datos);
+    }
+
+    public function medicamentosPDF()
+    {
+        $datos = $this->recetasModel->obtenerDatosRecetaMed();
+        return $this->response->setJSON($datos);
     }
 }

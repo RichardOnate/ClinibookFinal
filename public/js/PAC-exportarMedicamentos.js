@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function obtenerDatosPersona() {
         // Envía el userId al archivo PHP para obtener los datos de la persona
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/rec-graduacion");
+        xhr.open("GET", "/rec-medicamentos");
     
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
