@@ -14,6 +14,8 @@ if (!$session) {
     <link rel="stylesheet" href="<?= base_url() ?>css/styles.css?v=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
     <title>CliniVision-PACIENTE</title>
 </head>
 
@@ -34,33 +36,30 @@ if (!$session) {
 
             <h1 class="text-5xl text-white font-bold text-center mb-6">Documentos</h1>
 
-            <div class="flex flex-col items-center justify-center h-full">
-                <div class="w-full mb-4">
-                    <div class="bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                        <h2 class="px-4 py-2 text-lg font-semibold text-gray-900 dark:text-white">Recetas</h2>
-                        <div class="px-4 py-2">
-                            <a href="#" class="block text-blue-500 hover:underline dark:text-blue-400">Descargar Receta 1</a>
-                            <a href="#" class="block text-blue-500 hover:underline dark:text-blue-400">Descargar Receta 2</a>
-                        </div>
-                    </div>
+            <div class="flex flex-col items-center justify-between ">
+                <!-- exportar -->
+                <div class=" bg-white w-full p-4 border rounded-lg mb-4" >
+                <select name="filtrar-Fecha" id="fechaSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <option value="">Filtrar por fecha</option>
+                </select>
+                <button id="Export-optica" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Graduación Óptica</button>
                 </div>
-                <div class="w-full mb-4">
-                    <div class="bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                        <h2 class="px-4 py-2 text-lg font-semibold text-gray-900 dark:text-white">Medicamentos</h2>
-                        <div class="px-4 py-2">
-                            <a href="#" class="block text-blue-500 hover:underline dark:text-blue-400">Descargar Medicamento 1</a>
-                            <a href="#" class="block text-blue-500 hover:underline dark:text-blue-400">Descargar Medicamento 2</a>
-                        </div>
-                    </div>
+                <!-- Exportar -->
+                <div class=" bg-white w-full p-4 border rounded-lg mb-4 " >
+                <select name="filtrar-Fecha" id="fechaSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <option value="">Filtrar por fecha</option>
+                </select>
+                <button id="Export-trata" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Tratamientos</button>
                 </div>
-                <!--<div class="w-full">
-                    <div class="bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                        <h2 class="px-4 py-2 text-lg font-semibold text-gray-900 dark:text-white">Historial</h2>
-                        <div class="px-4 py-2">
-                            <button type="button" id="Historial" data-id="/*<?= session('id_usuario') ?>" class="mt-6 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg px-4 py-2 focus:outline-none">Exportar historial</button>
-                        </div>
-                    </div>
-                </div>-->
+                <!-- Exportar -->
+                <div class=" bg-white w-full p-4 border rounded-lg" >
+                <select name="filtrar-Fecha" id="fechaSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <option value="">Filtrar por fecha</option>
+                </select>
+                <button id="Export-Medicamentos" data-id="" type="button" class="mb-2 mt-2 md:mb-0 w-full md:w-auto px-6 py-4 text-sm font-medium text-gray-200 bg-blue-700 rounded-md hover:bg-gray-400 focus:ring focus:ring-gray-300 focus:ring-opacity-50">Exportar Recetas Medicamentos</button>
+                </div>
+
+
             </div>
 
         </div>
