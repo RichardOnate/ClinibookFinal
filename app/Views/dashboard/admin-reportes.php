@@ -89,43 +89,27 @@ if (!$session) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
+                  <?php foreach ($lista as $usuarios) : ?>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
 
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      Apple MacBook Pro 17"
-                    </th>
-                    <td class="px-6 py-4">
-                      Silver
-                    </td>
-                    <td class="px-6 py-4">
-                      Laptop
-                    </td>
-                    <td class="px-6 py-4">
-                      Yes
-                    </td>
-                    <td class="px-6 py-4">
-                      Yes
-                    </td>
+                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <?= $usuarios['RUT'] ?>
+                      </th>
+                      <td class="px-6 py-4">
+                        <?= $usuarios['NOMBRE'] ?>
+                      </td>
+                      <td class="px-6 py-4">
+                        <?= $usuarios['CORREO'] ?>
+                      </td>
+                      <td class="px-6 py-4">
+                        <?= $usuarios['CELULAR'] ?>
+                      </td>
+                      <td class="px-6 py-4">
+                        <?= $usuarios['ROL'] ?>
+                      </td>
 
-                  </tr>
-                  <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
-
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      Apple MacBook Pro 17"
-                    </th>
-                    <td class="px-6 py-4">
-                      Silver
-                    </td>
-                    <td class="px-6 py-4">
-                      Laptop
-                    </td>
-                    <td class="px-6 py-4">
-                      Yes
-                    </td>
-                    <td class="px-6 py-4">
-                      Yes
-                    </td>
-                  </tr>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
               <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">

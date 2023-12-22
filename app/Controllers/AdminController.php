@@ -126,9 +126,10 @@ class AdminController extends BaseController
     public function reportesAdmin()
     {
 
+        $listatotal = $this->trabajadorModel->obtenerDatosUsuarios();
         $data = [
             'active_page' => 'admin-reportes',
-            'lista' => $listaPacientes,
+            'lista' => $listatotal,
         ];
         //$data['active_page'] = 'admin-reportes';
         return view('dashboard/admin-reportes', $data);

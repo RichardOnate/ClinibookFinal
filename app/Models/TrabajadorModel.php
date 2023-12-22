@@ -224,18 +224,15 @@ class TrabajadorModel extends Model
     {
         $builder = $this->db->table('tbl_paciente p');
         $query1 = $builder
-            ->select('CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS NOMBRE, p.pac_correo AS CORREO, p.pac_celular AS CELULAR, r.rol_nombre AS ROL')
+            ->select('p.pac_rut as RUT, CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS NOMBRE, p.pac_correo AS CORREO, p.pac_celular AS CELULAR, r.rol_nombre AS ROL')
             ->join('tbl_usuario u', 'u.id_usuario = p.id_usuario')
             ->join('tbl_roles r', 'r.id_rol = u.id_rol');
-
         $builder = $this->db->table('tbl_trabajador t');
         $query2 = $builder
-            ->select('CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS NOMBRE, NULL AS CORREO, t.trab_celular AS CELULAR, r.rol_nombre AS ROL')
+            ->select('t.trab_rut as RUT, CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS NOMBRE, NULL AS CORREO, t.trab_celular AS CELULAR, r.rol_nombre AS ROL')
             ->join('tbl_usuario u', 'u.id_usuario = t.id_usuario')
             ->join('tbl_roles r', 'r.id_rol = u.id_rol');
-
         $unionQuery = $query1->getCompiledSelect() . ' UNION ' . $query2->getCompiledSelect();
-
         $query = $this->db->query($unionQuery);
 
         return $query->getResultArray();
