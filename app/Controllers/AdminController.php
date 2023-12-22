@@ -125,7 +125,12 @@ class AdminController extends BaseController
 
     public function reportesAdmin()
     {
-        $data['active_page'] = 'admin-reportes';
+
+        $data = [
+            'active_page' => 'admin-reportes',
+            'lista' => $listaPacientes,
+        ];
+        //$data['active_page'] = 'admin-reportes';
         return view('dashboard/admin-reportes', $data);
     }
 

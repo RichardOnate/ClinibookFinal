@@ -115,7 +115,7 @@ class RecetasModel extends Model
     {
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_receta r')
-            ->select('CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS TRABAJADOR, CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS PACIENTE, tr.tipo_rec_nombre as TIPO_RECETA, r.rec_fecha_emision as FECHA, dr.rec_descripcion as COMENTARIOS, det_lejos_der_esf as D1, det_lejos_der_cil as D2, det_lejos_der_eje as D3, det_lejos_izq_esf as D4, det_lejos_izq_cil as D5, 
+            ->select('p.pac_rut as RUT, CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS TRABAJADOR, CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS PACIENTE, tr.tipo_rec_nombre as TIPO_RECETA, r.rec_fecha_emision as FECHA, dr.rec_descripcion as COMENTARIOS, det_lejos_der_esf as D1, det_lejos_der_cil as D2, det_lejos_der_eje as D3, det_lejos_izq_esf as D4, det_lejos_izq_cil as D5, 
             det_lejos_izq_eje as D6, det_lejos_dp as D7, det_lejos_add as D8, det_cerca_der_esf as D9, 
             det_cerca_der_cil as D10, det_cerca_der_eje as D11, det_cerca_izq_esf as D12, 
             det_cerca_izq_cil as D13, det_cerca_izq_eje as D14, det_cerca_dp as D15')
@@ -138,7 +138,7 @@ class RecetasModel extends Model
     {
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_receta r')
-            ->select('CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS TRABAJADOR, CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS PACIENTE, tr.tipo_rec_nombre as TIPO_RECETA, 
+            ->select('p.pac_rut as RUT, CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS TRABAJADOR, CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS PACIENTE, tr.tipo_rec_nombre as TIPO_RECETA, 
         r.rec_fecha_emision as FECHA, dr.rec_descripcion as COMENTARIOS')
             ->join('tbl_trabajador t', 't.id_trabajador = r.id_trabajador')
             ->join('tbl_tipo_receta tr', 'tr.id_tipo_receta = r.id_tipo_receta')
@@ -159,7 +159,7 @@ class RecetasModel extends Model
     {
         $idUsuario = session('id_usuario');
         $query = $this->db->table('tbl_receta r')
-            ->select('CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS TRABAJADOR, CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS PACIENTE, tr.tipo_rec_nombre as TIPO_RECETA, 
+            ->select('p.pac_rut as RUT, CONCAT(t.trab_nombres, " ", t.trab_apellidos) AS TRABAJADOR, CONCAT(p.pac_nombres, " ", p.pac_apellidos) AS PACIENTE, tr.tipo_rec_nombre as TIPO_RECETA, 
         r.rec_fecha_emision as FECHA, dr.rec_descripcion as COMENTARIOS')
             ->join('tbl_trabajador t', 't.id_trabajador = r.id_trabajador')
             ->join('tbl_tipo_receta tr', 'tr.id_tipo_receta = r.id_tipo_receta')
