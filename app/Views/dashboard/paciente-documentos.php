@@ -48,7 +48,7 @@ if (!$session) {
                     <div class="bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <h2 class="px-4 py-2 text-lg font-semibold text-gray-900 dark:text-white">Medicamentos</h2>
                         <div class="px-4 py-2">
-                            <a href="#" class="block text-blue-500 hover:underline dark:text-blue-400">Descargar Medicamento 1</a>
+                            <a href="public/uploads/Walt_9919_RL.pdf" download="Walt_9919_RL.pdf" class="block text-blue-500 hover:underline dark:text-blue-400">Descargar Medicamento 1</a>
                             <a href="#" class="block text-blue-500 hover:underline dark:text-blue-400">Descargar Medicamento 2</a>
                         </div>
                     </div>
