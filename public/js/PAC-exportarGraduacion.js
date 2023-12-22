@@ -9,34 +9,48 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    var responseData = xhr.responseText.replace('<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>', '');
+                    var responseData = xhr.responseText.replace(
+                        '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>',
+                        ""
+                    );
                     console.log("Respuesta del servidor:", responseData);
 
                     try {
                         response = JSON.parse(responseData);
 
-                        var fechaSelectorGrad = document.getElementById("fechaSelectorGrad");
+                        var fechaSelectorTrata =
+                            document.getElementById("fechaSelectorGrad");
+
+                        // Limpiar el contenido actual del select
+                        fechaSelectorGrad.innerHTML = "";
+
+                        var fechasUnicas = new Set();
+
+                        for (var i = 0; i < response.length; i++) {
+                            var fecha = response[i].FECHA;
+                            fechasUnicas.add(fecha);
+                        }
 
                         var optionDefault = document.createElement("option");
                         optionDefault.value = "";
                         optionDefault.text = "Filtrar por fecha";
                         fechaSelectorGrad.appendChild(optionDefault);
 
-                        for (var i = 0; i < response.length; i++) {
-                            var fecha = response[i].FECHA;
-                            if (!fechaSelectorGrad.querySelector('[value="' + fecha + '"]')) {
-                                var option = document.createElement("option");
-                                option.value = fecha;
-                                option.text = fecha;
-                                fechaSelectorGrad.appendChild(option);
-                            }
-                        }
-
+                        fechasUnicas.forEach(function (fecha) {
+                            var option = document.createElement("option");
+                            option.value = fecha;
+                            option.text = fecha;
+                            fechaSelectorGrad.appendChild(option);
+                        });
                     } catch (e) {
                         console.error("Error al parsear JSON:", e);
                     }
                 } else {
-                    console.error("Error en la solicitud AJAX:", xhr.status, xhr.statusText);
+                    console.error(
+                        "Error en la solicitud AJAX:",
+                        xhr.status,
+                        xhr.statusText
+                    );
                 }
             }
         };
@@ -52,47 +66,70 @@ document.addEventListener("DOMContentLoaded", function () {
             for (var i = 0; i < response.length; i++) {
                 if (response[i].FECHA === fechaSeleccionada) {
                     datosPaciente.push({
-                        Rut: response.RUT,
-                        Especialista: response.TRABAJADOR,
-                        Nombre: response.PACIENTE,
-                        LejosDerEsf: response.D1,
-                        LejosDerCil: response.D2,
-                        LejosDerEje: response.D3,
-                        LejosIzqEsf: response.D4,
-                        LejosIzqCil: response.D5,
-                        LejosIzqEje: response.D6,
-                        LejosDp: response.D7,
-                        LejosAdd: response.D8,
-                        CercaDerEsf: response.D9,
-                        CercaDerCil: response.D10,
-                        CercaDerEje: response.D11,
-                        CercaIzqEsf: response.D12,
-                        CercaIzqCil: response.D13,
-                        CercaIzqEje: response.D14,
-                        CercaDp: response.D15,
-                        Comentario: response.COMENTARIOS
+                        Rut: response[i].RUT,
+                        Especialista: response[i].TRABAJADOR,
+                        Nombre: response[i].PACIENTE,
+                        LejosDerEsf: response[i].D1,
+                        LejosDerCil: response[i].D2,
+                        LejosDerEje: response[i].D3,
+                        LejosIzqEsf: response[i].D4,
+                        LejosIzqCil: response[i].D5,
+                        LejosIzqEje: response[i].D6,
+                        LejosDp: response[i].D7,
+                        LejosAdd: response[i].D8,
+                        CercaDerEsf: response[i].D9,
+                        CercaDerCil: response[i].D10,
+                        CercaDerEje: response[i].D11,
+                        CercaIzqEsf: response[i].D12,
+                        CercaIzqCil: response[i].D13,
+                        CercaIzqEje: response[i].D14,
+                        CercaDp: response[i].D15,
+                        Comentario: response[i].COMENTARIOS,
                     });
                 }
             }
 
             var docDefinition = {
+                pageSize: "A4",
                 content: [
-                    { text: 'Informe de Graduación', style: 'header' },
-                    { text: 'Fecha seleccionada: ' + fechaSeleccionada, style: 'subheader' },
-                    { text: 'Datos del paciente:', style: 'subheader' },
+                    { text: "Informe de Graduación", style: "header" },
+                    {
+                        text: "Fecha seleccionada: " + fechaSeleccionada,
+                        style: "subheader",
+                    },
+                    { text: "Datos del paciente:", style: "subheader" },
                     {
                         table: {
                             body: [
-                                ['Rut', 'Especialista', 'Nombre', 'Lejos Der Esf', 'Lejos Der Cil', 'Lejos Der Eje', 'Lejos Izq Esf', 'Lejos Izq Cil', 'Lejos Izq Eje', 'Lejos Dp', 'Lejos Add', 'Cerca Der Esf', 'Cerca Der Cil', 'Cerca Der Eje', 'Cerca Izq Esf', 'Cerca Izq Cil', 'Cerca Izq Eje', 'Cerca Dp', 'Comentario'],
-                                ...datosPaciente.map(paciente => [paciente.Rut, paciente.Especialista, paciente.Nombre, paciente.LejosDerEsf, paciente.LejosDerCil, paciente.LejosDerEje, paciente.LejosIzqEsf, paciente.LejosIzqCil, paciente.LejosIzqEje, paciente.LejosDp, paciente.LejosAdd, paciente.CercaDerEsf, paciente.CercaDerCil, paciente.CercaDerEje, paciente.CercaIzqEsf, paciente.CercaIzqCil, paciente.CercaIzqEje, paciente.CercaDp, paciente.Comentario])
-                            ]
-                        }
-                    }
+                                ["Campo", "Valor"],
+                                ["Rut", datosPaciente[0].Rut || ""],
+                                ["Especialista", datosPaciente[0].Especialista || ""],
+                                ["Nombre", datosPaciente[0].Nombre || ""],
+                                ["Lejos Der Esf", datosPaciente[0].LejosDerEsf || ""],
+                                ["Lejos Der Cil", datosPaciente[0].LejosDerCil || ""],
+                                ["Lejos Der Eje", datosPaciente[0].LejosDerEje || ""],
+                                ["Lejos Izq Esf", datosPaciente[0].LejosIzqEsf || ""],
+                                ["Lejos Izq Cil", datosPaciente[0].LejosIzqCil || ""],
+                                ["Lejos Izq Eje", datosPaciente[0].LejosIzqEje || ""],
+                                ["Lejos Dp", datosPaciente[0].LejosDp || ""],
+                                ["Lejos Add", datosPaciente[0].LejosAdd || ""],
+                                ["Cerca Der Esf", datosPaciente[0].CercaDerEsf || ""],
+                                ["Cerca Der Cil", datosPaciente[0].CercaDerCil || ""],
+                                ["Cerca Der Eje", datosPaciente[0].CercaDerEje || ""],
+                                ["Cerca Izq Esf", datosPaciente[0].CercaIzqEsf || ""],
+                                ["Cerca Izq Cil", datosPaciente[0].CercaIzqCil || ""],
+                                ["Cerca Izq Eje", datosPaciente[0].CercaIzqEje || ""],
+                                ["Cerca Dp", datosPaciente[0].CercaDp || ""],
+                                ["Comentario", datosPaciente[0].Comentario || ""],
+                            ],
+                        },
+                    },
                 ],
                 styles: {
                     header: { fontSize: 18, bold: true },
-                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5] }
-                }
+                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5] },
+                },
+                pageOrientation: "portrait", // Cambiado a portrait para mostrar los datos verticalmente
             };
 
             pdfMake.createPdf(docDefinition).download();
